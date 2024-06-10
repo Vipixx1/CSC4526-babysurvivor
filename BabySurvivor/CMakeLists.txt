@@ -21,20 +21,20 @@ if(APPLE)
     include_directories(${SFML_INCLUDE_DIRS})
 else()
     # Linux or Windows
+     cmake_policy(SET CMP0135 NEW) # This cmake_policy avoids warning by cmake when we fetch contents based on URL
     FetchContent_Declare(
-      sfml
-      GIT_REPOSITORY https://github.com/SFML/SFML.git
-      GIT_TAG 2.5.1
+    sfml
+    URL https://github.com/SFML/SFML/archive/refs/tags/2.6.1.tar.gz
     )
     FetchContent_MakeAvailable(sfml)
 endif()
 
 set(CMAKE_CXX_STANDARD 20)
 
+set(CMAKE_POLICY_DEFAULT_CMP0077 NEW) # This cmake_policy avoids warning by cmake when we use pugixml
 FetchContent_Declare(
     pugixml
-    GIT_REPOSITORY https://github.com/zeux/pugixml.git
-    GIT_TAG v1.10
+    URL https://github.com/zeux/pugixml/releases/download/v1.14/pugixml-1.14.tar.gz
 )
 
 FetchContent_MakeAvailable(pugixml)
