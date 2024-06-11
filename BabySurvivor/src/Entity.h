@@ -3,9 +3,11 @@
 
 class Entity {
 private:
-	sf::Vector2f coords;
+	sf::RectangleShape entityBox;
 
 public:
-	explicit Entity(sf::Vector2f coords);
-	void render();
+	explicit Entity(sf::Vector2f coords, const float lenght, const float height);
+	sf::Vector2f getCoords() const;
+	void render(sf::RenderWindow& gameWindow) const;
+	void moveEntity(sf::Vector2f movement);
 };
