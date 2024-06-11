@@ -33,6 +33,12 @@ void Game::processEvent()
 				sf::FloatRect visibleArea(0.f, 0.f, event.size.width, event.size.height);
 				gameWindow.setView(sf::View(visibleArea));
 			}
+
+			case sf::Event::KeyPressed:
+				handlePlayerInput(event.key.code, true);
+
+			case sf::Event::KeyReleased:
+				handlePlayerInput(event.key.code, false);
 				
 			default:
 				break;
@@ -43,7 +49,18 @@ void Game::processEvent()
 
 void Game::update(sf::Time elapsedTime)
 {
-	// All the logic will take place here
+	sf::Vector2f playerMovement(0.f, 0.f);
+	float playerSpeed = player.getSpeed();
+	if (playerMovingUp)
+		playerMovement.y -= playerSpeed;
+	if (playerMovingDown)
+		playerMovement.y += playerSpeed;
+	if (playerMovingLeft)
+		playerMovement.x -= playerSpeed;
+	if (playerMovingRight)
+		playerMovement.x += playerSpeed;
+
+	player.entityBox.move( playerMovement * elapsedTime.asSeconds());
 }
 
 void Game::render() 
@@ -97,4 +114,16 @@ void Game::run()
 		updateStats(elapsedTime);
 		render();
 	}
+}
+
+void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
+{
+	if (key == sf::Keyboard::Z)
+		playerMovingUp = isPressed;
+	else if (key == sf::Keyboard::S)
+		playerMovingDown = isPressed;
+	else if (key == sf::Keyboard::Q)
+		playerMovingLeft = isPressed;
+	else if (key == sf::Keyboard::D)
+		playerMovingRight = isPressed;
 }

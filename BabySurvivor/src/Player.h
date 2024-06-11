@@ -7,5 +7,6 @@ private:
 	int level;
 
 public:
+	Player();
 	void levelUp();
 };

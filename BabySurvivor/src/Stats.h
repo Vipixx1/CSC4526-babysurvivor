@@ -6,8 +6,9 @@ private:
 	int currentHealt;
 	int baseDamge;
 	int damageMultiplier;
-	int baseSpeed;
+	float baseSpeed;
 
 public:
-	void Stats();
+	Stats();
+	float getSpeed();
 };

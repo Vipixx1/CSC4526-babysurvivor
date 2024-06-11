@@ -1,5 +1,7 @@
 #pragma once 
 #include <SFML/Graphics.hpp>
+#include "Entity.h"
+#include "Player.h"
 
 int runGame();
 
@@ -13,11 +15,19 @@ private:
 	sf::Font font;
 	static const sf::Time	TimePerFrame;
 
+	Player player;
+	bool playerMovingUp{false};
+	bool playerMovingDown{false};
+	bool playerMovingLeft{false};
+	bool playerMovingRight{false};
+
 	void processEvent();
 	void update(sf::Time elaspedTime);
 	void render();
 
 	void updateStats(sf::Time elapsedTime);
+
+	void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
 
 
 public:
