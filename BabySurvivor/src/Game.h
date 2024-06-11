@@ -7,7 +7,7 @@ int runGame();
 
 class Game {
 private:
-	int money;
+	int money{ 0 };
 	sf::RenderWindow gameWindow{ sf::VideoMode(960, 540), "Baby Survivor"};
 	sf::Time statsUpdateTime;
 	std::size_t numFrames{ 0 };

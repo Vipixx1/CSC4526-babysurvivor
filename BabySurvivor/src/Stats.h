@@ -1,14 +1,20 @@
 #pragma once
 
+#include <string>
+#include <json.hpp>
+
 class Stats {
 private:
-	int baseHealth;
-	int currentHealt;
-	int baseDamge;
-	int damageMultiplier;
-	float baseSpeed;
+	float baseHealth{ 0 };
+	float currentHealt{ 0 };
+	float baseDamage{ 0 };
+	float damageMultiplier{ 0 };
+	float baseSpeed{ 0 };
 
 public:
-	Stats();
-	float getSpeed();
+	explicit Stats(const std::string& filePath);
+	float getSpeed() const;
+	float getCurrentHealth() const;
+	void setCurrentHealth(float newHealth);
+	float getDamage();
 };

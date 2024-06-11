@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Entity.h"
+#include "LivingEntity.h"
 
-class Player : public Entity {
+class Player : public LivingEntity {
 private:
 	int level;
 

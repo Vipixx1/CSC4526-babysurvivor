@@ -1,8 +1,9 @@
 #include "Entity.h"
 
-Entity::Entity() {}
+Entity::Entity(sf::Vector2f coords) :
+	coords{coords} {}
 
-float Entity::getSpeed()
+void Entity::render()
 {
-	return stats.getSpeed();
+	// TO DO : implement the rendering of an entity
 }

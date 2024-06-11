@@ -25,20 +25,27 @@ void Game::processEvent()
 	{
 		switch (event.type) 
 		{
-			case sf::Event::Closed:
+			case sf::Event::Closed: {
 				gameWindow.close();
 				break;
+			}
+				
 
 			case sf::Event::Resized: {
-				sf::FloatRect visibleArea(0.f, 0.f, event.size.width, event.size.height);
+				sf::FloatRect visibleArea(0.f, 0.f, static_cast<float>(event.size.width), static_cast<float>(event.size.height));
 				gameWindow.setView(sf::View(visibleArea));
+				break;
 			}
 
-			case sf::Event::KeyPressed:
+			case sf::Event::KeyPressed: {
 				handlePlayerInput(event.key.code, true);
-
-			case sf::Event::KeyReleased:
+				break;
+			}
+				
+			case sf::Event::KeyReleased: {
 				handlePlayerInput(event.key.code, false);
+				break;
+			}
 				
 			default:
 				break;

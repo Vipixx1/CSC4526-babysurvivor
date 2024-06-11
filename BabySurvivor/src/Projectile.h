@@ -4,10 +4,10 @@
 
 class Projectile {
 private:
-	bool isAlly;
-	int damage;
 	sf::Vector2f coords;
+	float damage;
+	bool isAlly;
 
 public:
-	void Projectile(sf::Vector2f coords, int damage, bool isAlly);
+	explicit Projectile(sf::Vector2f coords, float damage, bool isAlly);
 };
