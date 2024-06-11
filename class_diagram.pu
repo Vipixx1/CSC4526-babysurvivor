@@ -1,0 +1,91 @@
+@startuml
+hide empty methods
+hide circle
+skinparam class {
+  BackgroundColor White
+  ArrowColor Black
+  BorderColor Black
+}
+
+class Main {
+ + main()
+}
+
+class Game {
+ - saveFile : JSON file
+ - money
+ + renderEntities()
+ + renderCollectibles()
+ + renderProjectiles()
+ + update()
+}
+
+class Stage {
+ - size
+ - waveNumber
+ + spawnEnemy(waveNumber)
+ + renderStage()
+}
+
+class Entity {
+ - stats: Stats
+ - coords : Vector2f
+ + shoot()
+ + takeDamage()
+ + kill()
+}
+
+class Stats {
+ - baseHealth
+ - currentHealth
+ - baseDamage
+ - baseSpeed
+ - damageMultiplier
+ - ...
+}
+
+class Player {
+ - level
+ + levelUp()
+}
+
+class Enemy {
+}
+
+
+class Projectile {
+ - isAlly : bool
+ - damage
+ - coords : Vector2f
+}
+
+class Collectible {
+ + collect()
+ + drop()
+}
+
+class Money {}
+
+class Experience {}
+
+class Heal {}
+
+'Liens entre les classes'
+
+Main --> Game
+Game -- Stage
+Game --> Entity
+Game --> Collectible
+Game --> Projectile
+Entity <|-- Enemy
+Entity <|-- Player
+Stats <-- Entity
+Projectile -- Player
+Projectile -- Enemy
+Collectible -- Player
+Collectible -- Enemy
+Collectible  <|-- Money
+Collectible  <|-- Heal
+Collectible  <|-- Experience
+
+@enduml
