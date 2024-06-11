@@ -6,10 +6,11 @@
 class Stats {
 private:
 	float baseHealth{ 0 };
-	float currentHealt{ 0 };
+	float currentHealth{ 0 };
 	float baseDamage{ 0 };
 	float damageMultiplier{ 0 };
 	float baseSpeed{ 0 };
+
 
 public:
 	explicit Stats(const std::string& filePath);
