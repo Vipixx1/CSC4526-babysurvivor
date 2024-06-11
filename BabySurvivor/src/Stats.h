@@ -17,5 +17,5 @@ public:
 	float getSpeed() const;
 	float getCurrentHealth() const;
 	void setCurrentHealth(float newHealth);
-	float getDamage();
+	float getDamage() const;
 };

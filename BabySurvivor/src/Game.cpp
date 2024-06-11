@@ -45,7 +45,6 @@ void Game::update(sf::Time elapsedTime)
 {
 	sf::Vector2f playerMovement(0.f, 0.f);
 	float playerSpeed = player.getSpeed();
-	float playerSpeed = 1.f;
 	if (playerMovingUp)
 		playerMovement.y -= playerSpeed;
 	if (playerMovingDown)

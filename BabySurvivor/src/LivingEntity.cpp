@@ -4,8 +4,8 @@
 using json = nlohmann::json;
 
 LivingEntity::LivingEntity(const std::string& filePath, sf::Vector2f coords) : 
-	Entity{coords}, 
-	stats{filePath} {}
+	Entity{ coords }, 
+	stats{ filePath } {}
 
 float LivingEntity::getSpeed() const
 {
@@ -28,7 +28,7 @@ void LivingEntity::takeDamage(float damageValue)
 
 Projectile LivingEntity::shoot(bool isAlly)
 {
-	Projectile newProjectile{ coords, stats.getDamage(),isAlly};
+	Projectile newProjectile{ coords, stats.getDamage(),isAlly };
 }
 
 void LivingEntity::kill()
