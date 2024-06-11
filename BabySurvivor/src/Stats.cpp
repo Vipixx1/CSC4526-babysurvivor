@@ -8,11 +8,11 @@ Stats::Stats(const std::string& filePath)
 	std::ifstream f(filePath);
 	json data = json::parse(f);
 
-	baseHealth = data["baseHealth"];
+	baseHealth = data.at("baseHealth");
 	currentHealt = baseHealth;
-	baseDamage = data["baseDamage"];
-	damageMultiplier = data["damageMultiplier"];
-	baseSpeed = data["baseSpeed"];
+	baseDamage = data.at("baseDamage");
+	damageMultiplier = data.at("damageMultiplier");
+	baseSpeed = data.at("baseSpeed");
 }
 
 float Stats::getSpeed() const
@@ -30,7 +30,7 @@ void Stats::setCurrentHealth(float newHealth)
 	currentHealt = newHealth;
 }
 
-float Stats::getDamage()
+float Stats::getDamage() const
 {
 	return baseDamage * damageMultiplier;
 }

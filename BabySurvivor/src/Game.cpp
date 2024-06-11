@@ -67,17 +67,14 @@ void Game::update(sf::Time elapsedTime)
 	if (playerMovingRight)
 		playerMovement.x += playerSpeed;
 
-	player.entityBox.move( playerMovement * elapsedTime.asSeconds());
+	player.moveEntity(playerMovement * elapsedTime.asSeconds());
 }
 
 void Game::render() 
 {
 	gameWindow.clear(sf::Color::Black);
 
-	sf::CircleShape testShape(10);
-	testShape.setPosition(500, 350);
-
-	gameWindow.draw(testShape);
+	player.render(gameWindow);
 
 	gameWindow.draw(statsText);
 	gameWindow.display();

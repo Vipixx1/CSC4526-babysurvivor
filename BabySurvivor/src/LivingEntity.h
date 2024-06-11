@@ -10,9 +10,7 @@ private:
 	Stats stats;
 	
 public:
-	sf::RectangleShape entityBox;
-	
-	LivingEntity(const std::string& filePath, sf::Vector2f coords);
+	LivingEntity(const std::string& filePath, sf::Vector2f coords, const float length, const float height);
 	Projectile shoot(bool isAlly);
 	void takeDamage(float damageValue);
 	void kill();
