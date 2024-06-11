@@ -3,7 +3,6 @@
 
 class Entity {
 private:
-	sf::Vector2f coords;
 	sf::RectangleShape entityBox;
 
 public:

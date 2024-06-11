@@ -9,7 +9,7 @@ Stats::Stats(const std::string& filePath)
 	json data = json::parse(f);
 
 	baseHealth = data.at("baseHealth");
-	currentHealt = baseHealth;
+	currentHealth = baseHealth;
 	baseDamage = data.at("baseDamage");
 	damageMultiplier = data.at("damageMultiplier");
 	baseSpeed = data.at("baseSpeed");
@@ -22,12 +22,12 @@ float Stats::getSpeed() const
 
 float Stats::getCurrentHealth() const
 {
-	return currentHealt;
+	return currentHealth;
 }
 
 void Stats::setCurrentHealth(float newHealth)
 {
-	currentHealt = newHealth;
+	currentHealth = newHealth;
 }
 
 float Stats::getDamage() const

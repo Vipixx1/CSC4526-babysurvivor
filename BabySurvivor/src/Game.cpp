@@ -1,6 +1,8 @@
 #include "Game.h"
 #include "StringHelpers.hpp"
 
+#include <iostream>
+
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
 Game::Game() 
@@ -45,7 +47,6 @@ void Game::update(sf::Time elapsedTime)
 {
 	sf::Vector2f playerMovement(0.f, 0.f);
 	float playerSpeed = player.getSpeed();
-	float playerSpeed = 1.f;
 	if (playerMovingUp)
 		playerMovement.y -= playerSpeed;
 	if (playerMovingDown)
@@ -56,6 +57,13 @@ void Game::update(sf::Time elapsedTime)
 		playerMovement.x += playerSpeed;
 
 	player.moveEntity(playerMovement * elapsedTime.asSeconds());
+
+	for (auto& projectile : projectileVector)
+	{
+		projectile.moveEntity(projectile.getSpeed() * elapsedTime.asSeconds());
+
+		// TO DO : check if the bullet hit an ennemy or get out of the screen and do the appropriate action
+	}
 }
 
 void Game::render() 
@@ -63,6 +71,11 @@ void Game::render()
 	gameWindow.clear(sf::Color::Black);
 
 	player.render(gameWindow);
+
+	for (const auto& projectile : projectileVector)
+	{
+		projectile.render(gameWindow);
+	}
 
 	gameWindow.draw(statsText);
 	gameWindow.display();
@@ -98,6 +111,21 @@ void Game::run()
 		while (timeSinceLastUpdate > TimePerFrame)
 		{
 			timeSinceLastUpdate -= TimePerFrame;
+
+			elapsedFrame++;
+
+			// The player auto fire once every 30 frames
+			if (elapsedFrame >= 30)
+			{
+				auto mousePos = sf::Vector2f(sf::Mouse::getPosition(gameWindow));
+				
+				mousePos = mousePos - player.getCoords();
+				mousePos = mousePos * 100.f / sqrt(mousePos.x*mousePos.x + mousePos.y*mousePos.y);
+	
+				Projectile newProjectile = player.shoot(mousePos, true);
+				projectileVector.push_back(newProjectile);
+				elapsedFrame = 0;
+			}
 
 			processEvent();
 			update(TimePerFrame);

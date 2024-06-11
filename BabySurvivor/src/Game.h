@@ -15,6 +15,10 @@ private:
 	sf::Font font;
 	static const sf::Time	TimePerFrame;
 
+	std::vector<Projectile> projectileVector;
+
+	int elapsedFrame{ 0 };
+
 	Player player{"resources/playerStats.json", sf::Vector2f(480, 270), 10, 30, 1};
 	bool playerMovingUp{false};
 	bool playerMovingDown{false};

@@ -26,10 +26,9 @@ void LivingEntity::takeDamage(float damageValue)
 	}
 }
 
-Projectile LivingEntity::shoot(bool isAlly)
+Projectile LivingEntity::shoot(sf::Vector2f speed, bool isAlly) const
 {
-	Projectile newProjectile{ getCoords(), stats.getDamage(),isAlly};
-
+	Projectile newProjectile{ getCoords(), speed, stats.getDamage(),isAlly};
 	return newProjectile;
 }
 
