@@ -23,33 +23,20 @@ void Game::processEvent()
 
 	while (gameWindow.pollEvent(event))
 	{
-		switch (event.type) 
+		if (event.type == sf::Event::Closed)
+			gameWindow.close();
+
+		if (event.type == sf::Event::Resized)
 		{
-			case sf::Event::Closed: {
-				gameWindow.close();
-				break;
-			}
-				
-
-			case sf::Event::Resized: {
-				sf::FloatRect visibleArea(0.f, 0.f, static_cast<float>(event.size.width), static_cast<float>(event.size.height));
-				gameWindow.setView(sf::View(visibleArea));
-				break;
-			}
-
-			case sf::Event::KeyPressed: {
-				handlePlayerInput(event.key.code, true);
-				break;
-			}
-				
-			case sf::Event::KeyReleased: {
-				handlePlayerInput(event.key.code, false);
-				break;
-			}
-				
-			default:
-				break;
+			sf::FloatRect visibleArea(0.f, 0.f, static_cast<float>(event.size.width), static_cast<float>(event.size.height));
+			gameWindow.setView(sf::View(visibleArea));
 		}
+
+		if (event.type == sf::Event::KeyPressed)
+			handlePlayerInput(event.key.code, true);
+
+		if (event.type == sf::Event::KeyReleased)
+			handlePlayerInput(event.key.code, false);
 		
 	}
 }
@@ -58,6 +45,7 @@ void Game::update(sf::Time elapsedTime)
 {
 	sf::Vector2f playerMovement(0.f, 0.f);
 	float playerSpeed = player.getSpeed();
+	float playerSpeed = 1.f;
 	if (playerMovingUp)
 		playerMovement.y -= playerSpeed;
 	if (playerMovingDown)
