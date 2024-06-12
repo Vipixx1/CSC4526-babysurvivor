@@ -3,17 +3,19 @@
 
 using json = nlohmann::json;
 
-Stats::Stats(const std::string& filePath) 
+Stats::Stats(const std::string& filePath, const std::string& livingEntityName)
 {
 	std::ifstream f(filePath);
-	json data = json::parse(f);
+	json allData = json::parse(f);
+	json entityData = allData.at(livingEntityName);
 
-	baseHealth = data.at("baseHealth");
+	baseHealth = entityData.at("baseHealth");
 	currentHealth = baseHealth;
-	baseDamage = data.at("baseDamage");
-	damageMultiplier = data.at("damageMultiplier");
-	baseSpeed = data.at("baseSpeed");
+	baseDamage = entityData.at("baseDamage");
+	damageMultiplier = entityData.at("damageMultiplier");
+	baseSpeed = entityData.at("baseSpeed");
 }
+
 
 float Stats::getSpeed() const
 {

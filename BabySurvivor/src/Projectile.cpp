@@ -1,7 +1,7 @@
 #include "Projectile.h"
 
-Projectile::Projectile(sf::Vector2f coords, sf::Vector2f speed, float damage, bool isAlly) :
-	Entity{ coords, 1.f, 1.f },
+Projectile::Projectile(const std::string& filePath, sf::Vector2f coords, sf::Vector2f speed, float damage, bool isAlly) :
+	Entity{ filePath, "projectile", coords},
 	speed{ speed },
 	damage{ damage },
 	isAlly{ isAlly } {}

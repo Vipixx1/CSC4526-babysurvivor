@@ -2,10 +2,13 @@
 #include "StringHelpers.hpp"
 
 #include <iostream>
+#include <fstream>
+
+using json = nlohmann::json;
 
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
-Game::Game() 
+Game::Game()
 {
 	font.loadFromFile("resources/Sansation.ttf");
 	statsText.setFont(font);
@@ -106,9 +109,7 @@ void Game::run()
 
 	/* Creating the stage */
 	//Stage stage{ "Level 1", sf::Vector2f(1000, 1000) };
-
-	/* Creating the player */
-	//...//
+	
 	
 	/* Spawning the Enemies */
 	//std::vector<std::unique_ptr<Enemy>> wave = stage.spawn();//

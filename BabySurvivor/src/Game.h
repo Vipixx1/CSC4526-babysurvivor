@@ -20,7 +20,7 @@ private:
 
 	int elapsedFrame{ 0 };
 
-	Player player{ "resources/Player.json", sf::Vector2f(480, 270) };
+	Player player{"resources/Entity.json", sf::Vector2f(480, 270)};
 	bool playerMovingUp{false};
 	bool playerMovingDown{false};
 	bool playerMovingLeft{false};

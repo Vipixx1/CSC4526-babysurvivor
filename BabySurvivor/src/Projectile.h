@@ -9,6 +9,6 @@ private:
 	bool isAlly;
 
 public:
-	explicit Projectile(sf::Vector2f coords, sf::Vector2f speed, float damage, bool isAlly);
+	explicit Projectile(const std::string& filePath, sf::Vector2f coords, sf::Vector2f speed, float damage, bool isAlly);
 	sf::Vector2f getSpeed() const;
 };

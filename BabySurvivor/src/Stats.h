@@ -13,7 +13,7 @@ private:
 
 
 public:
-	explicit Stats(const std::string& filePath);
+	explicit Stats(const std::string& filePath, const std::string& livingEntityName);
 	float getSpeed() const;
 	float getCurrentHealth() const;
 	void setCurrentHealth(float newHealth);

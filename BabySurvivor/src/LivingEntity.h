@@ -10,8 +10,7 @@ private:
 	Stats stats;
 	
 public:
-	LivingEntity(const std::string& filePath, sf::Vector2f coords);
-
+	LivingEntity(const std::string& filePath, const std::string& livingEntityName, sf::Vector2f coords);
 	Projectile shoot(sf::Vector2f speed, bool isAlly) const;
 	void takeDamage(float damageValue);
 	void kill();
