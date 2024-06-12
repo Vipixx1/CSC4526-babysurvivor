@@ -9,7 +9,7 @@ private:
 	float height;
 
 public:
-	explicit Entity(const std::string& filePath, sf::Vector2f coords);
+	explicit Entity(const std::string& filePath, const std::string& entityName, sf::Vector2f coords);
 	sf::Vector2f getCoords() const;
 	void render(sf::RenderWindow& gameWindow) const;
 	void moveEntity(sf::Vector2f movement);

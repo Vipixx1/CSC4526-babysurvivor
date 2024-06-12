@@ -2,7 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "Entity.h"
 #include "Player.h"
-#include "Stage.h"
+//#include "Stage.h"
 #include "GameMenu.h"
 
 int runGame();
@@ -24,12 +24,16 @@ private:
 	sf::Font font;
 	static const sf::Time	TimePerFrame;
 
-	std::vector <std::unique_ptr<Enemy>> currentWave;
-	std::vector<Projectile> projectileVector;
+<<<<<<< HEAD
+	//std::vector<Projectile> projectileVector;
 
 	GameState gameState;
 
 	GameMenu gameMenu;
+=======
+	std::vector <std::unique_ptr<Enemy>> currentWave;
+	std::vector<Projectile> projectileVector;
+>>>>>>> 6b46db34a117c6fa9075c042b6b1c6269b8e154d
 
 	int elapsedFrame{ 0 };
 
@@ -48,7 +52,6 @@ private:
 	void updateStats(sf::Time elapsedTime);
 
 	void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
-
 
 public:
 	Game();

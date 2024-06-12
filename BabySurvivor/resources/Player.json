@@ -1,8 +1,0 @@
-{
-    "length": 100,
-    "height": 300,
-    "baseHealth": 500,
-    "baseDamage": 30,
-    "damageMultiplier": 1.0,
-    "baseSpeed": 100
-}

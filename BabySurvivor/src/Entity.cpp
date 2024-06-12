@@ -3,13 +3,15 @@
 
 using json = nlohmann::json;
 
-Entity::Entity(const std::string& filePath, sf::Vector2f coords)
+Entity::Entity(const std::string& filePath, const std::string& entityName, sf::Vector2f coords)
 {
 	std::ifstream f(filePath);
-	json data = json::parse(f);
+	json allData = json::parse(f);
 
-	length = data.at("length");
-	height = data.at("height");
+	json entityData = allData.at(entityName);
+
+	length = entityData.at("length");
+	height = entityData.at("height");
 
 	entityBox.setPosition(coords);
 	entityBox.setFillColor(sf::Color::Red);

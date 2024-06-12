@@ -26,12 +26,15 @@ void LivingEntity::takeDamage(float damageValue)
 	}
 }
 
+<<<<<<< HEAD
+=======
 Projectile LivingEntity::shoot(sf::Vector2f speed, bool isAlly) const
 {
 
 	Projectile newProjectile{ "resources/Entity.json", getCoords(), speed, stats.getDamage(), isAlly};
 	return newProjectile;
 }
+>>>>>>> 6b46db34a117c6fa9075c042b6b1c6269b8e154d
 
 void LivingEntity::kill()
 {
