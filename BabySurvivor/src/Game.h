@@ -2,9 +2,17 @@
 #include <SFML/Graphics.hpp>
 #include "Entity.h"
 #include "Player.h"
-#include "Stage.h"
+//#include "Stage.h"
+#include "GameMenu.h"
 
 int runGame();
+
+enum class GameState {
+	inGame,
+	inMainMenu,
+	inPlayMenu,
+	inSettingMenu,
+};
 
 class Game {
 private:
@@ -16,7 +24,11 @@ private:
 	sf::Font font;
 	static const sf::Time	TimePerFrame;
 
-	std::vector<Projectile> projectileVector;
+	//std::vector<Projectile> projectileVector;
+
+	GameState gameState;
+
+	GameMenu gameMenu;
 
 	int elapsedFrame{ 0 };
 
@@ -27,13 +39,14 @@ private:
 	bool playerMovingRight{false};
 
 	void processEvent();
+	void processInGameEvent(sf::Event event);
+
 	void update(sf::Time elaspedTime);
 	void render();
 
 	void updateStats(sf::Time elapsedTime);
 
 	void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
-
 
 public:
 	Game();

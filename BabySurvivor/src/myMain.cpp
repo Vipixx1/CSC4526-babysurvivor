@@ -3,9 +3,5 @@
 
 int myMain() 
 {
-	Game game;
-
-	game.run();
-
-	return 1;
+	return runGame();
 }

@@ -11,6 +11,8 @@ Game::Game()
 	statsText.setFont(font);
 	statsText.setPosition(5.f, 5.f);
 	statsText.setCharacterSize(10);
+
+	gameState = GameState::inMainMenu;
 }
 
 int runGame() {
@@ -34,13 +36,30 @@ void Game::processEvent()
 			gameWindow.setView(sf::View(visibleArea));
 		}
 
-		if (event.type == sf::Event::KeyPressed)
-			handlePlayerInput(event.key.code, true);
+		if (gameState == GameState::inGame) 
+		{
+			processInGameEvent(event);
+		}
 
-		if (event.type == sf::Event::KeyReleased)
-			handlePlayerInput(event.key.code, false);
-		
+		if (gameState == GameState::inMainMenu)
+		{
+			int currentMenu = gameMenu.processMenuEvent(event, gameWindow);
+
+			std::cout << currentMenu << std::endl;
+
+			if (currentMenu == 0) { gameState = GameState::inGame; }
+			if (currentMenu == 1) { gameState = GameState::inSettingMenu; }
+		}
 	}
+}
+
+void Game::processInGameEvent(sf::Event event)
+{
+	if (event.type == sf::Event::KeyPressed)
+		handlePlayerInput(event.key.code, true);
+
+	if (event.type == sf::Event::KeyReleased)
+		handlePlayerInput(event.key.code, false);
 }
 
 void Game::update(sf::Time elapsedTime)
@@ -58,12 +77,7 @@ void Game::update(sf::Time elapsedTime)
 
 	player.moveEntity(playerMovement * elapsedTime.asSeconds());
 
-	for (auto& projectile : projectileVector)
-	{
-		projectile.moveEntity(projectile.getSpeed() * elapsedTime.asSeconds());
-
-		//[TODO] check if the bullet hit an ennemy or get out of the screen and do the appropriate action
-	}
+	
 }
 
 void Game::render() 
@@ -71,11 +85,6 @@ void Game::render()
 	gameWindow.clear(sf::Color::Black);
 
 	player.render(gameWindow);
-
-	for (const auto& projectile : projectileVector)
-	{
-		projectile.render(gameWindow);
-	}
 
 	gameWindow.draw(statsText);
 	gameWindow.display();
@@ -123,16 +132,15 @@ void Game::run()
 
 			elapsedFrame++;
 
-			// The player auto fire once every 30 frames
-			if (elapsedFrame >= 30)
+			if (gameState == GameState::inGame && elapsedFrame >= 30)
 			{
 				auto mousePos = sf::Vector2f(sf::Mouse::getPosition(gameWindow));
 				
 				mousePos = mousePos - player.getCoords();
 				mousePos = mousePos * 100.f / sqrt(mousePos.x*mousePos.x + mousePos.y*mousePos.y);
 	
-				Projectile newProjectile = player.shoot(mousePos, true);
-				projectileVector.push_back(newProjectile);
+				//Projectile newProjectile = player.shoot(mousePos, true);
+				//projectileVector.push_back(newProjectile);
 				elapsedFrame = 0;
 			}
 
@@ -141,7 +149,11 @@ void Game::run()
 		}
 
 		updateStats(elapsedTime);
-		render();
+
+		if (gameState == GameState::inMainMenu) { gameMenu.renderMainMenu(gameWindow); }
+		if (gameState == GameState::inPlayMenu) { gameMenu.renderPlayMenu(gameWindow); }
+		if (gameState == GameState::inSettingMenu) { gameMenu.renderSettingMenu(gameWindow); }
+		if (gameState == GameState::inGame) { render(); }
 	}
 }
 
