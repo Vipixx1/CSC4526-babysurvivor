@@ -14,8 +14,8 @@
         "baseHealth": 100,
         "baseSpeed": 100,
         "damageMultiplier": 1.0,
-        "height": 200,
-        "length": 200,
+        "height": 20,
+        "length": 20,
 
         "movingPattern": "TowardPlayer",
         "shootingPattern": "One_Simple"
@@ -62,8 +62,8 @@
         "baseHealth": 100,
         "baseSpeed": 100,
         "damageMultiplier": 1.0,
-        "height": 200,
-        "length": 200,
+        "height": 20,
+        "length": 20,
 
         "movingPattern": "TowardPlayer",
         "shootingPattern": "Three_Simple"

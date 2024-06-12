@@ -16,6 +16,7 @@ private:
 	sf::Font font;
 	static const sf::Time	TimePerFrame;
 
+	std::vector <std::unique_ptr<Enemy>> currentWave;
 	std::vector<Projectile> projectileVector;
 
 	int elapsedFrame{ 0 };

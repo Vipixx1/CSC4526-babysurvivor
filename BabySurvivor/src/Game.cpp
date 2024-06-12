@@ -48,6 +48,7 @@ void Game::processEvent()
 
 void Game::update(sf::Time elapsedTime)
 {
+	/* Update player's movement */
 	sf::Vector2f playerMovement(0.f, 0.f);
 	float playerSpeed = player.getSpeed();
 	if (playerMovingUp)
@@ -61,6 +62,9 @@ void Game::update(sf::Time elapsedTime)
 
 	player.moveEntity(playerMovement * elapsedTime.asSeconds());
 
+	/* [TODO] Update enemies' movement */
+
+	/* Update projectiles' movement */
 	for (auto& projectile : projectileVector)
 	{
 		projectile.moveEntity(projectile.getSpeed() * elapsedTime.asSeconds());
@@ -74,6 +78,11 @@ void Game::render()
 	gameWindow.clear(sf::Color::Black);
 
 	player.render(gameWindow);
+
+	for (const auto& enemy : currentWave)
+	{
+		enemy->render(gameWindow);
+	}
 
 	for (const auto& projectile : projectileVector)
 	{
@@ -108,11 +117,10 @@ void Game::run()
 	gameWindow.setFramerateLimit(60);
 
 	/* Creating the stage */
-	//Stage stage{ "Level 1", sf::Vector2f(1000, 1000) };
-	
+	Stage stage{ "level_1", sf::Vector2f(1200, 1080) };
 	
 	/* Spawning the Enemies */
-	//std::vector<std::unique_ptr<Enemy>> wave = stage.spawn();//
+	currentWave = stage.spawn();
 
 	while (gameWindow.isOpen())
 	{

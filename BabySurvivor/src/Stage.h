@@ -8,7 +8,6 @@ class Stage {
 private:
 	std::string name;
 	sf::Vector2f size;
-	std::vector<std::unique_ptr<Enemy>> wave;
 	int waveNumber = 1;
 	bool isWaveBeginning = false;
 
