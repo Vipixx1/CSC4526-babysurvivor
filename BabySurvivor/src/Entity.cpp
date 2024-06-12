@@ -1,7 +1,16 @@
 #include "Entity.h"
+#include <fstream>
 
-Entity::Entity(sf::Vector2f coords, const float length, const float height)
+using json = nlohmann::json;
+
+Entity::Entity(const std::string& filePath, sf::Vector2f coords)
 {
+	std::ifstream f(filePath);
+	json data = json::parse(f);
+
+	length = data.at("length");
+	height = data.at("height");
+
 	entityBox.setPosition(coords);
 	entityBox.setFillColor(sf::Color::Red);
 	entityBox.setSize(sf::Vector2f(length, height));
@@ -20,5 +29,4 @@ void Entity::render(sf::RenderWindow& gameWindow) const
 void Entity::moveEntity(sf::Vector2f movement)
 {
 	entityBox.move(movement);
-
 }

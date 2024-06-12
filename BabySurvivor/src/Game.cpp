@@ -62,7 +62,7 @@ void Game::update(sf::Time elapsedTime)
 	{
 		projectile.moveEntity(projectile.getSpeed() * elapsedTime.asSeconds());
 
-		// TO DO : check if the bullet hit an ennemy or get out of the screen and do the appropriate action
+		//[TODO] check if the bullet hit an ennemy or get out of the screen and do the appropriate action
 	}
 }
 
@@ -103,6 +103,15 @@ void Game::run()
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 	gameWindow.setFramerateLimit(60);
+
+	/* Creating the stage */
+	//Stage stage{ "Level 1", sf::Vector2f(1000, 1000) };
+
+	/* Creating the player */
+	//...//
+	
+	/* Spawning the Enemies */
+	//std::vector<std::unique_ptr<Enemy>> wave = stage.spawn();//
 
 	while (gameWindow.isOpen())
 	{

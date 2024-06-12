@@ -5,9 +5,9 @@
 
 class Player : public LivingEntity {
 private:
-	int level;
+	int level = 1;
 
 public:
-	Player(const std::string& filePath, sf::Vector2f coords, const float length, const float height, int level);
+	Player(const std::string& filePath, sf::Vector2f coords);
 	void levelUp();
 };

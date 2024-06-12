@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include "Entity.h"
 #include "Player.h"
+#include "Stage.h"
 
 int runGame();
 
@@ -19,7 +20,7 @@ private:
 
 	int elapsedFrame{ 0 };
 
-	Player player{"resources/playerStats.json", sf::Vector2f(480, 270), 10, 30, 1};
+	Player player{ "resources/Player.json", sf::Vector2f(480, 270) };
 	bool playerMovingUp{false};
 	bool playerMovingDown{false};
 	bool playerMovingLeft{false};

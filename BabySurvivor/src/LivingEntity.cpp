@@ -3,9 +3,9 @@
 
 using json = nlohmann::json;
 
-LivingEntity::LivingEntity(const std::string& filePath, sf::Vector2f coords, const float length, const float height) :
-	Entity{coords, length, height}, 
-	stats{filePath} {}
+LivingEntity::LivingEntity(const std::string& filePath, sf::Vector2f coords) :
+	Entity{ filePath, coords },
+	stats{ filePath } {}
 
 float LivingEntity::getSpeed() const
 {
