@@ -5,3 +5,6 @@ out
 # Ignore directories used by CLion for project generation
 .idea
 cmake-build-debug
+
+#Ignore .orig file that are created when merging
+.orig
