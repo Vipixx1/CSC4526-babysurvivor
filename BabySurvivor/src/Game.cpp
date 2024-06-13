@@ -68,25 +68,35 @@ void Game::processInGameEvent(sf::Event event)
 void Game::update(sf::Time elapsedTime)
 {
 	/* Update player's movement */
-	sf::Vector2f playerMovement(0.f, 0.f);
+	sf::Vector2f playerVelocity(0.f, 0.f);
 	float playerSpeed = player.getSpeed();
 	if (playerMovingUp)
-		playerMovement.y -= playerSpeed;
+		playerVelocity.y -= playerSpeed;
 	if (playerMovingDown)
-		playerMovement.y += playerSpeed;
+		playerVelocity.y += playerSpeed;
 	if (playerMovingLeft)
-		playerMovement.x -= playerSpeed;
+		playerVelocity.x -= playerSpeed;
 	if (playerMovingRight)
-		playerMovement.x += playerSpeed;
+		playerVelocity.x += playerSpeed;
 
-	player.moveEntity(playerMovement * elapsedTime.asSeconds());
+	player.moveEntity(playerVelocity * elapsedTime.asSeconds());
 
-	/* [TODO] Update enemies' movement */
+	/* Update the movement of enemies */
+	for (auto const& enemy : currentWave)
+	{
+		float enemySpeed = enemy->getSpeed();
+		auto enemyVelocity = player.getCoords() - enemy->getCoords();
 
-	/* Update projectiles' movement */
+		enemyVelocity = enemyVelocity * enemySpeed / sqrt(enemyVelocity.x * enemyVelocity.x + enemyVelocity.y * enemyVelocity.y);
+
+		enemy->moveEntity(enemyVelocity * elapsedTime.asSeconds());
+
+	}
+
+	/* Update the movement of projectiles */
 	for (auto& projectile : projectileVector)
 	{
-		projectile.moveEntity(projectile.getSpeed() * elapsedTime.asSeconds());
+		projectile.moveEntity(projectile.getVelocity() * elapsedTime.asSeconds());
 
 		//[TODO] check if the bullet hit an ennemy or get out of the screen and do the appropriate action
 	}
@@ -151,9 +161,10 @@ void Game::run()
 
 			elapsedFrame++;
 
-			// The player auto fire once every 30 frames
+			
 			if (elapsedFrame >= 30)
 			{
+				/* The player auto fire once every 30 frames */
 				auto mousePos = sf::Vector2f(sf::Mouse::getPosition(gameWindow));
 				
 				mousePos = mousePos - player.getCoords();
@@ -161,6 +172,8 @@ void Game::run()
 	
 				Projectile newProjectile = player.shoot(mousePos, true);
 				projectileVector.push_back(newProjectile);
+
+
 				elapsedFrame = 0;
 			}
 

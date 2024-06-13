@@ -14,7 +14,7 @@ Entity::Entity(const std::string& filePath, const std::string& entityName, sf::V
 	height = entityData.at("height");
 
 	entityBox.setPosition(coords);
-	entityBox.setFillColor(sf::Color::Red);
+	entityBox.setFillColor(sf::Color::White);
 	entityBox.setSize(sf::Vector2f(length, height));
 }
 

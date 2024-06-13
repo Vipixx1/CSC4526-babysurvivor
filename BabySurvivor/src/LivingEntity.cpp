@@ -26,14 +26,14 @@ void LivingEntity::takeDamage(float damageValue)
 	}
 }
 
-Projectile LivingEntity::shoot(sf::Vector2f speed, bool isAlly) const
+Projectile LivingEntity::shoot(sf::Vector2f velocity, bool isAlly) const
 {
 
-	Projectile newProjectile{ "resources/Entity.json", getCoords(), speed, stats.getDamage(), isAlly};
+	Projectile newProjectile{ "resources/Entity.json", getCoords(), velocity, stats.getDamage(), isAlly};
 	return newProjectile;
 }
 
-void LivingEntity::kill()
+void LivingEntity::kill() const
 {
 	// TO DO : implement the logic when killing an entity
 }
