@@ -148,8 +148,6 @@ void Game::run()
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 	gameWindow.setFramerateLimit(60);
-
-	
 	
 	/* Spawning the Enemies */
 	currentWave = stage.spawn();
@@ -163,7 +161,7 @@ void Game::run()
 			timeSinceLastUpdate -= TimePerFrame;
 
 			elapsedFrame++;
-			
+
 			if (elapsedFrame >= 30)
 			{
 				/* The player auto fire once every 30 frames */
@@ -187,7 +185,17 @@ void Game::run()
 		}
 
 		/* Make the camera follow the player */
-		view.setCenter(player.getCoords().x + (player.getSize().x/2), player.getCoords().y + (player.getSize().y / 2));
+		cameraPosition.x = player.getCoords().x + (player.getSize().x / 2) - (static_cast<float>(gameWindow.getSize().x) / 2);
+		cameraPosition.y = player.getCoords().y + (player.getSize().y / 2) - (static_cast<float>(gameWindow.getSize().y) / 2);
+
+		/* Check if the camera is within the stage borders*/
+		if (cameraPosition.x < 0) cameraPosition.x = 0;
+		if (cameraPosition.x + static_cast<float>(gameWindow.getSize().x) > stage.getSize().x) cameraPosition.x = stage.getSize().x - static_cast<float>(gameWindow.getSize().x);
+		if (cameraPosition.y < 0) cameraPosition.y = 0;
+		if (cameraPosition.y + static_cast<float>(gameWindow.getSize().y) > stage.getSize().y) cameraPosition.y = stage.getSize().y - static_cast<float>(gameWindow.getSize().y);
+
+		view.reset(sf::FloatRect(cameraPosition.x, cameraPosition.y, static_cast<float>(gameWindow.getSize().x), static_cast<float>(gameWindow.getSize().y)));
+
 		gameWindow.setView(view);
 
 		updateStatsText(elapsedTime);

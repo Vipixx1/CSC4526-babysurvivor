@@ -40,6 +40,8 @@ private:
 	bool playerMovingDown{false};
 	bool playerMovingLeft{false};
 	bool playerMovingRight{false};
+	sf::Vector2f cameraPosition{ static_cast<float>(gameWindow.getSize().x) / 2, static_cast<float>(gameWindow.getSize().y) };
+
 
 	void processEvent();
 	void processInGameEvent(sf::Event event);
