@@ -17,7 +17,7 @@ enum class GameState {
 class Game {
 private:
 	int money{ 0 };
-	sf::RenderWindow gameWindow{ sf::VideoMode(960, 540), "Baby Survivor"};
+	sf::RenderWindow gameWindow{ sf::VideoMode(1920, 1080), "Baby Survivor"};
 	sf::Time statsUpdateTime;
 	std::size_t numFrames{ 0 };
 	sf::Text statsText;
@@ -33,7 +33,7 @@ private:
 
 	int elapsedFrame{ 0 };
 
-	Player player{"resources/Entity.json", sf::Vector2f(480, 270)};
+	Player player{"resources/Entity.json", sf::Vector2f(static_cast<float>(gameWindow.getSize().x)/2, static_cast<float>(gameWindow.getSize().y)/2) };
 	bool playerMovingUp{false};
 	bool playerMovingDown{false};
 	bool playerMovingLeft{false};

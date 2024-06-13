@@ -23,6 +23,11 @@ sf::Vector2f Entity::getCoords() const
 	return entityBox.getPosition();
 }
 
+sf::Vector2f Entity::getSize() const
+{
+	return entityBox.getSize();;
+}
+
 void Entity::render(sf::RenderWindow& gameWindow) const
 {
 	gameWindow.draw(entityBox);

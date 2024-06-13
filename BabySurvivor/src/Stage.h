@@ -12,7 +12,7 @@ private:
 	bool isWaveBeginning = false;
 
 public:
-	Stage(std::string_view name, sf::Vector2f size);
+	Stage(std::string_view name, sf::RenderWindow& gameWindow);
 	std::vector<std::unique_ptr<Enemy>> spawn();
 
 	void setWaveNumber(int newWaveNumber);

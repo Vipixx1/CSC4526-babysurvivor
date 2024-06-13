@@ -145,8 +145,10 @@ void Game::run()
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 	gameWindow.setFramerateLimit(60);
 
+	sf::View view = gameWindow.getDefaultView();
+
 	/* Creating the stage */
-	Stage stage{ "level_1", sf::Vector2f(1200, 1080) };
+	Stage stage{ "level_1", gameWindow };
 	
 	/* Spawning the Enemies */
 	currentWave = stage.spawn();
@@ -160,19 +162,21 @@ void Game::run()
 			timeSinceLastUpdate -= TimePerFrame;
 
 			elapsedFrame++;
-
 			
 			if (elapsedFrame >= 30)
 			{
 				/* The player auto fire once every 30 frames */
-				auto mousePos = sf::Vector2f(sf::Mouse::getPosition(gameWindow));
-				
-				mousePos = mousePos - player.getCoords();
-				mousePos = mousePos * 100.f / sqrt(mousePos.x*mousePos.x + mousePos.y*mousePos.y);
-	
-				Projectile newProjectile = player.shoot(mousePos, true);
-				projectileVector.push_back(newProjectile);
 
+				// Get the mouse position in the window
+				sf::Vector2i pixelPos = sf::Mouse::getPosition(gameWindow);
+				// Convert it to world coordinates
+				sf::Vector2f worldPos = gameWindow.mapPixelToCoords(pixelPos);
+
+				worldPos = worldPos - player.getCoords();
+				worldPos = worldPos * 500.f / sqrt(worldPos.x * worldPos.x + worldPos.y * worldPos.y);
+
+				Projectile newProjectile = player.shoot(worldPos, true);
+				projectileVector.push_back(newProjectile);
 
 				elapsedFrame = 0;
 			}
@@ -180,6 +184,10 @@ void Game::run()
 			processEvent();
 			update(TimePerFrame);
 		}
+
+		/* Make the camera follow the player */
+		view.setCenter(player.getCoords().x + (player.getSize().x/2), player.getCoords().y + (player.getSize().y / 2));
+		gameWindow.setView(view);
 
 		updateStats(elapsedTime);
 
