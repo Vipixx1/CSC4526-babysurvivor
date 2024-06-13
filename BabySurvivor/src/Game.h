@@ -18,6 +18,7 @@ class Game {
 private:
 	int money{ 0 };
 	sf::RenderWindow gameWindow{ sf::VideoMode(1920, 1080), "Baby Survivor"};
+	sf::View view = gameWindow.getDefaultView();
 	sf::Time statsUpdateTime;
 	std::size_t numFrames{ 0 };
 	sf::Text statsText;
@@ -33,7 +34,8 @@ private:
 
 	int elapsedFrame{ 0 };
 
-	Player player{"resources/Entity.json", sf::Vector2f(static_cast<float>(gameWindow.getSize().x)/2, static_cast<float>(gameWindow.getSize().y)/2) };
+	Stage stage{ "level_1", gameWindow };
+	Player player{"resources/Entity.json", sf::Vector2f(stage.getSize().x / 2, stage.getSize().y / 2)};
 	bool playerMovingUp{false};
 	bool playerMovingDown{false};
 	bool playerMovingLeft{false};
@@ -45,7 +47,7 @@ private:
 	void update(sf::Time elaspedTime);
 	void render();
 
-	void updateStats(sf::Time elapsedTime);
+	void updateStatsText(sf::Time elapsedTime);
 
 	void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
 

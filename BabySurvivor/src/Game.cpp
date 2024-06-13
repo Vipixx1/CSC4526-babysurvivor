@@ -12,8 +12,9 @@ Game::Game()
 {
 	font.loadFromFile("resources/Sansation.ttf");
 	statsText.setFont(font);
-	statsText.setPosition(5.f, 5.f);
-	statsText.setCharacterSize(10);
+	statsText.setFillColor(sf::Color::White);
+	statsText.setPosition(view.getCenter().x - view.getSize().x / 2 + 10.f, view.getCenter().y - view.getSize().y / 2 + 10.f);
+	statsText.setCharacterSize(20);
 
 	gameState = GameState::inMainMenu;
 }
@@ -106,6 +107,8 @@ void Game::render()
 {
 	gameWindow.clear(sf::Color::Black);
 
+	stage.render(gameWindow);
+
 	player.render(gameWindow);
 
 	for (const auto& enemy : currentWave)
@@ -122,8 +125,9 @@ void Game::render()
 	gameWindow.display();
 }
 
-void Game::updateStats(sf::Time elapsedTime)
+void Game::updateStatsText(sf::Time elapsedTime)
 {
+	statsText.setPosition(view.getCenter().x - view.getSize().x/2 + 10.f, view.getCenter().y - view.getSize().y/2 + 10.f);
 	statsUpdateTime += elapsedTime;
 	numFrames += 1;
 
@@ -145,10 +149,7 @@ void Game::run()
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 	gameWindow.setFramerateLimit(60);
 
-	sf::View view = gameWindow.getDefaultView();
-
-	/* Creating the stage */
-	Stage stage{ "level_1", gameWindow };
+	
 	
 	/* Spawning the Enemies */
 	currentWave = stage.spawn();
@@ -189,7 +190,7 @@ void Game::run()
 		view.setCenter(player.getCoords().x + (player.getSize().x/2), player.getCoords().y + (player.getSize().y / 2));
 		gameWindow.setView(view);
 
-		updateStats(elapsedTime);
+		updateStatsText(elapsedTime);
 
 		if (gameState == GameState::inMainMenu) { gameMenu.renderMainMenu(gameWindow); }
 		if (gameState == GameState::inPlayMenu) { gameMenu.renderPlayMenu(gameWindow); }

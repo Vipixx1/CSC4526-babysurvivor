@@ -11,6 +11,18 @@ Stage::Stage(std::string_view name, sf::RenderWindow& gameWindow) : name{ name }
 	json stageData = allData.at("level_1");
 
 	size = sf::Vector2f(stageData.at("length") * gameWindow.getSize().x, stageData.at("height") * gameWindow.getSize().y);
+
+	/* test pour afficher le stage */
+	texture.loadFromFile("resources/sprites/floor.png");
+	sprite.setTexture(texture);
+	sprite.setPosition(sf::Vector2f(0, 0));
+	sprite.setScale(sf::Vector2f(size.x / texture.getSize().x, size.y / texture.getSize().y));
+	
+}
+
+void Stage::render(sf::RenderWindow& gameWindow) const
+{
+	gameWindow.draw(sprite);
 }
 
 std::vector<std::unique_ptr<Enemy>> Stage::spawn()
@@ -34,4 +46,9 @@ std::vector<std::unique_ptr<Enemy>> Stage::spawn()
 void Stage::setWaveNumber(int newWaveNumber)
 {
 	waveNumber = newWaveNumber;
+}
+
+sf::Vector2f Stage::getSize() const
+{
+	return size;
 }
