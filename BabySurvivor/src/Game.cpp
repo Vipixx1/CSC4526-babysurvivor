@@ -1,7 +1,6 @@
 #include "Game.h"
 #include "StringHelpers.hpp"
 
-#include <iostream>
 #include <fstream>
 
 using json = nlohmann::json;
@@ -10,12 +9,30 @@ const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
 Game::Game()
 {
+	resolutionVector.push_back(std::make_tuple(1024, 798));
+	resolutionVector.push_back(std::make_tuple(1280, 800));
+	resolutionVector.push_back(std::make_tuple(1920, 1080));
+
+	gameWindow.create(sf::VideoMode(std::get<0>(resolutionVector[currentResolution]), std::get<1>(resolutionVector[currentResolution])), "Baby Survivor");
+
 	font.loadFromFile("resources/Sansation.ttf");
 	statsText.setFont(font);
 	statsText.setPosition(5.f, 5.f);
 	statsText.setCharacterSize(10);
 
-	gameState = GameState::inMainMenu;
+	gameState = GameState::inMenu;
+}
+
+void Game::loadPlayer(int saveFileNumber)
+{
+	if (saveFileNumber == 0) {player = Player{ "resources/Entity.json", "player1", sf::Vector2f(480, 270) };}
+	if (saveFileNumber == 1) { player = Player{ "resources/Entity.json", "player2", sf::Vector2f(480, 270) }; }
+	if (saveFileNumber == 2) { player = Player{ "resources/Entity.json", "player3", sf::Vector2f(480, 270) }; }
+}
+
+void Game::changeResolution(int newResolutionIndex)
+{
+	gameWindow.create(sf::VideoMode(std::get<0>(resolutionVector[newResolutionIndex]), std::get<1>(resolutionVector[newResolutionIndex])), "Baby Survivor");
 }
 
 int runGame() {
@@ -33,6 +50,9 @@ void Game::processEvent()
 		if (event.type == sf::Event::Closed)
 			gameWindow.close();
 
+		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F11)
+			gameWindow.create(sf::VideoMode(1920, 1080), "Baby Survivor", sf::Style::Fullscreen);
+
 		if (event.type == sf::Event::Resized)
 		{
 			sf::FloatRect visibleArea(0.f, 0.f, static_cast<float>(event.size.width), static_cast<float>(event.size.height));
@@ -44,14 +64,29 @@ void Game::processEvent()
 			processInGameEvent(event);
 		}
 
-		if (gameState == GameState::inMainMenu)
+		if (gameState == GameState::inMenu)
 		{
-			int currentMenu = gameMenu.processMenuEvent(event, gameWindow);
+			int returnValue = gameMenu.processMenuEvent(event, gameWindow);
 
-			std::cout << currentMenu << std::endl;
+			// We check the returned value to know if we are lauching a game or we are changing the resolution
+			// From 0 to 2 is changing the resolution
+			// From 3 to 5 is loading a save file and lauching a game
 
-			if (currentMenu == 0) { gameState = GameState::inGame; }
-			if (currentMenu == 1) { gameState = GameState::inSettingMenu; }
+			if (returnValue >= 0 && returnValue < 3)
+			{
+				loadPlayer(returnValue);
+				gameState = GameState::inGame;
+			}
+
+			if (returnValue >= 3 && returnValue < 6)
+			{
+				changeResolution(returnValue - 3);
+			}
+
+			if (returnValue == 6)
+			{
+				gameMenu.renderMainMenu(gameWindow);
+			}
 		}
 	}
 }
@@ -170,9 +205,13 @@ void Game::run()
 
 		updateStats(elapsedTime);
 
-		if (gameState == GameState::inMainMenu) { gameMenu.renderMainMenu(gameWindow); }
-		if (gameState == GameState::inPlayMenu) { gameMenu.renderPlayMenu(gameWindow); }
-		if (gameState == GameState::inSettingMenu) { gameMenu.renderSettingMenu(gameWindow); }
+		if (gameState == GameState::inMenu)
+		{
+			if (gameMenu.getMenuState() == MenuState::inMainMenu) { gameMenu.renderMainMenu(gameWindow); }
+			if (gameMenu.getMenuState() == MenuState::inPlayMenu) { gameMenu.renderPlayMenu(gameWindow); }
+			if (gameMenu.getMenuState() == MenuState::inSettingsMenu) { gameMenu.renderSettingMenu(gameWindow); }
+		}
+
 		if (gameState == GameState::inGame) { render(); }
 	}
 }

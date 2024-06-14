@@ -9,15 +9,18 @@ int runGame();
 
 enum class GameState {
 	inGame,
-	inMainMenu,
-	inPlayMenu,
-	inSettingMenu,
+	inMenu,
 };
 
 class Game {
 private:
+
+	std::vector<std::tuple<int, int>> resolutionVector;
+
+	int currentResolution{ 0 };
+
 	int money{ 0 };
-	sf::RenderWindow gameWindow{ sf::VideoMode(960, 540), "Baby Survivor"};
+	sf::RenderWindow gameWindow;
 	sf::Time statsUpdateTime;
 	std::size_t numFrames{ 0 };
 	sf::Text statsText;
@@ -33,7 +36,7 @@ private:
 
 	int elapsedFrame{ 0 };
 
-	Player player{"resources/Entity.json", sf::Vector2f(480, 270)};
+	Player player{"resources/Entity.json", "player1", sf::Vector2f(480, 270) };
 	bool playerMovingUp{false};
 	bool playerMovingDown{false};
 	bool playerMovingLeft{false};
@@ -49,6 +52,8 @@ private:
 
 	void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
 
+	void loadPlayer(int saveFileNumber);
+	void changeResolution(int newResolutionIndex);
 
 public:
 	Game();

@@ -8,6 +8,6 @@ private:
 	int level = 1;
 
 public:
-	Player(const std::string& filePath, sf::Vector2f coords);
+	Player(const std::string& filePath, const std::string& saveFile, sf::Vector2f coords);
 	void levelUp();
 };
