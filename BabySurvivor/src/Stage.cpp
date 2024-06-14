@@ -60,5 +60,5 @@ bool Stage::getSpawningBool()
 
 void Stage::setSpawningBool(bool newIsWaveBeginning)
 {
-	this->isWaveBeginning = isWaveBeginning;
+	isWaveBeginning = newIsWaveBeginning;
 }

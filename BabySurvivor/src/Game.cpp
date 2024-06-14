@@ -209,7 +209,6 @@ void Game::run()
 
 		if (gameState == GameState::inGame)
 		{
-
 			/* Spawning the Enemies */
 			if (stage.getSpawningBool()) {
 				currentWave = stage.spawn();
