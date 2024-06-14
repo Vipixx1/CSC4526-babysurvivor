@@ -23,6 +23,11 @@ sf::Vector2f Entity::getCoords() const
 	return entityBox.getPosition();
 }
 
+void Entity::setCoords(const sf::Vector2f& position)
+{
+	entityBox.setPosition(position);
+}
+
 sf::Vector2f Entity::getSize() const
 {
 	return entityBox.getSize();

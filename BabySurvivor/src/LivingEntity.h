@@ -11,6 +11,7 @@ private:
 	
 public:
 	LivingEntity(const std::string& filePath, const std::string& livingEntityName, sf::Vector2f coords);
+
 	Projectile shoot(sf::Vector2f velocity, bool isAlly) const;
 	void takeDamage(float damageValue);
 	void kill() const;

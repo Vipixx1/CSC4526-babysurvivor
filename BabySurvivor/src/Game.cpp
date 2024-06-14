@@ -68,7 +68,7 @@ void Game::processEvent()
 			if (returnValue >= 0 && returnValue < 3)
 			{
 				// LOAD THE GAME HERE...
-				//stage = Stage{ "stage_2" }; Change if multiple stages exist BUT IT'S CURRENTLY BUGGUED !!
+				// stage = Stage{ "stage_2" }; Change if multiple stages exist BUT IT'S CURRENTLY BUGGUED !!
 				loadPlayer(returnValue, stage.getSize());
 
 				gameState = GameState::inGame;
@@ -103,44 +103,80 @@ void Game::processInGameEvent(sf::Event event)
 		handlePlayerInput(event.key.code, false);
 }
 
-void Game::updateInGame(sf::Time elapsedTime)
+void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 {
-	/* Update player's movement */
-	sf::Vector2f playerVelocity(0.f, 0.f);
-	float playerSpeed = player.getSpeed();
-	if (playerMovingUp)
-		playerVelocity.y -= playerSpeed;
-	if (playerMovingDown)
-		playerVelocity.y += playerSpeed;
-	if (playerMovingLeft)
-		playerVelocity.x -= playerSpeed;
-	if (playerMovingRight)
-		playerVelocity.x += playerSpeed;
+	if (key == sf::Keyboard::Z)
+		playerMovingUp = isPressed;
+	else if (key == sf::Keyboard::S)
+		playerMovingDown = isPressed;
+	else if (key == sf::Keyboard::Q)
+		playerMovingLeft = isPressed;
+	else if (key == sf::Keyboard::D)
+		playerMovingRight = isPressed;
 
-	player.moveEntity(playerVelocity * elapsedTime.asSeconds());
+	// debug:
+	if (key == sf::Keyboard::A)
+		std::cout << "Pressed A:" << std::endl;
+}
 
-	/* Update the movement of enemies */
-	for (auto const& enemy : currentWave)
+void Game::run()
+{
+	sf::Clock clock;
+	sf::Time timeSinceLastUpdate = sf::Time::Zero;
+	gameWindow.setFramerateLimit(60);
+
+	while (gameWindow.isOpen())
 	{
-		float enemySpeed = enemy->getSpeed();
-		auto enemyVelocity = player.getCoords() - enemy->getCoords();
+		processEvent();
 
-		enemyVelocity = enemyVelocity * enemySpeed / sqrt(enemyVelocity.x * enemyVelocity.x + enemyVelocity.y * enemyVelocity.y);
+		if (gameState == GameState::inMenu)
+		{
+			switch (gameMenu.getMenuState())
+			{
+				using enum MenuState;
+			case inMainMenu:
+				gameMenu.renderMainMenu(gameWindow);
+				break;
+			case inPlayMenu:
+				gameMenu.renderPlayMenu(gameWindow);
+				break;
+			case inSettingsMenu:
+				gameMenu.renderSettingMenu(gameWindow);
+				break;
+			}
+		}
 
-		enemy->moveEntity(enemyVelocity * elapsedTime.asSeconds());
+		if (gameState == GameState::inGame)
+		{
+			/* Spawning the Enemies */
+			if (stage.getSpawningBool()) {
+				enemyVector = stage.spawn();
+				stage.setSpawningBool(false);
+			}
 
-	}
+			/* Make the game update fixed based on time steps */
+			sf::Time elapsedTime = clock.restart();
+			timeSinceLastUpdate += elapsedTime;
+			while (timeSinceLastUpdate > TimePerFrame)
+			{
+				timeSinceLastUpdate -= TimePerFrame;
 
-	/* Update the movement of projectiles */
-	for (auto& projectile : projectileVector)
-	{
-		projectile.moveEntity(projectile.getVelocity() * elapsedTime.asSeconds());
-
-		//[TODO] check if the bullet hit an ennemy or get out of the screen and do the appropriate action
+				elapsedFrame++;
+				if (elapsedFrame >= 30)
+				{
+					handleAutoFire();
+					elapsedFrame = 0;
+				}
+				updateInGame(TimePerFrame);
+			}
+			updateCamera();
+			updateStatsText(elapsedTime);
+			renderInGame();
+		}
 	}
 }
 
-void Game::renderInGame() 
+void Game::renderInGame()
 {
 	gameWindow.clear(sf::Color::Black);
 
@@ -148,18 +184,31 @@ void Game::renderInGame()
 
 	player.render(gameWindow);
 
-	for (const auto& enemy : currentWave)
+	for (const auto& enemy : enemyVector)
 	{
 		enemy->render(gameWindow);
 	}
 
 	for (const auto& projectile : projectileVector)
 	{
-		projectile.render(gameWindow);
+		projectile->render(gameWindow);
 	}
 
 	gameWindow.draw(statsText);
 	gameWindow.display();
+}
+
+void Game::updateInGame(sf::Time elapsedTime)
+{
+	/* Update player's movement */
+	updatePlayerMovement(elapsedTime);
+
+	/* Update the movement of enemies */
+	updateEnemiesMovement(elapsedTime);
+
+	/* Update the movement of projectiles */
+	updateProjectilesMovement(elapsedTime);
+
 }
 
 void Game::updateStatsText(sf::Time elapsedTime)
@@ -180,86 +229,6 @@ void Game::updateStatsText(sf::Time elapsedTime)
 	}
 }
 
-void Game::run()
-{
-	sf::Clock clock;
-	sf::Time timeSinceLastUpdate = sf::Time::Zero;
-	gameWindow.setFramerateLimit(60);
-
-	while (gameWindow.isOpen())
-	{
-		processEvent();
-
-		if (gameState == GameState::inMenu)
-		{
-			switch (gameMenu.getMenuState())
-			{
-				using enum MenuState;
-				case inMainMenu:
-					gameMenu.renderMainMenu(gameWindow);
-					break;
-				case inPlayMenu:
-					gameMenu.renderPlayMenu(gameWindow);
-					break;
-				case inSettingsMenu:
-					gameMenu.renderSettingMenu(gameWindow);
-					break;
-			}
-		}
-
-		if (gameState == GameState::inGame)
-		{
-			/* Spawning the Enemies */
-			if (stage.getSpawningBool()) {
-				currentWave = stage.spawn();
-				stage.setSpawningBool(false);
-			}
-			
-			/* Make the game update fixed based on time steps */
-			sf::Time elapsedTime = clock.restart();
-			timeSinceLastUpdate += elapsedTime;
-			while (timeSinceLastUpdate > TimePerFrame)
-			{
-				timeSinceLastUpdate -= TimePerFrame;
-
-				elapsedFrame++;
-				if (elapsedFrame >= 30)
-				{
-					handleAutoFire();
-					elapsedFrame = 0;
-				}
-
-				updateInGame(TimePerFrame);
-
-			}
-
-			updateCamera();
-			updateStatsText(elapsedTime);
-			renderInGame();
-		}
-
-	}
-}
-
-void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
-{
-	if (key == sf::Keyboard::Z)
-		playerMovingUp = isPressed;
-	else if (key == sf::Keyboard::S)
-		playerMovingDown = isPressed;
-	else if (key == sf::Keyboard::Q)
-		playerMovingLeft = isPressed;
-	else if (key == sf::Keyboard::D)
-		playerMovingRight = isPressed;
-
-	//debug:
-	if (key == sf::Keyboard::A)
-		std::cout << std::to_string(stage.getSize().x) << std::endl
-		<< std::to_string(stage.getSize().y) << std::endl
-		<< std::to_string(gameWindow.getSize().x) << std::endl
-		<< std::to_string(gameWindow.getSize().y) << std::endl;
-}
-
 void Game::updateCamera() 
 {
 	/* Make the camera follow the player */
@@ -275,6 +244,56 @@ void Game::updateCamera()
 	gameWindow.setView(view);
 }
 
+void Game::updatePlayerMovement(sf::Time elapsedTime) {
+	sf::Vector2f playerVelocity(0.f, 0.f);
+	float playerSpeed = player.getSpeed();
+	sf::Vector2f playerPosition = player.getCoords();
+	sf::Vector2f playerSize = player.getSize();
+	sf::Vector2f stageSize = stage.getSize();
+
+	if (playerMovingUp)
+		playerVelocity.y -= playerSpeed;
+	if (playerMovingDown)
+		playerVelocity.y += playerSpeed;
+	if (playerMovingLeft)
+		playerVelocity.x -= playerSpeed;
+	if (playerMovingRight)
+		playerVelocity.x += playerSpeed;
+
+	// Calculate the potential new position
+	sf::Vector2f newPosition = playerPosition + playerVelocity * elapsedTime.asSeconds();
+
+	// Boundary checks
+	if (newPosition.x < 0) newPosition.x = 0;
+	if (newPosition.y < 0) newPosition.y = 0;
+	if (newPosition.x + playerSize.x > stageSize.x) newPosition.x = stageSize.x - playerSize.x;
+	if (newPosition.y + playerSize.y > stageSize.y) newPosition.y = stageSize.y - playerSize.y;
+
+	// Set the player's new position
+	player.setCoords(newPosition);
+}
+
+void Game::updateEnemiesMovement(sf::Time elapsedTime) const {
+	for (auto const& enemy : enemyVector)
+	{
+		float enemySpeed = enemy->getSpeed();
+		auto enemyVelocity = player.getCoords() - enemy->getCoords();
+
+		enemyVelocity = enemyVelocity * enemySpeed / sqrt(enemyVelocity.x * enemyVelocity.x + enemyVelocity.y * enemyVelocity.y);
+
+		enemy->moveEntity(enemyVelocity * elapsedTime.asSeconds());
+	}
+	
+}
+
+void Game::updateProjectilesMovement(sf::Time elapsedTime) const {
+	for (auto const& projectile : projectileVector)
+	{
+		projectile->moveEntity(projectile->getVelocity() * elapsedTime.asSeconds());
+	}
+	
+}
+
 void Game::handleAutoFire()
 {
 	// Get the mouse position in the window
@@ -287,6 +306,6 @@ void Game::handleAutoFire()
 	worldPos = worldPos * 500.f / sqrt(worldPos.x * worldPos.x + worldPos.y * worldPos.y);
 
 	// Create and shoot a new projectile
-	Projectile newProjectile = player.shoot(worldPos, true);
-	projectileVector.push_back(newProjectile);
+	auto newProjectile = std::make_unique<Projectile>(player.shoot(worldPos, true));
+	projectileVector.push_back(std::move(newProjectile));
 }

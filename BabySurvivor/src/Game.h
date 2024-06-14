@@ -44,23 +44,24 @@ private:
 	bool playerMovingLeft{false};
 	bool playerMovingRight{false};
 
-	std::vector <std::unique_ptr<Enemy>> currentWave;
-	std::vector<Projectile> projectileVector;
+	std::vector<std::unique_ptr<Enemy>> enemyVector;
+	std::vector<std::unique_ptr<Projectile>> projectileVector;
 
-	void processEvent();
-	void processInGameEvent(sf::Event event);
-
-	void updateInGame(sf::Time elapsedTime);
-	void renderInGame();
-
-	void updateStatsText(sf::Time elapsedTime);
-
-	void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
-
-	void loadPlayer(int saveFileNumber, sf::Vector2f stageSize);
 	void changeResolution(int newResolutionIndex);
 
+	void loadPlayer(int saveFileNumber, sf::Vector2f stageSize);
+	void processEvent();
+	void processInGameEvent(sf::Event event);
+	void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
+
+	void renderInGame();
+
+	void updateInGame(sf::Time elapsedTime);
+	void updateStatsText(sf::Time elapsedTime);
 	void updateCamera();
+	void updatePlayerMovement(sf::Time elapsedTime);
+	void updateEnemiesMovement(sf::Time elapsedTime) const;
+	void updateProjectilesMovement(sf::Time elapsedTime) const;
 	void handleAutoFire();
 
 public:
