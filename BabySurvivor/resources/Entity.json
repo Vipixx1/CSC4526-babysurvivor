@@ -1,31 +1,30 @@
 {
-  "player1": {
-    "length": 10,
-    "height": 30,
+    "player1": {
+        "length": 50,
+        "height": 75,
+        "baseHealth": 500,
+        "baseDamage": 30,
+        "damageMultiplier": 1.0,
+        "baseSpeed": 300
+    },
 
-    "baseHealth": 500,
-    "baseDamage": 30,
-    "damageMultiplier": 1.0,
-    "baseSpeed": 100
-  },
+    "player2": {
+        "length": 50,
+        "height": 75,
+        "baseHealth": 500,
+        "baseDamage": 30,
+        "damageMultiplier": 1.0,
+        "baseSpeed": 300
+    },
 
-  "player2": {
-    "length": 10,
-    "height": 30,
-    "baseHealth": 500,
-    "baseDamage": 30,
-    "damageMultiplier": 1.0,
-    "baseSpeed": 100
-  },
-
-  "player3": {
-    "length": 10,
-    "height": 30,
-    "baseHealth": 500,
-    "baseDamage": 30,
-    "damageMultiplier": 1.0,
-    "baseSpeed": 100
-  },
+    "player3": {
+        "length": 50,
+        "height": 75,
+        "baseHealth": 500,
+        "baseDamage": 30,
+        "damageMultiplier": 1.0,
+        "baseSpeed": 300
+    },
 
     "broccoli_v1": {
         "length": 50,
@@ -33,7 +32,7 @@
         "baseHealth": 100,
         "baseDamage": 30,
         "damageMultiplier": 1.0,
-        "baseSpeed": 50,
+        "baseSpeed": 100,
 
         "movingPattern": "towardPlayer",
         "shootingPattern": "oneSimple"
@@ -81,7 +80,7 @@
         "baseHealth": 100,
         "baseDamage": 30,
         "damageMultiplier": 1.0,
-        "baseSpeed": 50,
+        "baseSpeed": 200,
 
         "movingPattern": "towardPlayer",
         "shootingPattern": "threeSimple"

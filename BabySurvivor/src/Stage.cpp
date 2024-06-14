@@ -4,13 +4,13 @@
 
 using json = nlohmann::json;
 
-Stage::Stage(std::string_view name, sf::RenderWindow& gameWindow) : name{ name }
+Stage::Stage(std::string_view name) : name{ name }
 {
 	std::ifstream f("resources/Stage.json");
 	json allData = json::parse(f);
-	json stageData = allData.at("level_1");
+	json stageData = allData.at(name);
 
-	size = sf::Vector2f(stageData.at("length") * gameWindow.getSize().x, stageData.at("height") * gameWindow.getSize().y);
+	size = sf::Vector2f(stageData.at("length"), stageData.at("height"));
 
 	/* test pour afficher le stage */
 	texture.loadFromFile("resources/sprites/floor.png");
@@ -51,4 +51,14 @@ void Stage::setWaveNumber(int newWaveNumber)
 sf::Vector2f Stage::getSize() const
 {
 	return size;
+}
+
+bool Stage::getSpawningBool()
+{
+	return isWaveBeginning;
+}
+
+void Stage::setSpawningBool(bool newIsWaveBeginning)
+{
+	this->isWaveBeginning = isWaveBeginning;
 }

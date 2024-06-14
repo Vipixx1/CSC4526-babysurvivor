@@ -1,7 +1,7 @@
 {
-    "level_1": {
-        "length": 3,
-        "height": 3,
+    "stage_1": {
+        "length": 5760,
+        "height": 3240,
 
         "wave_1": {
             "totalEnemyNumber": 10,
@@ -12,42 +12,101 @@
             },
             "enemy_2": {
                 "type": "broccoli_v1",
-                "coords_spawn_x": 50,
+                "coords_spawn_x": 200,
                 "coords_spawn_y": 30
             },
             "enemy_3": {
                 "type": "broccoli_v1",
-                "coords_spawn_x": 100,
+                "coords_spawn_x": 300,
                 "coords_spawn_y": 30
             },
             "enemy_4": {
                 "type": "broccoli_v1",
-                "coords_spawn_x": 150,
+                "coords_spawn_x": 400,
                 "coords_spawn_y": 30
             },
             "enemy_5": {
                 "type": "spider_v1",
-                "coords_spawn_x": 200,
+                "coords_spawn_x": 500,
                 "coords_spawn_y": 30
             },
             "enemy_6": {
                 "type": "spider_v1",
-                "coords_spawn_x": 250,
+                "coords_spawn_x": 600,
                 "coords_spawn_y": 30
             },
             "enemy_7": {
                 "type": "spider_v1",
-                "coords_spawn_x": 300,
+                "coords_spawn_x": 700,
                 "coords_spawn_y": 30
             },
             "enemy_8": {
                 "type": "spider_v1",
-                "coords_spawn_x": 350,
+                "coords_spawn_x": 800,
                 "coords_spawn_y": 30
             },
             "enemy_9": {
                 "type": "spider_v1",
+                "coords_spawn_x": 900,
+                "coords_spawn_y": 30
+            },
+            "enemy_10": {
+                "type": "spider_v1",
+                "coords_spawn_x": 450,
+                "coords_spawn_y": 30
+            }
+        }
+    },
+
+    "stage_2": {
+        "length": 5760,
+        "height": 3240,
+
+        "wave_1": {
+            "totalEnemyNumber": 10,
+            "enemy_1": {
+                "type": "broccoli_v1",
+                "coords_spawn_x": 10,
+                "coords_spawn_y": 30
+            },
+            "enemy_2": {
+                "type": "broccoli_v1",
+                "coords_spawn_x": 200,
+                "coords_spawn_y": 30
+            },
+            "enemy_3": {
+                "type": "broccoli_v1",
+                "coords_spawn_x": 300,
+                "coords_spawn_y": 30
+            },
+            "enemy_4": {
+                "type": "broccoli_v1",
                 "coords_spawn_x": 400,
+                "coords_spawn_y": 30
+            },
+            "enemy_5": {
+                "type": "spider_v1",
+                "coords_spawn_x": 500,
+                "coords_spawn_y": 30
+            },
+            "enemy_6": {
+                "type": "spider_v1",
+                "coords_spawn_x": 600,
+                "coords_spawn_y": 30
+            },
+            "enemy_7": {
+                "type": "spider_v1",
+                "coords_spawn_x": 700,
+                "coords_spawn_y": 30
+            },
+            "enemy_8": {
+                "type": "spider_v1",
+                "coords_spawn_x": 800,
+                "coords_spawn_y": 30
+            },
+            "enemy_9": {
+                "type": "spider_v1",
+                "coords_spawn_x": 900,
                 "coords_spawn_y": 30
             },
             "enemy_10": {

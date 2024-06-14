@@ -5,7 +5,7 @@
 #include "Stage.h"
 #include "GameMenu.h"
 
-int runGame();
+int startGame();
 
 enum class GameState {
 	inGame,
@@ -15,49 +15,53 @@ enum class GameState {
 class Game {
 private:
 
-	std::vector<std::tuple<int, int>> resolutionVector;
+	std::vector<std::tuple<int, int>> resolutionVector{ std::make_tuple(1920, 1080),
+														std::make_tuple(1280, 800),
+														std::make_tuple(1024, 768) };
 
 	int currentResolution{ 0 };
 
-	int money{ 0 };
 	sf::RenderWindow gameWindow;
 	sf::View view = gameWindow.getDefaultView();
+
 	sf::Time statsUpdateTime;
 	std::size_t numFrames{ 0 };
 	sf::Text statsText;
 	sf::Font font;
-	static const sf::Time	TimePerFrame;
-
-	std::vector <std::unique_ptr<Enemy>> currentWave;
-	std::vector<Projectile> projectileVector;
+	static const sf::Time TimePerFrame;
+	sf::Vector2f cameraPosition{ 0, 0 };
 
 	GameState gameState;
-
 	GameMenu gameMenu;
 
 	int elapsedFrame{ 0 };
 
-	Stage stage{ "level_1", gameWindow };
-	Player player{"resources/Entity.json", "player1", sf::Vector2f(stage.getSize().x / 2, stage.getSize().y / 2)};
+	int money{ 0 };
+	Stage stage{ "stage_1" };
+	Player player{ "resources/Entity.json", "player1", sf::Vector2f(0, 0) };
 	bool playerMovingUp{false};
 	bool playerMovingDown{false};
 	bool playerMovingLeft{false};
 	bool playerMovingRight{false};
-	sf::Vector2f cameraPosition{ static_cast<float>(gameWindow.getSize().x) / 2, static_cast<float>(gameWindow.getSize().y) };
 
+	std::vector <std::unique_ptr<Enemy>> currentWave;
+	std::vector<Projectile> projectileVector;
 
 	void processEvent();
 	void processInGameEvent(sf::Event event);
 
-	void update(sf::Time elaspedTime);
-	void render();
+	void updateInGame(sf::Time elapsedTime);
+	void renderInGame();
 
 	void updateStatsText(sf::Time elapsedTime);
 
 	void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
 
-	void loadPlayer(int saveFileNumber);
+	void loadPlayer(int saveFileNumber, sf::Vector2f stageSize);
 	void changeResolution(int newResolutionIndex);
+
+	void updateCamera();
+	void handleAutoFire();
 
 public:
 	Game();

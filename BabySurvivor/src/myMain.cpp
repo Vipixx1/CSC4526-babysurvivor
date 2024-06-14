@@ -3,5 +3,5 @@
 
 int myMain() 
 {
-	return runGame();
+	return startGame();
 }

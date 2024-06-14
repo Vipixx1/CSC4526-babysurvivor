@@ -31,7 +31,6 @@ private:
 
 	sf::Font font;
 
-
 	int currentMainMenuButton{ 0 };
 
 	int currentResolution{ -1 };
@@ -49,7 +48,6 @@ private:
 	int processMainMenuEvent(sf::Event event, sf::RenderWindow& gameWindow);
 	int processPlayMenuEvent(sf::Event event, sf::RenderWindow& gameWindow);
 	int processSettingsMenuEvent(sf::Event event, sf::RenderWindow& gameWindow);
-
 
 public:
 	explicit GameMenu();
