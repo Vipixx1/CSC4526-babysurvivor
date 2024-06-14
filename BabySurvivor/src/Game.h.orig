@@ -20,8 +20,12 @@ private:
 	int currentResolution{ 0 };
 
 	int money{ 0 };
+<<<<<<< HEAD
 	sf::RenderWindow gameWindow;
+=======
+	sf::RenderWindow gameWindow{ sf::VideoMode(1920, 1080), "Baby Survivor"};
 	sf::View view = gameWindow.getDefaultView();
+>>>>>>> 1492f7830cb4fd8fb0658beb9b05c42d5bd27d2b
 	sf::Time statsUpdateTime;
 	std::size_t numFrames{ 0 };
 	sf::Text statsText;
@@ -37,8 +41,12 @@ private:
 
 	int elapsedFrame{ 0 };
 
+<<<<<<< HEAD
+	Player player{"resources/Entity.json", "player1", sf::Vector2f(480, 270) };
+=======
 	Stage stage{ "level_1", gameWindow };
-	Player player{"resources/Entity.json", "player1", sf::Vector2f(stage.getSize().x / 2, stage.getSize().y / 2)};
+	Player player{"resources/Entity.json", sf::Vector2f(stage.getSize().x / 2, stage.getSize().y / 2)};
+>>>>>>> 1492f7830cb4fd8fb0658beb9b05c42d5bd27d2b
 	bool playerMovingUp{false};
 	bool playerMovingDown{false};
 	bool playerMovingLeft{false};

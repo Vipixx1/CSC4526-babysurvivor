@@ -17,8 +17,9 @@ Game::Game()
 
 	font.loadFromFile("resources/Sansation.ttf");
 	statsText.setFont(font);
-	statsText.setPosition(5.f, 5.f);
-	statsText.setCharacterSize(10);
+	statsText.setFillColor(sf::Color::White);
+	statsText.setPosition(view.getCenter().x - view.getSize().x / 2 + 10.f, view.getCenter().y - view.getSize().y / 2 + 10.f);
+	statsText.setCharacterSize(20);
 
 	gameState = GameState::inMenu;
 }
@@ -103,25 +104,35 @@ void Game::processInGameEvent(sf::Event event)
 void Game::update(sf::Time elapsedTime)
 {
 	/* Update player's movement */
-	sf::Vector2f playerMovement(0.f, 0.f);
+	sf::Vector2f playerVelocity(0.f, 0.f);
 	float playerSpeed = player.getSpeed();
 	if (playerMovingUp)
-		playerMovement.y -= playerSpeed;
+		playerVelocity.y -= playerSpeed;
 	if (playerMovingDown)
-		playerMovement.y += playerSpeed;
+		playerVelocity.y += playerSpeed;
 	if (playerMovingLeft)
-		playerMovement.x -= playerSpeed;
+		playerVelocity.x -= playerSpeed;
 	if (playerMovingRight)
-		playerMovement.x += playerSpeed;
+		playerVelocity.x += playerSpeed;
 
-	player.moveEntity(playerMovement * elapsedTime.asSeconds());
+	player.moveEntity(playerVelocity * elapsedTime.asSeconds());
 
-	/* [TODO] Update enemies' movement */
+	/* Update the movement of enemies */
+	for (auto const& enemy : currentWave)
+	{
+		float enemySpeed = enemy->getSpeed();
+		auto enemyVelocity = player.getCoords() - enemy->getCoords();
 
-	/* Update projectiles' movement */
+		enemyVelocity = enemyVelocity * enemySpeed / sqrt(enemyVelocity.x * enemyVelocity.x + enemyVelocity.y * enemyVelocity.y);
+
+		enemy->moveEntity(enemyVelocity * elapsedTime.asSeconds());
+
+	}
+
+	/* Update the movement of projectiles */
 	for (auto& projectile : projectileVector)
 	{
-		projectile.moveEntity(projectile.getSpeed() * elapsedTime.asSeconds());
+		projectile.moveEntity(projectile.getVelocity() * elapsedTime.asSeconds());
 
 		//[TODO] check if the bullet hit an ennemy or get out of the screen and do the appropriate action
 	}
@@ -130,6 +141,8 @@ void Game::update(sf::Time elapsedTime)
 void Game::render() 
 {
 	gameWindow.clear(sf::Color::Black);
+
+	stage.render(gameWindow);
 
 	player.render(gameWindow);
 
@@ -147,8 +160,9 @@ void Game::render()
 	gameWindow.display();
 }
 
-void Game::updateStats(sf::Time elapsedTime)
+void Game::updateStatsText(sf::Time elapsedTime)
 {
+	statsText.setPosition(view.getCenter().x - view.getSize().x/2 + 10.f, view.getCenter().y - view.getSize().y/2 + 10.f);
 	statsUpdateTime += elapsedTime;
 	numFrames += 1;
 
@@ -169,9 +183,6 @@ void Game::run()
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
 	gameWindow.setFramerateLimit(60);
-
-	/* Creating the stage */
-	Stage stage{ "level_1", sf::Vector2f(1200, 1080) };
 	
 	/* Spawning the Enemies */
 	currentWave = stage.spawn();
@@ -186,16 +197,21 @@ void Game::run()
 
 			elapsedFrame++;
 
-			// The player auto fire once every 30 frames
 			if (elapsedFrame >= 30)
 			{
-				auto mousePos = sf::Vector2f(sf::Mouse::getPosition(gameWindow));
-				
-				mousePos = mousePos - player.getCoords();
-				mousePos = mousePos * 100.f / sqrt(mousePos.x*mousePos.x + mousePos.y*mousePos.y);
-	
-				Projectile newProjectile = player.shoot(mousePos, true);
+				/* The player auto fire once every 30 frames */
+
+				// Get the mouse position in the window
+				sf::Vector2i pixelPos = sf::Mouse::getPosition(gameWindow);
+				// Convert it to world coordinates
+				sf::Vector2f worldPos = gameWindow.mapPixelToCoords(pixelPos);
+
+				worldPos = worldPos - player.getCoords();
+				worldPos = worldPos * 500.f / sqrt(worldPos.x * worldPos.x + worldPos.y * worldPos.y);
+
+				Projectile newProjectile = player.shoot(worldPos, true);
 				projectileVector.push_back(newProjectile);
+
 				elapsedFrame = 0;
 			}
 
@@ -203,7 +219,21 @@ void Game::run()
 			update(TimePerFrame);
 		}
 
-		updateStats(elapsedTime);
+		/* Make the camera follow the player */
+		cameraPosition.x = player.getCoords().x + (player.getSize().x / 2) - (static_cast<float>(gameWindow.getSize().x) / 2);
+		cameraPosition.y = player.getCoords().y + (player.getSize().y / 2) - (static_cast<float>(gameWindow.getSize().y) / 2);
+
+		/* Check if the camera is within the stage borders*/
+		if (cameraPosition.x < 0) cameraPosition.x = 0;
+		if (cameraPosition.x + static_cast<float>(gameWindow.getSize().x) > stage.getSize().x) cameraPosition.x = stage.getSize().x - static_cast<float>(gameWindow.getSize().x);
+		if (cameraPosition.y < 0) cameraPosition.y = 0;
+		if (cameraPosition.y + static_cast<float>(gameWindow.getSize().y) > stage.getSize().y) cameraPosition.y = stage.getSize().y - static_cast<float>(gameWindow.getSize().y);
+
+		view.reset(sf::FloatRect(cameraPosition.x, cameraPosition.y, static_cast<float>(gameWindow.getSize().x), static_cast<float>(gameWindow.getSize().y)));
+
+		gameWindow.setView(view);
+
+		updateStatsText(elapsedTime);
 
 		if (gameState == GameState::inMenu)
 		{

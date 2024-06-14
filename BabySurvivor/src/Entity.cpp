@@ -14,13 +14,18 @@ Entity::Entity(const std::string& filePath, const std::string& entityName, sf::V
 	height = entityData.at("height");
 
 	entityBox.setPosition(coords);
-	entityBox.setFillColor(sf::Color::Red);
+	entityBox.setFillColor(sf::Color::White);
 	entityBox.setSize(sf::Vector2f(length, height));
 }
 
 sf::Vector2f Entity::getCoords() const
 {
 	return entityBox.getPosition();
+}
+
+sf::Vector2f Entity::getSize() const
+{
+	return entityBox.getSize();;
 }
 
 void Entity::render(sf::RenderWindow& gameWindow) const
