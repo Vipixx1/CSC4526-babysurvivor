@@ -134,15 +134,15 @@ void Game::run()
 			switch (gameMenu.getMenuState())
 			{
 				using enum MenuState;
-			case inMainMenu:
-				gameMenu.renderMainMenu(gameWindow);
-				break;
-			case inPlayMenu:
-				gameMenu.renderPlayMenu(gameWindow);
-				break;
-			case inSettingsMenu:
-				gameMenu.renderSettingMenu(gameWindow);
-				break;
+				case inMainMenu:
+					gameMenu.renderMainMenu(gameWindow);
+					break;
+				case inPlayMenu:
+					gameMenu.renderPlayMenu(gameWindow);
+					break;
+				case inSettingsMenu:
+					gameMenu.renderSettingMenu(gameWindow);
+					break;
 			}
 		}
 
@@ -208,7 +208,6 @@ void Game::updateInGame(sf::Time elapsedTime)
 
 	/* Update the movement of projectiles */
 	updateProjectilesMovement(elapsedTime);
-
 }
 
 void Game::updateStatsText(sf::Time elapsedTime)
@@ -276,12 +275,7 @@ void Game::updatePlayerMovement(sf::Time elapsedTime) {
 void Game::updateEnemiesMovement(sf::Time elapsedTime) const {
 	for (auto const& enemy : enemyVector)
 	{
-		float enemySpeed = enemy->getSpeed();
-		auto enemyVelocity = player.getCoords() - enemy->getCoords();
-
-		enemyVelocity = enemyVelocity * enemySpeed / sqrt(enemyVelocity.x * enemyVelocity.x + enemyVelocity.y * enemyVelocity.y);
-
-		enemy->moveEntity(enemyVelocity * elapsedTime.asSeconds());
+		enemy->moveAccordingToPattern(elapsedTime, player.getCoords(), stage.getSize());
 	}
 	
 }

@@ -1,59 +1,59 @@
 {
     "stage_1": {
-        "length": 5760,
-        "height": 3240,
+        "length": 3000,
+        "height": 2500,
 
         "wave_1": {
             "totalEnemyNumber": 10,
             "enemy_1": {
                 "type": "broccoli_v1",
-                "coords_spawn_x": 10,
-                "coords_spawn_y": 30
+                "coords_spawn_x": 100,
+                "coords_spawn_y": 100
             },
             "enemy_2": {
-                "type": "broccoli_v1",
-                "coords_spawn_x": 200,
-                "coords_spawn_y": 30
+                "type": "broccoli_v2",
+                "coords_spawn_x": 1000,
+                "coords_spawn_y": 50
             },
             "enemy_3": {
-                "type": "broccoli_v1",
-                "coords_spawn_x": 300,
-                "coords_spawn_y": 30
+                "type": "ladybug_v1",
+                "coords_spawn_x": 2400,
+                "coords_spawn_y": 1900
             },
             "enemy_4": {
                 "type": "broccoli_v1",
-                "coords_spawn_x": 400,
-                "coords_spawn_y": 30
+                "coords_spawn_x": 35,
+                "coords_spawn_y": 1900
             },
             "enemy_5": {
                 "type": "spider_v1",
                 "coords_spawn_x": 500,
-                "coords_spawn_y": 30
+                "coords_spawn_y": 50
             },
             "enemy_6": {
-                "type": "spider_v1",
-                "coords_spawn_x": 600,
-                "coords_spawn_y": 30
+                "type": "robotToy_v1",
+                "coords_spawn_x": 2300,
+                "coords_spawn_y": 100
             },
             "enemy_7": {
-                "type": "spider_v1",
-                "coords_spawn_x": 700,
-                "coords_spawn_y": 30
+                "type": "tomato_v1",
+                "coords_spawn_x": 2100,
+                "coords_spawn_y": 1000
             },
             "enemy_8": {
-                "type": "spider_v1",
-                "coords_spawn_x": 800,
-                "coords_spawn_y": 30
+                "type": "ladybug_v1",
+                "coords_spawn_x": 1200,
+                "coords_spawn_y": 1860
             },
             "enemy_9": {
-                "type": "spider_v1",
-                "coords_spawn_x": 900,
-                "coords_spawn_y": 30
+                "type": "towerToy_v1",
+                "coords_spawn_x": 90,
+                "coords_spawn_y": 500
             },
             "enemy_10": {
                 "type": "spider_v1",
-                "coords_spawn_x": 450,
-                "coords_spawn_y": 30
+                "coords_spawn_x": 100,
+                "coords_spawn_y": 750
             }
         }
     },

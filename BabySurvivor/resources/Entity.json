@@ -1,7 +1,7 @@
 {
     "player1": {
-        "length": 50,
-        "height": 75,
+        "length": 75,
+        "height": 100,
         "baseHealth": 500,
         "baseDamage": 30,
         "damageMultiplier": 1.0,
@@ -9,8 +9,8 @@
     },
 
     "player2": {
-        "length": 50,
-        "height": 75,
+        "length": 75,
+        "height": 100,
         "baseHealth": 500,
         "baseDamage": 30,
         "damageMultiplier": 1.0,
@@ -18,8 +18,8 @@
     },
 
     "player3": {
-        "length": 50,
-        "height": 75,
+        "length": 75,
+        "height": 100,
         "baseHealth": 500,
         "baseDamage": 30,
         "damageMultiplier": 1.0,
@@ -34,7 +34,7 @@
         "damageMultiplier": 1.0,
         "baseSpeed": 100,
 
-        "movingPattern": "towardPlayer",
+        "movementPattern": "towardPlayer",
         "shootingPattern": "oneSimple"
     },
 
@@ -44,9 +44,9 @@
         "baseHealth": 100,
         "baseDamage": 30,
         "damageMultiplier": 1.0,
-        "baseSpeed": 50,
+        "baseSpeed": 100,
 
-        "movingPattern": "towardPlayer",
+        "movementPattern": "towardPlayer",
         "shootingPattern": "threeSimple"
     },
 
@@ -56,9 +56,9 @@
         "baseHealth": 100,
         "baseDamage": 30,
         "damageMultiplier": 1.0,
-        "baseSpeed": 50,
+        "baseSpeed": 75,
 
-        "movingPattern": "towardPlayer",
+        "movementPattern": "towardPlayer",
         "shootingPattern": "threeSimple"
     },
 
@@ -68,9 +68,9 @@
         "baseHealth": 100,
         "baseDamage": 30,
         "damageMultiplier": 1.0,
-        "baseSpeed": 50,
+        "baseSpeed": 90,
 
-        "movingPattern": "towardPlayer",
+        "movementPattern": "towardPlayer",
         "shootingPattern": "threeSimple"
     },
 
@@ -82,7 +82,7 @@
         "damageMultiplier": 1.0,
         "baseSpeed": 200,
 
-        "movingPattern": "towardPlayer",
+        "movementPattern": "towardPlayer",
         "shootingPattern": "threeSimple"
     },
 
@@ -92,9 +92,9 @@
         "baseHealth": 100,
         "baseDamage": 30,
         "damageMultiplier": 1.0,
-        "baseSpeed": 50,
+        "baseSpeed": 500,
 
-        "movingPattern": "towardPlayer",
+        "movementPattern": "bounceBorders",
         "shootingPattern": "threeSimple"
     },
 
@@ -104,9 +104,9 @@
         "baseHealth": 100,
         "baseDamage": 30,
         "damageMultiplier": 1.0,
-        "baseSpeed": 50,
+        "baseSpeed": 500,
 
-        "movingPattern": "towardPlayer",
+        "movementPattern": "bounceBorders",
         "shootingPattern": "threeSimple"
     },
 
@@ -116,9 +116,9 @@
         "baseHealth": 100,
         "baseDamage": 30,
         "damageMultiplier": 1.0,
-        "baseSpeed": 50,
+        "baseSpeed": 300,
 
-        "movingPattern": "towardPlayer",
+        "movementPattern": "bounceBorders",
         "shootingPattern": "threeSimple"
     },
 
@@ -128,9 +128,9 @@
         "baseHealth": 100,
         "baseDamage": 30,
         "damageMultiplier": 1.0,
-        "baseSpeed": 50,
+        "baseSpeed": 300,
 
-        "movingPattern": "towardPlayer",
+        "movementPattern": "bounceBorders",
         "shootingPattern": "threeSimple"
     },
 
@@ -140,9 +140,9 @@
         "baseHealth": 100,
         "baseDamage": 30,
         "damageMultiplier": 1.0,
-        "baseSpeed": 50,
+        "baseSpeed": 0,
 
-        "movingPattern": "towardPlayer",
+        "movementPattern": "noMove",
         "shootingPattern": "threeSimple"
     },
 
@@ -152,9 +152,9 @@
         "baseHealth": 100,
         "baseDamage": 30,
         "damageMultiplier": 1.0,
-        "baseSpeed": 50,
+        "baseSpeed": 0,
 
-        "movingPattern": "towardPlayer",
+        "movementPattern": "noMove",
         "shootingPattern": "threeSimple"
     },
 
@@ -164,9 +164,9 @@
         "baseHealth": 100,
         "baseDamage": 30,
         "damageMultiplier": 1.0,
-        "baseSpeed": 50,
+        "baseSpeed": 0,
 
-        "movingPattern": "towardPlayer",
+        "movementPattern": "noMove",
         "shootingPattern": "threeSimple"
     },
 
@@ -176,15 +176,15 @@
         "baseHealth": 100,
         "baseDamage": 30,
         "damageMultiplier": 1.0,
-        "baseSpeed": 50,
+        "baseSpeed": 0,
 
-        "movingPattern": "towardPlayer",
+        "movementPattern": "noMove",
         "shootingPattern": "threeSimple"
     },
 
     "projectile": {
-        "length": 5,
-        "height": 5
+        "length": 10,
+        "height": 10
     }
 }
         

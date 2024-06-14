@@ -21,9 +21,15 @@ enum class EnemyType {
 class Enemy : public LivingEntity {
 private:
 	std::string enemyType;
+	std::string movementPattern;
+	std::string shootingPattern;
+	sf::Vector2f currentVelocity;
+
+	void initializeRandomVelocity();
 
 public:
 	Enemy(const std::string& filePath, const std::string& enemyType, sf::Vector2f coords);
+	void moveAccordingToPattern(sf::Time elapsedTime, sf::Vector2f playerCoords, sf::Vector2f stageSize);
 };
 
 

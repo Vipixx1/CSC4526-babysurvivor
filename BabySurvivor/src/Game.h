@@ -14,7 +14,6 @@ enum class GameState {
 
 class Game {
 private:
-
 	std::vector<std::tuple<int, int>> resolutionVector{ std::make_tuple(1920, 1080),
 														std::make_tuple(1280, 800),
 														std::make_tuple(1024, 768) };
