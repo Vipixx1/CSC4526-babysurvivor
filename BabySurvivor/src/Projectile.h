@@ -10,5 +10,7 @@ private:
 
 public:
 	explicit Projectile(const std::string& filePath, sf::Vector2f coords, sf::Vector2f velocity, float damage, bool isAlly);
+	bool getTeam() const;
 	sf::Vector2f getVelocity() const;
+	float getDamage() const;
 };

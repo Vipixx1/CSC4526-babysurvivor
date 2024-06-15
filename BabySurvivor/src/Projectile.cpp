@@ -6,9 +6,20 @@ Projectile::Projectile(const std::string& filePath, sf::Vector2f coords, sf::Vec
 	damage{ damage },
 	isAlly{ isAlly } {}
 
+bool Projectile::getTeam() const
+{
+	return isAlly;
+}
+
 
 sf::Vector2f Projectile::getVelocity() const
 {
 	return velocity;
+}
+
+float Projectile::getDamage() const
+{
+	return damage;
+;
 }
 

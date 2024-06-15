@@ -16,6 +16,8 @@ public:
 
 	sf::Vector2f getSize() const;
 
+	sf::FloatRect getGlobalBounds() const;
+
 	void render(sf::RenderWindow& gameWindow) const;
 	void moveEntity(sf::Vector2f movement);
 };

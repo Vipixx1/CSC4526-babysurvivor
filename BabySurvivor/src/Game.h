@@ -46,8 +46,8 @@ private:
 	bool playerMovingLeft{false};
 	bool playerMovingRight{false};
 
-	std::vector<std::unique_ptr<Enemy>> enemyVector;
-	std::vector<std::unique_ptr<Projectile>> projectileVector;
+	std::vector<std::unique_ptr<Enemy>> enemies;
+	std::vector<std::unique_ptr<Projectile>> projectiles;
 
 	void changeResolution(int newResolutionIndex);
 
@@ -61,9 +61,9 @@ private:
 	void updateInGame(sf::Time elapsedTime);
 	void updateStatsText(sf::Time elapsedTime);
 	void updateCamera();
-	void updatePlayerMovement(sf::Time elapsedTime);
-	void updateEnemiesMovement(sf::Time elapsedTime) const;
-	void updateProjectilesMovement(sf::Time elapsedTime) const;
+	void updatePlayer(sf::Time elapsedTime);
+	void updateEnemies(sf::Time elapsedTime);
+	void updateProjectiles(sf::Time elapsedTime);
 	void handleAutoFire();
 
 public:
