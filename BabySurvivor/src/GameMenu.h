@@ -14,19 +14,26 @@ private:
 	MenuState menuState{ MenuState::inMainMenu };
 
 	sf::Text gameTitle;
-	sf::Text resolutionText;
 	sf::Text controlsText;
 	sf::Font font;
 
+	bool insideOption{ false };
+
 	int currentMainMenuButton{ 0 };
 
-	int currentResolution{ -1 };
+	int currentResolution{ 0 };
 
 	int currentSaveFile{ 0 };
+
+	int currentSettingButton{ 0 };
+
+	int currentVolumeLevel{ 0 };
 
 	std::vector<sf::Text> textVector;
 	std::vector<sf::Text> currentResVector;
 	std::vector<sf::Text> saveFileVector;
+	std::vector<sf::Text> volumeLevelVector;
+	std::vector<sf::Text> settingOptions;
 
 	void renderMenu(sf::RenderWindow& gameWindow, int currentMenu);
 

@@ -81,9 +81,16 @@ void Game::processEvent()
 				changeResolution(returnValue - 3);
 			}
 
+			// 6 means we are going back to the main menu
 			if (returnValue == 6)
 			{
 				gameMenu.renderMainMenu(gameWindow);
+			}
+
+			// From 7 to 12 : changing the volume setting
+			if (returnValue >= 7 && returnValue < 13)
+			{
+				soundManager.changeVolume(returnValue - 7);
 			}
 		}
 

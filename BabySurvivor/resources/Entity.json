@@ -183,9 +183,14 @@
     },
 
     "projectile": {
-        "length": 10,
-        "height": 10
-    }
+    "length": 10,
+    "height": 10
+  },
+
+    "collectible": {
+    "length": 20,
+    "height":  20
+  }
 }
         
             
