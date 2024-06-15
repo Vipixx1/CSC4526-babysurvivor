@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Stage.h"
 #include "GameMenu.h"
+#include "SoundManager.h"
 
 int startGame();
 
@@ -32,6 +33,8 @@ private:
 
 	GameState gameState;
 	GameMenu gameMenu;
+
+	SoundManager soundManager;
 
 	int elapsedFrame{ 0 };
 

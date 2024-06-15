@@ -14,21 +14,8 @@ private:
 	MenuState menuState{ MenuState::inMainMenu };
 
 	sf::Text gameTitle;
-
-	sf::Text playButtonText;
-	sf::Text settingsButtonText;
-	sf::Text exitButtonText;
-
 	sf::Text resolutionText;
-	sf::Text resolution1;
-	sf::Text resolution2;
-	sf::Text resolution3;
 	sf::Text controlsText;
-
-	sf::Text saveFile1;
-	sf::Text saveFile2;
-	sf::Text saveFile3;
-
 	sf::Font font;
 
 	int currentMainMenuButton{ 0 };

@@ -14,6 +14,18 @@ GameMenu::GameMenu()
 {
 	font.loadFromFile("resources/Sansation.ttf");
 
+	sf::Text playButtonText;
+	sf::Text settingsButtonText;
+	sf::Text exitButtonText;
+
+	sf::Text resolution1;
+	sf::Text resolution2;
+	sf::Text resolution3;
+
+	sf::Text saveFile1;
+	sf::Text saveFile2;
+	sf::Text saveFile3;
+
 	initializeText(playButtonText, "Play", 30, sf::Vector2f(380.f, 300.f), sf::Color::Yellow);
 	initializeText(settingsButtonText, "Settings", 30, sf::Vector2f(380.f, 355.f), sf::Color::White);
 	initializeText(exitButtonText, "Exit", 30, sf::Vector2f(380.f, 410.f), sf::Color::White);
@@ -22,9 +34,9 @@ GameMenu::GameMenu()
 
 	
 	initializeText(resolutionText, "Resolution :", 30, sf::Vector2f(380.f, 200.f), sf::Color::Yellow);
-	initializeText(resolution1, "1024x768", 20, sf::Vector2f(550.f, 210.f), sf::Color::White);
-	initializeText(resolution2, "1280x800", 20, sf::Vector2f(650.f, 210.f), sf::Color::White);
-	initializeText(resolution3, "1920x1080", 20, sf::Vector2f(750.f, 210.f), sf::Color::White);
+	initializeText(resolution1, "1920x1080", 20, sf::Vector2f(550.f, 210.f), sf::Color::White);
+	initializeText(resolution2, "1280x800", 20, sf::Vector2f(660.f, 210.f), sf::Color::White);
+	initializeText(resolution3, "1024x768", 20, sf::Vector2f(760.f, 210.f), sf::Color::White);
 	initializeText(controlsText, "Controls:\nZQSD to move\nAutofire at the mouse\n\nPress esc to get back to the previous menu"
 			, 30, sf::Vector2f(380.f, 245.f), sf::Color::White);
 
@@ -122,7 +134,6 @@ int GameMenu::processMenuEvent(sf::Event event, sf::RenderWindow& gameWindow)
 {
 	if (event.type == sf::Event::KeyPressed)
 	{
-		std::cout << "key pressed" << std::endl;
 		if (menuState == MenuState::inMainMenu) {
 			return processMainMenuEvent(event, gameWindow);
 		}

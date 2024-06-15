@@ -37,6 +37,7 @@ void Game::loadPlayer(int saveFileNumber, sf::Vector2f stageSize)
 void Game::changeResolution(int newResolutionIndex)
 {
 	gameWindow.create(sf::VideoMode(std::get<0>(resolutionVector[newResolutionIndex]), std::get<1>(resolutionVector[newResolutionIndex])), "Baby Survivor");
+	gameWindow.setFramerateLimit(60);
 }
 
 void Game::processEvent() 
@@ -302,4 +303,5 @@ void Game::handleAutoFire()
 	// Create and shoot a new projectile
 	auto newProjectile = std::make_unique<Projectile>(player.shoot(worldPos, true));
 	projectileVector.push_back(std::move(newProjectile));
+	soundManager.playSound("resources/audio/playerShoot.wav");
 }
