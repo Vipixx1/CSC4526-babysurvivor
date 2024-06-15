@@ -278,6 +278,16 @@ void Game::updatePlayer(sf::Time elapsedTime) {
 
 	// Set the player's new position
 	player.setCoords(newPosition);
+
+
+	/* Check for collision with enemies */
+	for (auto const& enemy : enemies) {
+		if (player.getGlobalBounds().intersects(enemy->getGlobalBounds())) {
+			player.takeDamage(enemy->getDamage());
+			//Add invulnerability frames...
+			break;
+		}
+	}
 }
 
 void Game::updateEnemies(sf::Time elapsedTime) {
