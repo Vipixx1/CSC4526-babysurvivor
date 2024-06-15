@@ -150,7 +150,7 @@ void Game::run()
 		{
 			/* Spawning the Enemies */
 			if (stage.getSpawningBool()) {
-				enemyVector = stage.spawn();
+				enemies = stage.spawn();
 				stage.setSpawningBool(false);
 			}
 
@@ -184,12 +184,12 @@ void Game::renderInGame()
 
 	player.render(gameWindow);
 
-	for (const auto& enemy : enemyVector)
+	for (const auto& enemy : enemies)
 	{
 		enemy->render(gameWindow);
 	}
 
-	for (const auto& projectile : projectileVector)
+	for (const auto& projectile : projectiles)
 	{
 		projectile->render(gameWindow);
 	}
@@ -201,13 +201,13 @@ void Game::renderInGame()
 void Game::updateInGame(sf::Time elapsedTime)
 {
 	/* Update player's movement */
-	updatePlayerMovement(elapsedTime);
+	updatePlayer(elapsedTime);
 
 	/* Update the movement of enemies */
-	updateEnemiesMovement(elapsedTime);
+	updateEnemies(elapsedTime);
 
-	/* Update the movement of projectiles */
-	updateProjectilesMovement(elapsedTime);
+	/* Update the projectiles */
+	updateProjectiles(elapsedTime);
 }
 
 void Game::updateStatsText(sf::Time elapsedTime)
@@ -243,7 +243,7 @@ void Game::updateCamera()
 	gameWindow.setView(view);
 }
 
-void Game::updatePlayerMovement(sf::Time elapsedTime) {
+void Game::updatePlayer(sf::Time elapsedTime) {
 	sf::Vector2f playerVelocity(0.f, 0.f);
 	float playerSpeed = player.getSpeed();
 	sf::Vector2f playerPosition = player.getCoords();
@@ -272,20 +272,69 @@ void Game::updatePlayerMovement(sf::Time elapsedTime) {
 	player.setCoords(newPosition);
 }
 
-void Game::updateEnemiesMovement(sf::Time elapsedTime) const {
-	for (auto const& enemy : enemyVector)
+void Game::updateEnemies(sf::Time elapsedTime) {
+	for (auto it = enemies.begin(); it != enemies.end();) 
 	{
+		auto const& enemy = *it;
+
+		/* Move enemy based on its pattern */ 
 		enemy->moveAccordingToPattern(elapsedTime, player.getCoords(), stage.getSize());
+
+		/* Check if the enemy is dead */
+		if (enemy->isDead()) 
+		{
+			it = enemies.erase(it);
+		}
+		else ++it;
 	}
-	
 }
 
-void Game::updateProjectilesMovement(sf::Time elapsedTime) const {
-	for (auto const& projectile : projectileVector)
-	{
+void Game::updateProjectiles(sf::Time elapsedTime) {
+	for (auto it = projectiles.begin(); it != projectiles.end();) {
+		auto const& projectile = *it;
+
+		/* Update the projectile's movement */
 		projectile->moveEntity(projectile->getVelocity() * elapsedTime.asSeconds());
+
+		/* Check for collision with opposite team */
+		bool collided = false;
+
+		if (projectile->getTeam()) {	// player's projectiles
+			for (auto const& enemy : enemies) {
+				if (projectile->getGlobalBounds().intersects(enemy->getGlobalBounds())) {
+					collided = true;
+					enemy->takeDamage(projectile->getDamage());
+					break;
+				}
+			}
+		}
+		else {		//Enemies's projectiles
+			if (projectile->getGlobalBounds().intersects(player.getGlobalBounds())) {
+				collided = true;
+				player.takeDamage(projectile->getDamage());
+				break;
+			}
+		}
+		
+
+		/* Check if the projectile is Out Of Bounds (OOB) */
+		if (auto pos = projectile->getCoords();
+			pos.x < 0 
+			|| pos.x > stage.getSize().x 
+			|| pos.y < 0 
+			|| pos.y > stage.getSize().y) 
+		{
+			collided = true;
+		}
+
+		/* Remove the projectile if it collided or OOB */
+		if (collided) {
+			it = projectiles.erase(it);
+		}
+		else {
+			++it;
+		}
 	}
-	
 }
 
 void Game::handleAutoFire()
@@ -301,5 +350,5 @@ void Game::handleAutoFire()
 
 	// Create and shoot a new projectile
 	auto newProjectile = std::make_unique<Projectile>(player.shoot(worldPos, true));
-	projectileVector.push_back(std::move(newProjectile));
+	projectiles.push_back(std::move(newProjectile));
 }

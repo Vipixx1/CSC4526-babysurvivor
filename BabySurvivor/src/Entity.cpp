@@ -33,6 +33,11 @@ sf::Vector2f Entity::getSize() const
 	return entityBox.getSize();
 }
 
+sf::FloatRect Entity::getGlobalBounds() const
+{
+	return entityBox.getGlobalBounds();
+}
+
 void Entity::render(sf::RenderWindow& gameWindow) const
 {
 	gameWindow.draw(entityBox);
