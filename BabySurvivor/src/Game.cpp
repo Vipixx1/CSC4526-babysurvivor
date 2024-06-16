@@ -50,8 +50,23 @@ void Game::processEvent()
 		if (event.type == sf::Event::Closed)
 			gameWindow.close();
 
-		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F11)
-			gameWindow.create(sf::VideoMode(1920, 1080), "Baby Survivor", sf::Style::Fullscreen);
+		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F11 )
+		{
+			if (fullScreen)
+			{
+				gameWindow.create(sf::VideoMode(1920, 1080), "Baby Survivor", sf::Style::None);
+				gameWindow.setFramerateLimit(60);
+				fullScreen = false;
+			}
+
+			if (!fullScreen)
+			{
+				gameWindow.create(sf::VideoMode(1920, 1080), "Baby Survivor", sf::Style::Fullscreen);
+				gameWindow.setFramerateLimit(60);
+				fullScreen = true;
+			}
+		}
+			
 
 		if (event.type == sf::Event::Resized)
 		{
@@ -309,10 +324,14 @@ void Game::updateEnemies(sf::Time elapsedTime) {
 		/* Check if the enemy is dead */
 		if (enemy->isDead()) 
 		{
+			// The enemy might drop a collectible on death
 			if (std::optional<Collectible> dropedCollectible = enemy->dropCollectible(); dropedCollectible.has_value())
 			{
 				collectibles.push_back(std::make_unique<Collectible>(dropedCollectible.value()));
 			}
+
+			// The enemy gives experience to the player on death
+			player.giveExperience(15);
 
 			it = enemies.erase(it);
 		}

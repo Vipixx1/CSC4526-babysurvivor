@@ -32,6 +32,11 @@ float Stats::getMaxHealth() const
 	return baseHealth;
 }
 
+void Stats::setMaxHealth(float newMaxHealth)
+{
+	baseHealth = newMaxHealth;
+}
+
 void Stats::setCurrentHealth(float newHealth)
 {
 	currentHealth = newHealth;
@@ -40,4 +45,19 @@ void Stats::setCurrentHealth(float newHealth)
 float Stats::getDamage() const
 {
 	return baseDamage * damageMultiplier;
+}
+
+void Stats::setDamage(float newDamage)
+{
+	baseDamage = newDamage;
+}
+
+float Stats::getDamageMultiplier() const
+{
+	return damageMultiplier;
+}
+
+void Stats::setDamageMultiplier(float newDamageMultiplier)
+{
+	damageMultiplier = newDamageMultiplier;
 }

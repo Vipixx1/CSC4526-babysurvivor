@@ -14,9 +14,18 @@ private:
 
 public:
 	explicit Stats(const std::string& filePath, const std::string& livingEntityName);
+
 	float getSpeed() const;
-	float getCurrentHealth() const;
-	float getMaxHealth() const;
-	void setCurrentHealth(float newHealth);
+
 	float getDamage() const;
+	void setDamage(float newDamage);
+
+	float getDamageMultiplier() const;
+	void setDamageMultiplier(float newDamageMultiplier);
+
+	float getCurrentHealth() const;
+	void setCurrentHealth(float newHealth);
+
+	float getMaxHealth() const;
+	void setMaxHealth(float newMaxHealth);
 };

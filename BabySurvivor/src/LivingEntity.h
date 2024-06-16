@@ -17,11 +17,18 @@ public:
 	void takeDamage(float damageValue);
 
 	float getSpeed() const;
+
 	float getDamage() const;
+	void setDamage(float newDamage);
+
+	float getDamageMultiplier() const;
+	void setDamageMultiplier(float newDamageMultiplier);
 
 	float getCurrentHealth() const;
-	float getMaxHealth() const;
 	void setCurrentHealth(float newHealth);
+
+	float getMaxHealth() const;
+	void setMaxHealth(float newMaxHealt);
 
 	bool isDead() const;
 	void kill();

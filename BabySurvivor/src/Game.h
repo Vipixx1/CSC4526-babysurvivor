@@ -31,6 +31,8 @@ private:
 	static const sf::Time TimePerFrame;
 	sf::Vector2f cameraPosition{ 0, 0 };
 
+	bool fullScreen{ false };
+
 	GameState gameState;
 	GameMenu gameMenu;
 
@@ -47,11 +49,9 @@ private:
 	bool playerMovingRight{false};
 
 	std::vector<std::unique_ptr<Projectile>> projectiles;
-<<<<<<< HEAD
 	std::vector<std::unique_ptr<Collectible>> collectibles;
-=======
 	std::vector<std::unique_ptr<Enemy>> enemies;
->>>>>>> a1cc045a302734ba0d616dd906f76d950ce2d4bd
+
 
 	void changeResolution(int newResolutionIndex);
 
