@@ -22,7 +22,7 @@ private:
 	int currentResolution{ 0 };
 
 	sf::RenderWindow gameWindow;
-	sf::View view = gameWindow.getDefaultView();
+	sf::View view;
 
 	sf::Time statsUpdateTime;
 	std::size_t numFrames{ 0 };
@@ -46,9 +46,12 @@ private:
 	bool playerMovingLeft{false};
 	bool playerMovingRight{false};
 
-	std::vector<std::unique_ptr<Enemy>> enemies;
 	std::vector<std::unique_ptr<Projectile>> projectiles;
+<<<<<<< HEAD
 	std::vector<std::unique_ptr<Collectible>> collectibles;
+=======
+	std::vector<std::unique_ptr<Enemy>> enemies;
+>>>>>>> a1cc045a302734ba0d616dd906f76d950ce2d4bd
 
 	void changeResolution(int newResolutionIndex);
 

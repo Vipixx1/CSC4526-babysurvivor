@@ -20,6 +20,5 @@ sf::Vector2f Projectile::getVelocity() const
 float Projectile::getDamage() const
 {
 	return damage;
-;
 }
 

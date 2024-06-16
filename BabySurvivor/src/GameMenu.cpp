@@ -169,22 +169,24 @@ int GameMenu::processMenuEvent(sf::Event event, sf::RenderWindow& gameWindow)
 {
 	if (event.type == sf::Event::KeyPressed)
 	{
-		if (menuState == MenuState::inMainMenu) {
+		using enum MenuState;
+		if (menuState == inMainMenu) {
 			return processMainMenuEvent(event, gameWindow);
 		}
 		
-		if (menuState == MenuState::inSettingsMenu)
+		if (menuState == inSettingsMenu)
 		{
 			return  processSettingsMenuEvent(event, gameWindow);
 		}
 
-		if (menuState == MenuState::inPlayMenu)
+		if (menuState == inPlayMenu)
 		{
 			return processPlayMenuEvent(event, gameWindow);
 		}
-	}
 
-	else return -1;
+		return -1;
+	}
+	return -1;
 }
 
 int GameMenu::processMainMenuEvent(sf::Event event, sf::RenderWindow& gameWindow)
@@ -220,6 +222,7 @@ int GameMenu::processMainMenuEvent(sf::Event event, sf::RenderWindow& gameWindow
 		gameWindow.close();
 		return -1;
 	}
+	return -1;
 }
 
 int GameMenu::processPlayMenuEvent(sf::Event event, sf::RenderWindow& gameWindow)

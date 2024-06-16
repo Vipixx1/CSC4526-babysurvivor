@@ -17,6 +17,7 @@ public:
 	void takeDamage(float damageValue);
 
 	float getSpeed() const;
+	float getDamage() const;
 
 	float getCurrentHealth() const;
 	float getMaxHealth() const;

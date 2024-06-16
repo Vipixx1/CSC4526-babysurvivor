@@ -12,6 +12,7 @@ float LivingEntity::getSpeed() const
 	return stats.getSpeed();
 }
 
+<<<<<<< HEAD
 float LivingEntity::getCurrentHealth() const
 {
 	return stats.getCurrentHealth();
@@ -25,6 +26,11 @@ float LivingEntity::getMaxHealth() const
 void LivingEntity::setCurrentHealth(float newHealth)
 {
 	stats.setCurrentHealth(newHealth);
+=======
+float LivingEntity::getDamage() const
+{
+	return stats.getDamage();
+>>>>>>> a1cc045a302734ba0d616dd906f76d950ce2d4bd
 }
 
 void LivingEntity::takeDamage(float damageValue) 
