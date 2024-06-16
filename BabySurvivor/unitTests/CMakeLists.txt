@@ -5,7 +5,7 @@
 # Note: include(GoogleTest)and enable_testing() already done in top CMakeLists.txt
 
 add_executable(unitTests unitTests.cpp)
-target_link_libraries(unitTests GTest::gtest_main src pugixml sfml-graphics)
+target_link_libraries(unitTests GTest::gtest_main src sfml-graphics)
 if (UNIX)
   target_link_options(unitTests PUBLIC -pthread)
 endif()
