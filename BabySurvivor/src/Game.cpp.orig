@@ -62,7 +62,7 @@ void Game::processEvent()
 		/* Handle events related to the gameMenu */
 		if (gameState == GameState::inMenu)
 		{
-			// We check the returned value to know if we are launching a game or we are changing an option
+			// We check the returned value to know if we are launching a game or we are changing the resolution
 			int returnValue = gameMenu.processMenuEvent(event, gameWindow);
 			
 			// From 0 to 2: changing the resolution
@@ -202,11 +202,6 @@ void Game::renderInGame()
 		projectile->render(gameWindow);
 	}
 
-	for (const auto& collectible : collectibles)
-	{
-		collectible->render(gameWindow);
-	}
-
 	gameWindow.draw(statsText);
 	gameWindow.display();
 }
@@ -296,16 +291,10 @@ void Game::updateEnemies(sf::Time elapsedTime) {
 		/* Check if the enemy is dead */
 		if (enemy->isDead()) 
 		{
-			if (std::optional<Collectible> dropedCollectible = enemy->dropCollectible(); dropedCollectible.has_value())
-			{
-				collectibles.push_back(std::make_unique<Collectible>(dropedCollectible.value()));
-			}
-
 			it = enemies.erase(it);
 		}
 		else ++it;
 	}
-	
 }
 
 void Game::updateProjectiles(sf::Time elapsedTime) {
@@ -354,7 +343,6 @@ void Game::updateProjectiles(sf::Time elapsedTime) {
 			++it;
 		}
 	}
-	
 }
 
 void Game::handleAutoFire()
@@ -370,6 +358,10 @@ void Game::handleAutoFire()
 
 	// Create and shoot a new projectile
 	auto newProjectile = std::make_unique<Projectile>(player.shoot(worldPos, true));
-	projectiles.push_back(std::move(newProjectile));
+<<<<<<< HEAD
+	projectileVector.push_back(std::move(newProjectile));
 	soundManager.playSound("resources/audio/playerShoot.wav");
+=======
+	projectiles.push_back(std::move(newProjectile));
+>>>>>>> 8a958b470555c57792d6197d38fee471421a7bd0
 }

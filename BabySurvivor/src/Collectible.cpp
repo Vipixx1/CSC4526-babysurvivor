@@ -4,15 +4,3 @@ Collectible::Collectible(const std::string& filePath, const std::string& entityN
 	Entity{filePath, entityName, coords},
 	type{type},
 	value{value} {}
-
-
-float Collectible::collect() const
-{
-	return value;
-}
-
-Collectible Collectible::drop(const std::string& entityName, sf::Vector2f coords, CollectibleType type, float value)
-{
-	Collectible newCollectible{ "resources/Entity.json", entityName, coords, type, value };
-	return newCollectible;
-}

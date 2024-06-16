@@ -48,6 +48,7 @@ private:
 
 	std::vector<std::unique_ptr<Enemy>> enemies;
 	std::vector<std::unique_ptr<Projectile>> projectiles;
+	std::vector<std::unique_ptr<Collectible>> collectibles;
 
 	void changeResolution(int newResolutionIndex);
 

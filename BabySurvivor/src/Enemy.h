@@ -1,5 +1,6 @@
 #pragma once
 #include "LivingEntity.h"
+#include "Collectible.h"
 #include <string>
 
 enum class EnemyType {
@@ -27,9 +28,13 @@ private:
 
 	void initializeRandomVelocity();
 
+	std::optional<CollectibleType> getRandomCollectible() const;
+
 public:
 	Enemy(const std::string& filePath, const std::string& enemyType, sf::Vector2f coords);
 	void moveAccordingToPattern(sf::Time elapsedTime, sf::Vector2f playerCoords, sf::Vector2f stageSize);
+
+	std::optional<Collectible> dropCollectible() const;
 };
 
 

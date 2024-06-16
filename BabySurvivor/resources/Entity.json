@@ -187,10 +187,20 @@
     "height": 10
   },
 
-    "collectible": {
-    "length": 20,
-    "height":  20
-  }
+    "experience": {
+      "length": 20,
+      "height": 20
+    },
+
+    "health": {
+      "length": 40,
+      "height": 40
+    },
+
+    "money": {
+      "length": 10,
+      "height": 10
+    }
 }
         
             
