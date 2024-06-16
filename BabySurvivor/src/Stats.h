@@ -16,6 +16,7 @@ public:
 	explicit Stats(const std::string& filePath, const std::string& livingEntityName);
 	float getSpeed() const;
 	float getCurrentHealth() const;
+	float getMaxHealth() const;
 	void setCurrentHealth(float newHealth);
 	float getDamage() const;
 };

@@ -27,6 +27,11 @@ float Stats::getCurrentHealth() const
 	return currentHealth;
 }
 
+float Stats::getMaxHealth() const
+{
+	return baseHealth;
+}
+
 void Stats::setCurrentHealth(float newHealth)
 {
 	currentHealth = newHealth;

@@ -4,3 +4,13 @@ Collectible::Collectible(const std::string& filePath, const std::string& entityN
 	Entity{filePath, entityName, coords},
 	type{type},
 	value{value} {}
+
+CollectibleType Collectible::getCollectibleType() const
+{
+	return type;
+}
+
+float Collectible::getCollectibleValue() const
+{
+	return value;
+}

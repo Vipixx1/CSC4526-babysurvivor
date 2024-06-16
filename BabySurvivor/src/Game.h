@@ -64,6 +64,8 @@ private:
 	void updateCamera();
 	void updatePlayer(sf::Time elapsedTime);
 	void updateEnemies(sf::Time elapsedTime);
+	void handleCollectibleCollection(const Collectible& collectible);
+	void updateCollectibles();
 	void updateProjectiles(sf::Time elapsedTime);
 	void handleAutoFire();
 

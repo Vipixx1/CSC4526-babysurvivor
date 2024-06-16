@@ -221,6 +221,9 @@ void Game::updateInGame(sf::Time elapsedTime)
 
 	/* Update the projectiles */
 	updateProjectiles(elapsedTime);
+
+	/* Update collectibles */
+	updateCollectibles();
 }
 
 void Game::updateStatsText(sf::Time elapsedTime)
@@ -306,6 +309,43 @@ void Game::updateEnemies(sf::Time elapsedTime) {
 		else ++it;
 	}
 	
+}
+
+void Game::handleCollectibleCollection(const Collectible& collectible)
+{
+	switch (collectible.getCollectibleType())
+	{
+		case CollectibleType::money:
+			money += static_cast<int>(collectible.getCollectibleValue());
+			break;
+		case CollectibleType::health:
+			player.heal(collectible.getCollectibleValue());
+			break;
+		case CollectibleType::experience:
+			player.giveExperience(collectible.getCollectibleValue());
+			break;
+	}
+}
+
+void Game::updateCollectibles()
+{
+	for (auto it = collectibles.begin(); it != collectibles.end();)
+	{
+		auto const& collectible = *it;
+
+		if (collectible->getGlobalBounds().intersects(player.getGlobalBounds()))
+		{
+			handleCollectibleCollection(*collectible);
+
+			it = collectibles.erase(it);
+			break;
+		}
+
+		else 
+		{
+			it++;
+		}
+	}
 }
 
 void Game::updateProjectiles(sf::Time elapsedTime) {

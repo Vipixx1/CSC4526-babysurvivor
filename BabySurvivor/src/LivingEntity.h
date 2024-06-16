@@ -18,6 +18,10 @@ public:
 
 	float getSpeed() const;
 
+	float getCurrentHealth() const;
+	float getMaxHealth() const;
+	void setCurrentHealth(float newHealth);
+
 	bool isDead() const;
 	void kill();
 };

@@ -15,4 +15,8 @@ private:
 
 public:
 	explicit Collectible(const std::string& filePath, const std::string& entityName, sf::Vector2f coords, CollectibleType type, float value);
+
+	CollectibleType getCollectibleType() const;
+	float getCollectibleValue() const;
+
 };
