@@ -326,8 +326,7 @@ void Game::updateProjectiles(sf::Time elapsedTime) {
 					break;
 				}
 			}
-		}
-		else {		//Enemies's projectiles
+		} else {						//Enemies's projectiles
 			if (projectile->getGlobalBounds().intersects(player.getGlobalBounds())) {
 				collided = true;
 				player.takeDamage(projectile->getDamage());
