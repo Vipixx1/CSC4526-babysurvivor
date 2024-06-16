@@ -8,17 +8,20 @@
 class LivingEntity : public Entity {
 private:
 	Stats stats;
-	bool dead = false;
+	bool isAlly = false;
+	std::vector<std::shared_ptr<Projectile>> projectiles;
 	
 public:
-	LivingEntity(const std::string& filePath, const std::string& livingEntityName, sf::Vector2f coords);
+	LivingEntity(const std::string& filePath, const std::string& livingEntityName);
 
-	Projectile shoot(sf::Vector2f velocity, bool isAlly) const;
-	void takeDamage(float damageValue);
+	std::vector<std::shared_ptr<Projectile>>& getProjectiles();
 
 	float getSpeed() const;
 	float getDamage() const;
 
-	bool isDead() const;
-	void kill();
+	bool getTeam() const;
+
+	void takeDamage(float damageValue);
+	virtual void shoot(sf::Vector2f direction) = 0;
+	
 };

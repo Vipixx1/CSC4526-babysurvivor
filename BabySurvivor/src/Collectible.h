@@ -14,9 +14,8 @@ private:
 	float value;
 
 public:
-	explicit Collectible(const std::string& filePath, const std::string& entityName, sf::Vector2f coords, CollectibleType type, float value);
-	~Collectible() = default;
+	explicit Collectible(const std::string& filePath, const std::string& entityName, CollectibleType type, float value);
 
 	float collect() const; 
-	Collectible drop(const std::string& entityName, sf::Vector2f coords, CollectibleType type, float value);
+	//Collectible drop(const std::string& entityName, sf::Vector2f coords, CollectibleType type, float value);
 };

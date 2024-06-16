@@ -24,49 +24,36 @@ private:
 	sf::RenderWindow gameWindow;
 	sf::View view;
 
+	static const sf::Time TimePerFrame;
 	sf::Time statsUpdateTime;
 	std::size_t numFrames{ 0 };
 	sf::Text statsText;
 	sf::Font font;
-	static const sf::Time TimePerFrame;
-	sf::Vector2f cameraPosition{ 0, 0 };
+	
 
 	GameState gameState;
 	GameMenu gameMenu;
 
 	SoundManager soundManager;
 
-	int elapsedFrame{ 0 };
-
 	int money{ 0 };
-	Stage stage{ "stage_1" };
-	Player player{ "resources/Entity.json", "player1", sf::Vector2f(0, 0) };
-	bool playerMovingUp{false};
-	bool playerMovingDown{false};
-	bool playerMovingLeft{false};
-	bool playerMovingRight{false};
 
-	std::vector<std::unique_ptr<Projectile>> projectiles;
-	std::vector<std::unique_ptr<Enemy>> enemies;
+	std::shared_ptr<Player> player;
+	Stage stage{ "stage_1" };
+	
 
 	void changeResolution(int newResolutionIndex);
 
-	void loadPlayer(int saveFileNumber, sf::Vector2f stageSize);
-	void processEvent();
-	void processInGameEvent(sf::Event event);
-	void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
+	void processGeneralEvent(sf::Event event);
+	void processMenuEvent();
+	void processInGameEvent();
 
-	void renderInGame();
+	void loadPlayer(int saveFileNumber);
 
-	void updateInGame(sf::Time elapsedTime);
 	void updateStatsText(sf::Time elapsedTime);
-	void updateCamera();
-	void updatePlayer(sf::Time elapsedTime);
-	void updateEnemies(sf::Time elapsedTime);
-	void updateProjectiles(sf::Time elapsedTime);
-	void handleAutoFire();
 
 public:
 	Game();
 	void run();
+	
 };

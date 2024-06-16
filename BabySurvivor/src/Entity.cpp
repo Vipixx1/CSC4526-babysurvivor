@@ -1,9 +1,10 @@
 #include "Entity.h"
 #include <fstream>
+#include <iostream>a
 
 using json = nlohmann::json;
 
-Entity::Entity(const std::string& filePath, const std::string& entityName, sf::Vector2f coords)
+Entity::Entity(const std::string& filePath, const std::string& entityName)
 {
 	std::ifstream f(filePath);
 	json allData = json::parse(f);
@@ -13,17 +14,16 @@ Entity::Entity(const std::string& filePath, const std::string& entityName, sf::V
 	length = entityData.at("length");
 	height = entityData.at("height");
 
-	entityBox.setPosition(coords);
 	entityBox.setFillColor(sf::Color::White);
 	entityBox.setSize(sf::Vector2f(length, height));
 }
 
-sf::Vector2f Entity::getCoords() const
+sf::Vector2f Entity::getPosition() const
 {
 	return entityBox.getPosition();
 }
 
-void Entity::setCoords(const sf::Vector2f& position)
+void Entity::setPosition(const sf::Vector2f& position)
 {
 	entityBox.setPosition(position);
 }
@@ -31,6 +31,16 @@ void Entity::setCoords(const sf::Vector2f& position)
 sf::Vector2f Entity::getSize() const
 {
 	return entityBox.getSize();
+}
+
+bool Entity::getActive() const
+{
+	return isActive;
+}
+
+void Entity::setActive(bool active)
+{
+	isActive = active;
 }
 
 sf::FloatRect Entity::getGlobalBounds() const
@@ -41,6 +51,19 @@ sf::FloatRect Entity::getGlobalBounds() const
 void Entity::render(sf::RenderWindow& gameWindow) const
 {
 	gameWindow.draw(entityBox);
+}
+
+void Entity::checkBounds(sf::Vector2f stageSize)
+{
+	sf::Vector2f position = getPosition();
+	sf::Vector2f size = getSize();
+
+	if (position.x < 0) position.x = 0;
+	if (position.y < 0) position.y = 0;
+	if (position.x + size.x > stageSize.x) position.x = stageSize.x - size.x;
+	if (position.y + size.y > stageSize.y) position.y = stageSize.y - size.y;
+
+	setPosition(position);
 }
 
 void Entity::moveEntity(sf::Vector2f movement)
