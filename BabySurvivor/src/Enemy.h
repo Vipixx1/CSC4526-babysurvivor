@@ -24,16 +24,20 @@ private:
 	std::string enemyType;
 	std::string movementPattern;
 	std::string shootingPattern;
-	sf::Vector2f currentVelocity;
+	sf::Vector2f direction{ 0,0 };
+	
+	Entity& target;
 
-	void initializeRandomVelocity();
+	void initializeRandomDirection();
 
 	std::optional<CollectibleType> getRandomCollectible() const;
 
 public:
-	Enemy(const std::string& filePath, const std::string& enemyType, sf::Vector2f coords);
-	void moveAccordingToPattern(sf::Time elapsedTime, sf::Vector2f playerCoords, sf::Vector2f stageSize);
+	Enemy(const std::string& filePath, const std::string& enemyType, Entity& target);
+	void update(sf::Time elapsedTime) override;
+	void checkBounds(sf::Vector2f stageSize) override;
 
+	void shoot(sf::Vector2f projDirection) override;
 	std::optional<Collectible> dropCollectible() const;
 };
 

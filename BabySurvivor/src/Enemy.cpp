@@ -6,9 +6,10 @@
 
 using json = nlohmann::json;
 
-Enemy::Enemy(const std::string& filePath, const std::string& enemyType, sf::Vector2f coords) :
-	LivingEntity{ filePath, enemyType, coords},
-	enemyType{ enemyType }
+Enemy::Enemy(const std::string& filePath, const std::string& enemyType, Entity& target) :
+	LivingEntity{ filePath, enemyType},
+	enemyType{ enemyType },
+	target{ target }
 {
 	std::ifstream f("resources/Entity.json");
 
@@ -18,59 +19,72 @@ Enemy::Enemy(const std::string& filePath, const std::string& enemyType, sf::Vect
 	movementPattern = enemyData.at("movementPattern");
 	shootingPattern = enemyData.at("shootingPattern");
 
-	initializeRandomVelocity();
+	initializeRandomDirection();
+
 }
 
-void Enemy::moveAccordingToPattern(sf::Time elapsedTime, sf::Vector2f playerCoords, sf::Vector2f stageSize)
+void Enemy::update(sf::Time elapsedTime)
 {
-	/* Case where enemy is going toward player */
 	if (movementPattern == "towardPlayer") 
 	{
-		currentVelocity = playerCoords - getCoords();
+		direction = target.getPosition() - getPosition();
+		direction = direction * getSpeed() / sqrt(direction.x * direction.x + direction.y * direction.y);
 
-		currentVelocity = currentVelocity * getSpeed() / sqrt(currentVelocity.x * currentVelocity.x + currentVelocity.y * currentVelocity.y);
-
-		moveEntity(currentVelocity * elapsedTime.asSeconds());
+		moveEntity(direction * elapsedTime.asSeconds());
 	}
 
 	else if (movementPattern == "bounceBorders") {
-		sf::Vector2f enemyPosition = getCoords();
+		moveEntity(direction * elapsedTime.asSeconds());
+	}
+}
+
+void Enemy::checkBounds(sf::Vector2f stageSize)
+{
+	if (movementPattern == "bounceBorders") {
+		sf::Vector2f enemyPosition = getPosition();
 		sf::Vector2f enemySize = getSize();
 
-		// Check for collisions with the borders and reverse direction
 		if (enemyPosition.x <= 0) {
 			enemyPosition.x = 0;
-			currentVelocity.x = std::abs(currentVelocity.x);
+			direction.x = std::abs(direction.x);
 		}
 		else if (enemyPosition.x + enemySize.x >= stageSize.x) {
 			enemyPosition.x = stageSize.x - enemySize.x;
-			currentVelocity.x = -std::abs(currentVelocity.x);
+			direction.x = -std::abs(direction.x);
 		}
 
 		if (enemyPosition.y <= 0) {
 			enemyPosition.y = 0;
-			currentVelocity.y = std::abs(currentVelocity.y);
+			direction.y = std::abs(direction.y);
 		}
 		else if (enemyPosition.y + enemySize.y >= stageSize.y) {
 			enemyPosition.y = stageSize.y - enemySize.y;
-			currentVelocity.y = -std::abs(currentVelocity.y);
+			direction.y = -std::abs(direction.y);
 		}
-
-		// Move the enemy based on its current velocity
-		moveEntity(currentVelocity * elapsedTime.asSeconds());
 	}
+
+	else { Entity::checkBounds(stageSize); }
 }
 
-void Enemy::initializeRandomVelocity() {
+
+void Enemy::shoot(sf::Vector2f projDirection)
+{
+	auto newProjectile = std::make_unique<Projectile>("resources/Entity.json", getDamage(), false);
+	newProjectile->setPosition(getPosition() + sf::Vector2f(getSize().x / 2, getSize().y / 2));
+	newProjectile->setDirection(projDirection);
+	getProjectiles().push_back(std::move(newProjectile));
+}
+
+void Enemy::initializeRandomDirection() {
 	static std::mt19937 rng(std::random_device{}());
 	static std::uniform_real_distribution<float> dist(-1.0f, 1.0f);
 
-	currentVelocity.x = dist(rng);
-	currentVelocity.y = dist(rng);
+	direction.x = dist(rng);
+	direction.y = dist(rng);
 
 	// Normalize the velocity to ensure consistent speed
-	float length = std::sqrt(currentVelocity.x * currentVelocity.x + currentVelocity.y * currentVelocity.y);
-	currentVelocity = currentVelocity * (getSpeed() / length);
+	float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+	direction = direction * (getSpeed() / length);
 }
 
 std::optional<CollectibleType> Enemy::getRandomCollectible() const
@@ -135,7 +149,8 @@ std::optional<Collectible> Enemy::dropCollectible() const
 			break;
 		}
 
-		Collectible newCollectible{ "resources/Entity.json" ,collectibleName, getCoords(), collectibleType.value(), collectibleValue};
+		Collectible newCollectible{ "resources/Entity.json" , collectibleName, collectibleType.value(), collectibleValue};
+		newCollectible.setPosition(getPosition());
 
 		return newCollectible;
 	}

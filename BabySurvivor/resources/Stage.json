@@ -12,43 +12,43 @@
             },
             "enemy_2": {
                 "type": "broccoli_v2",
-                "coords_spawn_x": 1000,
+                "coords_spawn_x": 1500,
                 "coords_spawn_y": 50
             },
             "enemy_3": {
                 "type": "ladybug_v1",
-                "coords_spawn_x": 2400,
-                "coords_spawn_y": 1900
+                "coords_spawn_x": 2500,
+                "coords_spawn_y": 150
             },
             "enemy_4": {
                 "type": "broccoli_v1",
-                "coords_spawn_x": 35,
-                "coords_spawn_y": 1900
+                "coords_spawn_x": 2900,
+                "coords_spawn_y": 1000
             },
             "enemy_5": {
                 "type": "spider_v1",
-                "coords_spawn_x": 500,
-                "coords_spawn_y": 50
+                "coords_spawn_x": 2900,
+                "coords_spawn_y": 1800
             },
             "enemy_6": {
                 "type": "robotToy_v1",
-                "coords_spawn_x": 2300,
-                "coords_spawn_y": 100
+                "coords_spawn_x": 2900,
+                "coords_spawn_y": 2400
             },
             "enemy_7": {
                 "type": "tomato_v1",
-                "coords_spawn_x": 2100,
-                "coords_spawn_y": 1000
+                "coords_spawn_x": 2600,
+                "coords_spawn_y": 2350
             },
             "enemy_8": {
                 "type": "ladybug_v1",
                 "coords_spawn_x": 1200,
-                "coords_spawn_y": 1860
+                "coords_spawn_y": 2200
             },
             "enemy_9": {
                 "type": "towerToy_v1",
-                "coords_spawn_x": 90,
-                "coords_spawn_y": 500
+                "coords_spawn_x": 500,
+                "coords_spawn_y": 1200
             },
             "enemy_10": {
                 "type": "spider_v1",

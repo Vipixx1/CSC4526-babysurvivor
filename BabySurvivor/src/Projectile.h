@@ -1,16 +1,20 @@
 #pragma once
-
 #include "Entity.h"
 
 class Projectile : public Entity {
 private:
-	sf::Vector2f velocity;
+	sf::Vector2f direction;
 	float damage;
 	bool isAlly;
 
 public:
-	explicit Projectile(const std::string& filePath, sf::Vector2f coords, sf::Vector2f velocity, float damage, bool isAlly);
-	bool getTeam() const;
-	sf::Vector2f getVelocity() const;
+	explicit Projectile(const std::string& filePath, float damage, bool isAlly);
+	void update(sf::Time elapsedTime) override;
+	void checkBounds(sf::Vector2f stageSize) override;
+
 	float getDamage() const;
+
+	sf::Vector2f getDirection() const;
+	void setDirection(sf::Vector2f newDirection);
+	bool getTeam() const;
 };

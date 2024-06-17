@@ -7,4 +7,4 @@ out
 cmake-build-debug
 
 #Ignore .orig file that are created when merging
-.orig
+*.orig

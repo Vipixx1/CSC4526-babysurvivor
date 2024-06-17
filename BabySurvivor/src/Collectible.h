@@ -14,7 +14,9 @@ private:
 	float value;
 
 public:
-	explicit Collectible(const std::string& filePath, const std::string& entityName, sf::Vector2f coords, CollectibleType type, float value);
+
+	explicit Collectible(const std::string& filePath, const std::string& entityName, CollectibleType type, float value);
+	void update(sf::Time elapsedTime) override;
 
 	CollectibleType getCollectibleType() const;
 	float getCollectibleValue() const;

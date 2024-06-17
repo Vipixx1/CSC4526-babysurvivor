@@ -27,11 +27,11 @@ Game::Game()
 	gameState = GameState::inMenu;
 }
 
-void Game::loadPlayer(int saveFileNumber, sf::Vector2f stageSize)
+void Game::loadPlayer(int saveFileNumber)
 {
-	if (saveFileNumber == 0) { player = Player{ "resources/Entity.json", "player1", sf::Vector2f(stageSize.x / 2, stageSize.y / 2) }; }
-	if (saveFileNumber == 1) { player = Player{ "resources/Entity.json", "player2", sf::Vector2f(stageSize.x / 2, stageSize.y / 2) }; }
-	if (saveFileNumber == 2) { player = Player{ "resources/Entity.json", "player3", sf::Vector2f(stageSize.x / 2, stageSize.y / 2) }; }
+	if (saveFileNumber == 0) { player = std::make_shared<Player>( "resources/Entity.json", "player1" ); }
+	if (saveFileNumber == 1) { player = std::make_shared<Player>( "resources/Entity.json", "player2" ); }
+	if (saveFileNumber == 2) { player = std::make_shared<Player>( "resources/Entity.json", "player3" ); }
 }
 
 void Game::changeResolution(int newResolutionIndex)
@@ -46,114 +46,70 @@ void Game::processEvent()
 
 	while (gameWindow.pollEvent(event))
 	{
-		/* Handle events that set the gameWindow */
-		if (event.type == sf::Event::Closed)
-			gameWindow.close();
+		processGeneralEvent(event);
+		// We check the returned value to know if we are launching a game or we are changing the resolution
+		int returnValue = gameMenu.processMenuEvent(event, gameWindow);
 
-		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F11 )
+		// From 0 to 2: changing the resolution
+		if (returnValue >= 0 && returnValue < 3)
 		{
-			if (fullScreen)
-			{
-				gameWindow.create(sf::VideoMode(1920, 1080), "Baby Survivor", sf::Style::None);
-				gameWindow.setFramerateLimit(60);
-				fullScreen = false;
-			}
+			// LOAD THE GAME HERE...
+			//stage = Stage{ "stage_1" };
+			loadPlayer(returnValue);
+			stage.setPlayer(player);
 
-			if (!fullScreen)
-			{
-				gameWindow.create(sf::VideoMode(1920, 1080), "Baby Survivor", sf::Style::Fullscreen);
-				gameWindow.setFramerateLimit(60);
-				fullScreen = true;
-			}
-		}
-			
-
-		if (event.type == sf::Event::Resized)
-		{
-			sf::FloatRect visibleArea(0.f, 0.f, static_cast<float>(event.size.width), static_cast<float>(event.size.height));
-			gameWindow.setView(sf::View(visibleArea));
+			gameState = GameState::inGame;
 		}
 
-		/* Handle events related to the gameMenu */
-		if (gameState == GameState::inMenu)
+		// From 3 to 5: loading a save file and launching a game
+		if (returnValue >= 3 && returnValue < 6)
 		{
-			// We check the returned value to know if we are launching a game or we are changing an option
-			int returnValue = gameMenu.processMenuEvent(event, gameWindow);
-			
-			// From 0 to 2: changing the resolution
-			if (returnValue >= 0 && returnValue < 3)
-			{
-				// LOAD THE GAME HERE...
-				// stage = Stage{ "stage_2" }; Change if multiple stages exist BUT IT'S CURRENTLY BUGGUED !!
-				loadPlayer(returnValue, stage.getSize());
-
-				gameState = GameState::inGame;
-			}
-
-			// From 3 to 5: loading a save file and launching a game
-			if (returnValue >= 3 && returnValue < 6)
-			{
-				changeResolution(returnValue - 3);
-			}
-
-			// 6 means we are going back to the main menu
-			if (returnValue == 6)
-			{
-				gameMenu.renderMainMenu(gameWindow);
-			}
-
-			// From 7 to 12 : changing the volume setting
-			if (returnValue >= 7 && returnValue < 13)
-			{
-				soundManager.changeVolume(returnValue - 7);
-			}
+			changeResolution(returnValue - 3);
 		}
 
-		/* Handle events related to the true game */
-		if (gameState == GameState::inGame)
+		// 6 means we are going back to the main menu
+		if (returnValue == 6)
 		{
-			processInGameEvent(event);
+			gameMenu.renderMainMenu(gameWindow);
+		}
+
+		// From 7 to 12 : changing the volume setting
+		if (returnValue >= 7 && returnValue < 13)
+		{
+			soundManager.changeVolume(returnValue - 7);
 		}
 	}
 }
 
-void Game::processInGameEvent(sf::Event event)
+void Game::processInGameEvent()
 {
-	if (event.type == sf::Event::KeyPressed)
-		handlePlayerInput(event.key.code, true);
+	sf::Event event{ sf::Event::Count };
 
-	if (event.type == sf::Event::KeyReleased)
-		handlePlayerInput(event.key.code, false);
-}
+	while (gameWindow.pollEvent(event))
+	{
+		processGeneralEvent(event);
+		if (event.type == sf::Event::KeyPressed)
+			player->handleInput(event.key.code, true);
 
-void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
-{
-	if (key == sf::Keyboard::Z)
-		playerMovingUp = isPressed;
-	else if (key == sf::Keyboard::S)
-		playerMovingDown = isPressed;
-	else if (key == sf::Keyboard::Q)
-		playerMovingLeft = isPressed;
-	else if (key == sf::Keyboard::D)
-		playerMovingRight = isPressed;
-
-	// debug:
-	if (key == sf::Keyboard::A)
-		std::cout << "Pressed A:" << std::endl;
+		if (event.type == sf::Event::KeyReleased)
+			player->handleInput(event.key.code, false);
+	}
+	
 }
 
 void Game::run()
 {
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
+
 	gameWindow.setFramerateLimit(60);
 
 	while (gameWindow.isOpen())
 	{
-		processEvent();
-
+		/* Render the menu */
 		if (gameState == GameState::inMenu)
 		{
+			processMenuEvent();
 			switch (gameMenu.getMenuState())
 			{
 				using enum MenuState;
@@ -171,74 +127,32 @@ void Game::run()
 
 		if (gameState == GameState::inGame)
 		{
-			/* Spawning the Enemies */
-			if (stage.getSpawningBool()) {
-				enemies = stage.spawn();
-				stage.setSpawningBool(false);
-			}
+			processInGameEvent();
 
-			/* Make the game update fixed based on time steps */
+			/* Updates based on fixed time steps */
 			sf::Time elapsedTime = clock.restart();
 			timeSinceLastUpdate += elapsedTime;
+
 			while (timeSinceLastUpdate > TimePerFrame)
 			{
 				timeSinceLastUpdate -= TimePerFrame;
 
-				elapsedFrame++;
-				if (elapsedFrame >= 30)
-				{
-					handleAutoFire();
-					elapsedFrame = 0;
-				}
-				updateInGame(TimePerFrame);
+				stage.update(TimePerFrame, gameWindow);
+				
+				view.reset(stage.updateView(gameWindow));
+				gameWindow.setView(view);
+
+				updateStatsText(TimePerFrame);
 			}
-			updateCamera();
-			updateStatsText(elapsedTime);
-			renderInGame();
+
+			/* Updates not based on fixed time steps */
+			
+			stage.render(gameWindow);
+			gameWindow.draw(statsText);
+			gameWindow.display();
+			//stage.playMusic();
 		}
 	}
-}
-
-void Game::renderInGame()
-{
-	gameWindow.clear(sf::Color::Black);
-
-	stage.render(gameWindow);
-
-	player.render(gameWindow);
-
-	for (const auto& enemy : enemies)
-	{
-		enemy->render(gameWindow);
-	}
-
-	for (const auto& projectile : projectiles)
-	{
-		projectile->render(gameWindow);
-	}
-
-	for (const auto& collectible : collectibles)
-	{
-		collectible->render(gameWindow);
-	}
-
-	gameWindow.draw(statsText);
-	gameWindow.display();
-}
-
-void Game::updateInGame(sf::Time elapsedTime)
-{
-	/* Update player's movement */
-	updatePlayer(elapsedTime);
-
-	/* Update the movement of enemies */
-	updateEnemies(elapsedTime);
-
-	/* Update the projectiles */
-	updateProjectiles(elapsedTime);
-
-	/* Update collectibles */
-	updateCollectibles();
 }
 
 void Game::updateStatsText(sf::Time elapsedTime)
@@ -257,187 +171,4 @@ void Game::updateStatsText(sf::Time elapsedTime)
 		statsUpdateTime -= sf::seconds(1.0f);
 		numFrames = 0;
 	}
-}
-
-void Game::updateCamera() 
-{
-	/* Make the camera follow the player */
-	cameraPosition.x = player.getCoords().x + (player.getSize().x / 2) - (static_cast<float>(gameWindow.getSize().x) / 2);
-	cameraPosition.y = player.getCoords().y + (player.getSize().y / 2) - (static_cast<float>(gameWindow.getSize().y) / 2);
-	/* Check if the camera is within the stage borders*/
-	if (cameraPosition.x < 0) cameraPosition.x = 0;
-	if (cameraPosition.x + static_cast<float>(gameWindow.getSize().x) > stage.getSize().x) cameraPosition.x = stage.getSize().x - static_cast<float>(gameWindow.getSize().x);
-	if (cameraPosition.y < 0) cameraPosition.y = 0;
-	if (cameraPosition.y + static_cast<float>(gameWindow.getSize().y) > stage.getSize().y) cameraPosition.y = stage.getSize().y - static_cast<float>(gameWindow.getSize().y);
-
-	view.reset(sf::FloatRect(cameraPosition.x, cameraPosition.y, static_cast<float>(gameWindow.getSize().x), static_cast<float>(gameWindow.getSize().y)));
-	gameWindow.setView(view);
-}
-
-void Game::updatePlayer(sf::Time elapsedTime) {
-	sf::Vector2f playerVelocity(0.f, 0.f);
-	float playerSpeed = player.getSpeed();
-	sf::Vector2f playerPosition = player.getCoords();
-	sf::Vector2f playerSize = player.getSize();
-	sf::Vector2f stageSize = stage.getSize();
-
-	if (playerMovingUp)
-		playerVelocity.y -= playerSpeed;
-	if (playerMovingDown)
-		playerVelocity.y += playerSpeed;
-	if (playerMovingLeft)
-		playerVelocity.x -= playerSpeed;
-	if (playerMovingRight)
-		playerVelocity.x += playerSpeed;
-
-	// Calculate the potential new position
-	sf::Vector2f newPosition = playerPosition + playerVelocity * elapsedTime.asSeconds();
-
-	// Boundary checks
-	if (newPosition.x < 0) newPosition.x = 0;
-	if (newPosition.y < 0) newPosition.y = 0;
-	if (newPosition.x + playerSize.x > stageSize.x) newPosition.x = stageSize.x - playerSize.x;
-	if (newPosition.y + playerSize.y > stageSize.y) newPosition.y = stageSize.y - playerSize.y;
-
-	// Set the player's new position
-	player.setCoords(newPosition);
-
-
-	/* Check for collision with enemies */
-	for (auto const& enemy : enemies) {
-		if (player.getGlobalBounds().intersects(enemy->getGlobalBounds())) {
-			player.takeDamage(enemy->getDamage());
-			//Add invulnerability frames...
-			break;
-		}
-	}
-}
-
-void Game::updateEnemies(sf::Time elapsedTime) {
-	for (auto it = enemies.begin(); it != enemies.end();) 
-	{
-		auto const& enemy = *it;
-
-		/* Move enemy based on its pattern */ 
-		enemy->moveAccordingToPattern(elapsedTime, player.getCoords(), stage.getSize());
-
-		/* Check if the enemy is dead */
-		if (enemy->isDead()) 
-		{
-			// The enemy might drop a collectible on death
-			if (std::optional<Collectible> dropedCollectible = enemy->dropCollectible(); dropedCollectible.has_value())
-			{
-				collectibles.push_back(std::make_unique<Collectible>(dropedCollectible.value()));
-			}
-
-			// The enemy gives experience to the player on death
-			player.giveExperience(15);
-
-			it = enemies.erase(it);
-		}
-		else ++it;
-	}
-	
-}
-
-void Game::handleCollectibleCollection(const Collectible& collectible)
-{
-	switch (collectible.getCollectibleType())
-	{
-		case CollectibleType::money:
-			money += static_cast<int>(collectible.getCollectibleValue());
-			break;
-		case CollectibleType::health:
-			player.heal(collectible.getCollectibleValue());
-			break;
-		case CollectibleType::experience:
-			player.giveExperience(collectible.getCollectibleValue());
-			break;
-	}
-}
-
-void Game::updateCollectibles()
-{
-	for (auto it = collectibles.begin(); it != collectibles.end();)
-	{
-		auto const& collectible = *it;
-
-		if (collectible->getGlobalBounds().intersects(player.getGlobalBounds()))
-		{
-			handleCollectibleCollection(*collectible);
-
-			it = collectibles.erase(it);
-			break;
-		}
-
-		else 
-		{
-			it++;
-		}
-	}
-}
-
-void Game::updateProjectiles(sf::Time elapsedTime) {
-	for (auto it = projectiles.begin(); it != projectiles.end();) {
-		auto const& projectile = *it;
-
-		/* Update the projectile's movement */
-		projectile->moveEntity(projectile->getVelocity() * elapsedTime.asSeconds());
-
-		/* Check for collision with opposite team */
-		bool collided = false;
-
-		if (projectile->getTeam()) {	// player's projectiles
-			for (auto const& enemy : enemies) {
-				if (projectile->getGlobalBounds().intersects(enemy->getGlobalBounds())) {
-					collided = true;
-					enemy->takeDamage(projectile->getDamage());
-					break;
-				}
-			}
-		} else {						//Enemies's projectiles
-			if (projectile->getGlobalBounds().intersects(player.getGlobalBounds())) {
-				collided = true;
-				player.takeDamage(projectile->getDamage());
-				break;
-			}
-		}
-		
-
-		/* Check if the projectile is Out Of Bounds (OOB) */
-		if (auto pos = projectile->getCoords();
-			pos.x < 0 
-			|| pos.x > stage.getSize().x 
-			|| pos.y < 0 
-			|| pos.y > stage.getSize().y) 
-		{
-			collided = true;
-		}
-
-		/* Remove the projectile if it collided or OOB */
-		if (collided) {
-			it = projectiles.erase(it);
-		}
-		else {
-			++it;
-		}
-	}
-	
-}
-
-void Game::handleAutoFire()
-{
-	// Get the mouse position in the window
-	sf::Vector2i pixelPos = sf::Mouse::getPosition(gameWindow);
-	// Convert it to world coordinates
-	sf::Vector2f worldPos = gameWindow.mapPixelToCoords(pixelPos);
-
-	// Calculate direction and normalize
-	worldPos = worldPos - player.getCoords();
-	worldPos = worldPos * 500.f / sqrt(worldPos.x * worldPos.x + worldPos.y * worldPos.y);
-
-	// Create and shoot a new projectile
-	auto newProjectile = std::make_unique<Projectile>(player.shoot(worldPos, true));
-	projectiles.push_back(std::move(newProjectile));
-	soundManager.playSound("resources/audio/playerShoot.wav");
 }
