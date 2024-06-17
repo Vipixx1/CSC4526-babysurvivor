@@ -2,9 +2,9 @@
 
 Ce jeu est un projet réalisé par Tobias MOILLERON et Victor LY dans le micro-projet JIN4 de l'année 2023-2024.
 
-Baby Survivor est un jeu hautement inspiré des jeux Vampire Survivor et Holocure.
+Baby Survivor est un jeu hautement inspiré des jeux Vampire Survivor et Brotato.
 
-Le joueur contrôle un bébé qui doit survivre à des vagues incessantes d'ennemis dans un environnement 2D vu de dessus. L'objectif principal est de survivre aussi longtemps que possible, généralement pendant une durée prédéterminée (souvent 30 minutes). Durant cette période, des boss, souvent extrêmement puissants, vont apparaître pour tenter de mettre fin à la partie.
+Le joueur contrôle un bébé qui doit survivre à des vagues incessantes d'ennemis dans un environnement 2D vu de dessus. L'objectif principal est de survivre à ces vagues.
 
 Les attaques sont des larmes et se déclenchent automatiquement selon un rythme prédéfini.
 Le joueur ne contrôle que le déplacement du personnage et la direction des attaques.
