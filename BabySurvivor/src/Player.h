@@ -11,7 +11,7 @@ private:
 
 	int level{ 1 };
 	float experience{ 0 };
-	float nextLevelExperienceRequierment{ 0 };
+	float nextLevelExperienceRequierement{ 0 };
 
 	std::array<float, 20> experienceRequierement;
 

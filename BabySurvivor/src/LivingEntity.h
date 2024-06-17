@@ -8,11 +8,11 @@
 class LivingEntity : public Entity {
 private:
 	Stats stats;
-	bool isAlly = false;
+	bool isAlly;
 	std::vector<std::shared_ptr<Projectile>> projectiles;
 	
 public:
-	LivingEntity(const std::string& filePath, const std::string& livingEntityName);
+	LivingEntity(const std::string& filePath, const std::string& livingEntityName, bool isAlly);
 
 	std::vector<std::shared_ptr<Projectile>>& getProjectiles();
 

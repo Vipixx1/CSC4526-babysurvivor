@@ -2,7 +2,7 @@
 #include <iostream>
 
 Player::Player(const std::string& filePath, const std::string& saveFile) :
-	LivingEntity{ filePath, saveFile }
+	LivingEntity{ filePath, saveFile, true }
 {}
 
 void Player::levelUp()
@@ -11,7 +11,7 @@ void Player::levelUp()
 
 	// Does the actual level up and update the experience requierment for the next level
 	level++;
-	nextLevelExperienceRequierment = experienceRequierement[level-1];
+	nextLevelExperienceRequierement = experienceRequierement[level-1];
 
 	// Boost player stat after each level up
 	float currentMaxHealth = getMaxHealth();
@@ -47,9 +47,9 @@ void Player::heal(float healValue)
 
 void Player::giveExperience(float experienceValue)
 {
-	if ((experience + experienceValue) >= nextLevelExperienceRequierment)
+	if ((experience + experienceValue) >= nextLevelExperienceRequierement)
 	{
-		experience = (experience + experienceValue) - nextLevelExperienceRequierment;
+		experience = (experience + experienceValue) - nextLevelExperienceRequierement;
 		levelUp();
 	}
 

@@ -3,9 +3,11 @@
 
 using json = nlohmann::json;
 
-LivingEntity::LivingEntity(const std::string& filePath, const std::string& livingEntityName) :
+LivingEntity::LivingEntity(const std::string& filePath, const std::string& livingEntityName, bool isAlly) :
 	Entity{ filePath, livingEntityName },
-	stats{ filePath, livingEntityName } {}
+	stats{ filePath, livingEntityName },
+	isAlly{ isAlly }
+{}
 
 std::vector<std::shared_ptr<Projectile>>& LivingEntity::getProjectiles() 
 {

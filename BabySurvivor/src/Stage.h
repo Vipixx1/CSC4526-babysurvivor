@@ -11,7 +11,11 @@ class Stage {
 private:
 	std::string name;
 	sf::Vector2f size;
-	int waveNumber = 1;
+
+	int totalWaveNumber = 0;
+	int currentWaveNumber = 0;
+	int currentSubWaveNumber = 0;
+	sf::Clock subwaveTimer;
 	bool isWaveBeginning = true;
 
 	std::shared_ptr<Player> player;
@@ -29,13 +33,16 @@ public:
 	explicit Stage(std::string_view name);
 
 	void update(sf::Time elapsedTime, sf::RenderWindow const& gameWindow);
+	void updatePlayer(sf::Time elapsedTime, sf::RenderWindow const& gameWindow);
+	void updateEnemies(sf::Time elapsedTime);
+	void updateCollectibles(sf::Time elapsedTime);
+	sf::FloatRect updateView(sf::RenderWindow const& gameWindow) const;
+	void updateSpawn();
 	void render(sf::RenderWindow& gameWindow) const;
 
 	void setPlayer(std::shared_ptr<Player> setPlayer);
 	void spawn();
-	void playerAutoFire(sf::RenderWindow const& gameWindow) const;
-	sf::FloatRect updateView(sf::RenderWindow const& gameWindow) const;
-
+	void playerAutoFire(sf::RenderWindow const& gameWindow) const;	
 	void enemyProjectileCheckCollisions(Projectile& projectile) const;
 	void playerProjectileCheckCollisions(Projectile& projectile);
 	void collectibleCheckCollision();
