@@ -32,7 +32,6 @@ void Player::levelUp()
 
 	// Does the actual level up and update the experience requierment for the next level
 	level++;
-	nextLevelExperienceRequierement = experienceRequierement[level-1];
 
 	// Boost player stat after each level up
 	float currentMaxHealth = getMaxHealth();

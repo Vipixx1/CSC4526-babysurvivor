@@ -34,7 +34,7 @@
     "damageUpgrade": 0,
     "damageMultiplierUpgrade": 0,
     "healthUpgrade": 0,
-    "speedUpgrade": 0
+    "speedUpgrade": 0,
     "shotDelay": 30,
     "shotSpeed": 1300,
     "sprite": "resources/sprites/baby.png"
@@ -51,7 +51,7 @@
     "damageUpgrade": 0,
     "damageMultiplierUpgrade": 0,
     "healthUpgrade": 0,
-    "speedUpgrade": 0
+    "speedUpgrade": 0,
     "shotDelay": 90,
     "shotSpeed": 800,
     "sprite": "resources/sprites/baby.png"
