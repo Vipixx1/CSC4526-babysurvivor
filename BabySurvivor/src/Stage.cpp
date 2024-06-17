@@ -4,10 +4,69 @@
 
 using json = nlohmann::json;
 
+void Stage::renderHpBar(sf::RenderWindow& gameWindow)
+{
+	sf::View view = gameWindow.getView();
+	float x = view.getCenter().x;
+	float y = view.getCenter().y;
+
+	hpText.setString(std::format("{}/{}", player->getCurrentHealth(), player->getMaxHealth()));
+	hpText.setCharacterSize(40);
+	hpText.setFillColor(sf::Color::Black);
+	hpText.setPosition(x , y + 450);
+
+	hpBar.setPosition(x - 200, y + 450);
+	hpBar.setSize(sf::Vector2f(500.f, 50.f));
+	hpBar.setFillColor(sf::Color::Red);
+	
+	gameWindow.draw(hpBar);
+	gameWindow.draw(hpText);
+}
+
+void Stage::renderXpBar(sf::RenderWindow& gameWindow)
+{
+	sf::View view = gameWindow.getView();
+	float x = view.getCenter().x;
+	float y = view.getCenter().y;
+
+	xpText.setString(std::format("{}/{}", player->getExperience(), player->getExperienceRequierment()));
+	xpText.setCharacterSize(40);
+	xpText.setFillColor(sf::Color::Black);
+	xpText.setPosition(sf::Vector2f(x, y + 390));
+
+	xpBar.setPosition(sf::Vector2f(x - 200, y + 390));
+	xpBar.setSize(sf::Vector2f(500.f, 50.f));
+	xpBar.setFillColor(sf::Color(93, 207, 6));
+
+	gameWindow.draw(xpBar);
+	gameWindow.draw(xpText);
+}
+
+void Stage::renderLevelMoney(sf::RenderWindow& gameWindow)
+{
+	sf::View view = gameWindow.getView();
+	float x = view.getCenter().x;
+	float y = view.getCenter().y;
+
+	levelText.setString(std::format("Level: {}", player->getLevel()));
+	levelText.setCharacterSize(30);
+	levelText.setFillColor(sf::Color::Black);
+	levelText.setPosition(sf::Vector2f(x + 750, y - 480));
+
+	moneyText.setString(std::format("Money: {}", player->getMoney()));
+	moneyText.setCharacterSize(30);
+	moneyText.setFillColor(sf::Color::Black);
+	moneyText.setPosition(sf::Vector2f(x + 750, y - 440));
+
+	gameWindow.draw(levelText);
+	gameWindow.draw(moneyText);
+}
+
 Stage::Stage(std::string_view name) : name{ name }
 {
 	std::ifstream f("resources/Stage.json");
 	json allData = json::parse(f);
+	f.close();
 	json stageData = allData.at(name);
 
 	size = sf::Vector2f(stageData.at("length"), stageData.at("height"));
@@ -17,7 +76,12 @@ Stage::Stage(std::string_view name) : name{ name }
 	sprite.setTexture(texture);
 	sprite.setPosition(sf::Vector2f(0, 0));
 	sprite.setScale(sf::Vector2f(size.x / texture.getSize().x, size.y / texture.getSize().y));
-	
+
+	font.loadFromFile("resources/Sansation.ttf");
+	xpText.setFont(font);
+	hpText.setFont(font);
+	moneyText.setFont(font);
+	levelText.setFont(font);
 }
 
 void Stage::update(sf::Time elapsedTime, sf::RenderWindow const& gameWindow) 
@@ -85,7 +149,7 @@ void Stage::update(sf::Time elapsedTime, sf::RenderWindow const& gameWindow)
 	
 }
 
-void Stage::render(sf::RenderWindow& gameWindow) const
+void Stage::render(sf::RenderWindow& gameWindow)
 {
 	gameWindow.clear(sf::Color::Black);
 
@@ -119,6 +183,8 @@ void Stage::render(sf::RenderWindow& gameWindow) const
 			collectible->render(gameWindow);
 	}
 	
+	renderHpBar(gameWindow);
+	renderXpBar(gameWindow);
 }
 
 void Stage::setPlayer(std::shared_ptr<Player> setPlayer)
@@ -185,6 +251,7 @@ void Stage::playerProjectileCheckCollisions(Projectile& projectile) {
 		if (enemy->getActive() && enemy->getTeam() != projectile.getTeam() && projectile.getGlobalBounds().intersects(enemy->getGlobalBounds())) {
 			projectile.setActive(false);
 			if (enemy->takeDamage(projectile.getDamage())) { // takeDamage returns true if the enemy is dead
+				player->giveExperience(3.f);
 				if (std::optional<Collectible> dropedCollectible = enemy->dropCollectible(); dropedCollectible.has_value()) {
 					collectibles.push_back(std::make_unique<Collectible>(dropedCollectible.value()));
 				}
@@ -194,23 +261,26 @@ void Stage::playerProjectileCheckCollisions(Projectile& projectile) {
 }
 
 void Stage::collectibleCheckCollision() {
+	using enum CollectibleType;
+
 	for (auto const& collectible : collectibles) {
 		if (collectible->getGlobalBounds().intersects(player->getGlobalBounds()))
 		{
 			switch (collectible->getCollectibleType())
 			{
-			case CollectibleType::money:
-				money += static_cast<int>(collectible->getCollectibleValue());
-				
+			case money:
+				player->giveMoney(static_cast<int>(collectible->getCollectibleValue()));
+				collectible->setActive(false);
 				break;
-			case CollectibleType::health:
+			case health:
 				player->heal(collectible->getCollectibleValue());
+				collectible->setActive(false);
 				break;
-			case CollectibleType::experience:
-				player->giveExperience(collectible->getCollectibleValue());
+			case experience:
+				if (player->getLevel() < 20) {player->giveExperience(collectible->getCollectibleValue());}
+				collectible->setActive(false);
 				break;
 			}
-			collectible->setActive(false);
 		}
 	}
 }

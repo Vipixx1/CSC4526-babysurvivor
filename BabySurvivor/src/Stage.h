@@ -17,7 +17,17 @@ private:
 	std::shared_ptr<Player> player;
 	std::vector<std::unique_ptr<Enemy>> enemies;
 	std::vector<std::unique_ptr<Collectible>> collectibles;
-	int money{ 0 };
+
+	sf::Font font;
+
+	sf::Text hpText;
+	sf::RectangleShape hpBar;
+
+	sf::Text levelText;
+	sf::Text moneyText;
+
+	sf::Text xpText;
+	sf::RectangleShape xpBar;
 
 	int frameCounter = 0;
 
@@ -29,7 +39,7 @@ public:
 	explicit Stage(std::string_view name);
 
 	void update(sf::Time elapsedTime, sf::RenderWindow const& gameWindow);
-	void render(sf::RenderWindow& gameWindow) const;
+	void render(sf::RenderWindow& gameWindow);
 
 	void setPlayer(std::shared_ptr<Player> setPlayer);
 	void spawn();
@@ -40,4 +50,7 @@ public:
 	void playerProjectileCheckCollisions(Projectile& projectile);
 	void collectibleCheckCollision();
 
+	void renderHpBar(sf::RenderWindow& gameWindow);
+	void renderXpBar(sf::RenderWindow& gameWindow);
+	void renderLevelMoney(sf::RenderWindow& gameWindow);
 };

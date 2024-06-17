@@ -11,7 +11,6 @@ private:
 
 	int level{ 1 };
 	float experience{ 0 };
-	float nextLevelExperienceRequierment{ 0 };
 
 	int money;
 
@@ -23,6 +22,13 @@ public:
 	void levelUp();
 	void heal(float healValue);
 	void giveExperience(float experienceValue);
+	void giveMoney(int moneyValue);
+
+	float getExperience() const;
+	float getExperienceRequierment() const;
+	int getMoney() const;
+
+	int getLevel() const;
 
 	void update(sf::Time elapsedTime) override;
 	void checkBounds(sf::Vector2f stageSize) override;

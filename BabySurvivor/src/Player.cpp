@@ -32,7 +32,6 @@ void Player::levelUp()
 
 	// Does the actual level up and update the experience requierment for the next level
 	level++;
-	nextLevelExperienceRequierment = experienceRequierement[level-1];
 
 	// Boost player stat after each level up
 	float currentMaxHealth = getMaxHealth();
@@ -68,9 +67,9 @@ void Player::heal(float healValue)
 
 void Player::giveExperience(float experienceValue)
 {
-	if ((experience + experienceValue) >= nextLevelExperienceRequierment)
+	if ((experience + experienceValue) >= experienceRequierement[level - 1])
 	{
-		experience = (experience + experienceValue) - nextLevelExperienceRequierment;
+		experience = (experience + experienceValue) - experienceRequierement[level - 1];
 		levelUp();
 	}
 
@@ -78,6 +77,11 @@ void Player::giveExperience(float experienceValue)
 	{
 		experience += experienceValue;
 	}
+}
+
+void Player::giveMoney(int moneyValue)
+{
+	money += moneyValue;
 }
 
 void Player::update(sf::Time elapsedTime)
@@ -94,6 +98,12 @@ void Player::update(sf::Time elapsedTime)
 	sf::Vector2f newPosition = position + velocity * elapsedTime.asSeconds();
 
 	setPosition(newPosition);
+}
+
+float Player::getExperience() const
+{
+	if (level < 20) { return experience; }
+	else return 0;
 }
 
 void Player::checkBounds(sf::Vector2f stageSize)
@@ -121,9 +131,25 @@ void Player::handleInput(sf::Keyboard::Key key, bool isPressed)
 		movingRight = isPressed;
 }
 
+float Player::getExperienceRequierment() const
+{
+	if (level < 20) { return experienceRequierement[level - 1]; }
+	else return 0;
+}
+
 void Player::shoot(sf::Vector2f projDirection)
 {
 	auto newProjectile = std::make_shared<Projectile>("resources/Entity.json", getDamage(), true);
 	newProjectile->setPosition(getPosition() + sf::Vector2f(getSize().x / 2, getSize().y / 2));
 	newProjectile->setDirection(projDirection);
 	getProjectiles().push_back(newProjectile);}
+
+int Player::getLevel() const
+{
+	return level;
+}
+
+int Player::getMoney() const
+{
+	return money;
+}

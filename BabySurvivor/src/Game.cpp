@@ -166,6 +166,11 @@ void Game::run()
 
 			stage.render(gameWindow);
 			gameWindow.draw(statsText);
+
+			stage.renderHpBar(gameWindow);
+			stage.renderXpBar(gameWindow);
+			stage.renderLevelMoney(gameWindow);
+
 			gameWindow.display();
 			//stage.playMusic();
 		}
