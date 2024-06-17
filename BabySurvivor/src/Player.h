@@ -13,6 +13,8 @@ private:
 	float experience{ 0 };
 	float nextLevelExperienceRequierment{ 0 };
 
+	int money;
+
 	std::array<float, 20> experienceRequierement;
 
 public:

@@ -1,5 +1,9 @@
 #include "GameMenu.h"
+#include "json.hpp"
+#include <fstream>
 #include <iostream>
+
+using json = nlohmann::json;
 
 void GameMenu::initializeText(sf::Text& text, const std::string& textString, int size, sf::Vector2f position, sf::Color color) const
 {
@@ -8,6 +12,31 @@ void GameMenu::initializeText(sf::Text& text, const std::string& textString, int
 	text.setFillColor(color);
 	text.setString(textString);
 	text.setPosition(position);
+}
+
+void GameMenu::updateUpgradeMenu()
+{
+	std::string player = std::format("player{}", currentSaveFile + 1);
+
+	std::ifstream f("resources/Entity.json");
+	json allData = json::parse(f);
+
+	json playerData = allData.at(player);
+
+	std::array < std::string, 4> upgradeNames{ "Damage: ", "Damage multiplier: ", "Health: ", "Speed: " };
+	
+	upgradeLevel[0] = playerData.at("damageUpgrade");
+	upgradeLevel[1] = playerData.at("damageMultiplierUpgrade");
+	upgradeLevel[2] = playerData.at("healthUpgrade");
+	upgradeLevel[3] = playerData.at("speedUpgrade");
+
+	playerMoney = playerData.at("money");
+	
+	for (int i = 1; i < 5; i++) {
+		upgradeOptions[i].setString(std::format("{}{}/5", upgradeNames[i - 1], upgradeLevel[i - 1]));
+	}
+
+	f.close();
 }
 
 GameMenu::GameMenu()
@@ -35,12 +64,17 @@ GameMenu::GameMenu()
 	sf::Text saveFile2;
 	sf::Text saveFile3;
 
+	sf::Text play;
+	sf::Text baseDamage;
+	sf::Text damageMultiplier;
+	sf::Text baseHealth;
+	sf::Text baseSpeed;
+
 	initializeText(playButtonText, "Play", 30, sf::Vector2f(380.f, 300.f), sf::Color::Yellow);
 	initializeText(settingsButtonText, "Settings", 30, sf::Vector2f(380.f, 355.f), sf::Color::White);
 	initializeText(exitButtonText, "Exit", 30, sf::Vector2f(380.f, 410.f), sf::Color::White);
 
 	initializeText(gameTitle, "Baby Survivor", 75, sf::Vector2f(300.f, 100.f), sf::Color(122, 103, 6));
-
 
 	initializeText(resolutionText, "Resolution:", 30, sf::Vector2f(380.f, 200.f), sf::Color::Yellow);
 	initializeText(resolution1, "1920x1080", 20, sf::Vector2f(550.f, 210.f), sf::Color::White);
@@ -61,6 +95,12 @@ GameMenu::GameMenu()
 	initializeText(volumeLevel3, "3", 20, sf::Vector2f(550.f, 270.f), sf::Color::White);
 	initializeText(volumeLevel4, "4", 20, sf::Vector2f(570.f, 270.f), sf::Color::White);
 	initializeText(volumeLevel5, "5", 20, sf::Vector2f(590.f, 270.f), sf::Color::White);
+
+	initializeText(play, "Play", 30, sf::Vector2f(380.f, 200.f), sf::Color::Yellow);
+	initializeText(baseDamage, "Damage", 30, sf::Vector2f(380.f, 255.f), sf::Color::White);
+	initializeText(damageMultiplier, "Damage Multiplier", 30, sf::Vector2f(380.f, 310.f), sf::Color::White);
+	initializeText(baseHealth, "Health", 30, sf::Vector2f(380.f, 365.f), sf::Color::White);
+	initializeText(baseSpeed, "Speed", 30, sf::Vector2f(380.f, 420.f), sf::Color::White);
 
 	// Add the texts to the vector containing all texts
 	textVector.push_back(playButtonText);
@@ -84,6 +124,12 @@ GameMenu::GameMenu()
 
 	settingOptions.push_back(resolutionText);
 	settingOptions.push_back(volumeText);
+
+	upgradeOptions.push_back(play);
+	upgradeOptions.push_back(baseDamage);
+	upgradeOptions.push_back(damageMultiplier);
+	upgradeOptions.push_back(baseHealth);
+	upgradeOptions.push_back(baseSpeed);
 }
 
 void GameMenu::renderMenu(sf::RenderWindow& gameWindow, int currentMenu)
@@ -107,6 +153,12 @@ void GameMenu::renderMenu(sf::RenderWindow& gameWindow, int currentMenu)
 	case 3:
 		menuState = MenuState::inMainMenu;
 		renderMainMenu(gameWindow);
+		break;
+
+	case 4:
+		menuState = MenuState::inUpgradeMenu;
+		updateUpgradeMenu();
+		renderUpgradeMenu(gameWindow);
 		break;
 
 	default:
@@ -165,6 +217,18 @@ void GameMenu::renderSettingMenu(sf::RenderWindow& gameWindow) const
 	gameWindow.display();
 }
 
+void GameMenu::renderUpgradeMenu(sf::RenderWindow& gameWindow) const
+{
+	gameWindow.clear(sf::Color(185, 119, 201));
+	
+	for (const auto& upgrade : upgradeOptions)
+	{
+		gameWindow.draw(upgrade);
+	}
+
+	gameWindow.display();
+}
+
 int GameMenu::processMenuEvent(sf::Event event, sf::RenderWindow& gameWindow)
 {
 	if (event.type == sf::Event::KeyPressed)
@@ -182,6 +246,11 @@ int GameMenu::processMenuEvent(sf::Event event, sf::RenderWindow& gameWindow)
 		if (menuState == inPlayMenu)
 		{
 			return processPlayMenuEvent(event, gameWindow);
+		}
+
+		if (menuState == inUpgradeMenu)
+		{
+			return processUpgradeMenuEvent(event, gameWindow);
 		}
 
 		return -1;
@@ -229,8 +298,7 @@ int GameMenu::processPlayMenuEvent(sf::Event event, sf::RenderWindow& gameWindow
 {
 	if (event.key.code == sf::Keyboard::Enter)
 	{
-		// The return value of the save file to use
-		return currentSaveFile;
+		renderMenu(gameWindow, 4);
 	}
 
 	if (event.key.code == sf::Keyboard::Escape)
@@ -373,6 +441,91 @@ int GameMenu::processSettingsMenuEvent(sf::Event event, sf::RenderWindow& gameWi
 	}
 
 	return -1;
+}
+
+int GameMenu::processUpgradeMenuEvent(sf::Event event, sf::RenderWindow& gameWindow)
+{
+	if (event.key.code == sf::Keyboard::Escape)
+	{
+		renderMenu(gameWindow, 0);
+	}
+
+	if (event.key.code == sf::Keyboard::Down && currentUpgrade < 4)
+	{
+		currentUpgrade++;
+
+		upgradeOptions[currentUpgrade - 1].setFillColor(sf::Color::White);
+		upgradeOptions[currentUpgrade].setFillColor(sf::Color::Yellow);
+	}
+
+	if (event.key.code == sf::Keyboard::Up && currentUpgrade > 0)
+	{
+		currentUpgrade--;
+
+		upgradeOptions[currentUpgrade + 1].setFillColor(sf::Color::White);
+		upgradeOptions[currentUpgrade].setFillColor(sf::Color::Yellow);
+	}
+
+	if (event.key.code == sf::Keyboard::Enter && currentUpgrade > 0 && upgradeLevel[currentUpgrade - 1] < 5)
+	{
+		int upgradeCost = upgradeRequierment[(currentUpgrade - 1) * 5 + upgradeLevel[currentUpgrade - 1]];
+
+		if (upgradeLevel[currentUpgrade - 1] < 5 && playerMoney >= upgradeCost)
+		{
+			upgradeLevel[currentUpgrade - 1]++;
+			playerMoney -= upgradeCost;
+			updateJson(currentUpgrade - 1);
+			updateUpgradeMenu();
+		}
+	}
+
+	return -1;
+}
+
+void GameMenu::updateJson(int changedUpgrade)
+{
+	std::string player = std::format("player{}", currentSaveFile + 1);
+
+	std::string upgradeName = "";
+	std::string statName = "";
+
+	switch (changedUpgrade) {
+		case 0:
+			upgradeName = "damageUpgrade";
+			statName = "baseDamage";
+			break;
+		case 1:
+			upgradeName = "damageMultiplierUpgrade";
+			statName = "damageMultiplier";
+			break;
+		case 2:
+			upgradeName = "healthUpgrade";
+			statName = "baseHealth";
+			break;
+		case 3:
+			upgradeName = "speedUpgrade";
+			statName = "baseSpeed";
+			break;
+		default:
+			break;
+	}
+
+	std::ifstream f("resources/Entity.json");
+	json allData = json::parse(f);
+	f.close();
+
+	allData[player]["money"] = playerMoney;
+	allData[player][statName] = static_cast<float>(allData.at("upgradeValue").at(upgradeName)[upgradeLevel[changedUpgrade] - 1]);
+
+	allData[player][upgradeName] = static_cast<int>(allData.at(player).at(upgradeName)) + 1;
+
+	std::ofstream fout("resources/Entity.json");
+
+	fout << allData.dump(4);
+
+	f.close();
+	fout.flush();
+	fout.close();
 }
 
 MenuState GameMenu::getMenuState() const

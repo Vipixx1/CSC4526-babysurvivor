@@ -1,206 +1,228 @@
 {
-    "player1": {
-        "length": 75,
-        "height": 100,
-        "baseHealth": 500,
-        "baseDamage": 30,
-        "damageMultiplier": 1.0,
-        "baseSpeed": 300
-    },
+  "upgradeValue": {
+    "damageUpgrade": [ 40, 50, 70, 85, 100 ],
+    "damageMultiplierUpgrade": [ 1.1, 1.2, 1.5, 1.7, 2.0 ],
+    "healthUpgrade": [ 600, 700, 800, 1000, 1500 ],
+    "speedUpgrade": [ 310, 320, 330, 340, 350 ]
+  },
 
-    "player2": {
-        "length": 75,
-        "height": 100,
-        "baseHealth": 500,
-        "baseDamage": 30,
-        "damageMultiplier": 1.0,
-        "baseSpeed": 300
-    },
+  "player1": {
+    "length": 75,
+    "height": 100,
+    "baseHealth": 500,
+    "baseDamage": 30,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 300,
+    "money": 10000,
+    "damageUpgrade": 0,
+    "damageMultiplierUpgrade": 0,
+    "healthUpgrade": 0,
+    "speedUpgrade": 0
+  },
 
-    "player3": {
-        "length": 75,
-        "height": 100,
-        "baseHealth": 500,
-        "baseDamage": 30,
-        "damageMultiplier": 1.0,
-        "baseSpeed": 300
-    },
+  "player2": {
+    "length": 75,
+    "height": 100,
+    "baseHealth": 500,
+    "baseDamage": 30,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 300,
+    "money": 0,
+    "damageUpgrade": 0,
+    "damageMultiplierUpgrade": 0,
+    "healthUpgrade": 0,
+    "speedUpgrade": 0
+  },
 
-    "broccoli_v1": {
-        "length": 50,
-        "height": 50,
-        "baseHealth": 100,
-        "baseDamage": 30,
-        "damageMultiplier": 1.0,
-        "baseSpeed": 100,
+  "player3": {
+    "length": 75,
+    "height": 100,
+    "baseHealth": 500,
+    "baseDamage": 30,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 300,
+    "money": 0,
+    "damageUpgrade": 0,
+    "damageMultiplierUpgrade": 0,
+    "healthUpgrade": 0,
+    "speedUpgrade": 0
+  },
 
-        "movementPattern": "towardPlayer",
-        "shootingPattern": "oneSimple"
-    },
+  "broccoli_v1": {
+    "length": 50,
+    "height": 50,
+    "baseHealth": 100,
+    "baseDamage": 30,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 100,
 
-    "broccoli_v2": {
-        "length": 50,
-        "height": 50,
-        "baseHealth": 100,
-        "baseDamage": 30,
-        "damageMultiplier": 1.0,
-        "baseSpeed": 100,
+    "movementPattern": "towardPlayer",
+    "shootingPattern": "oneSimple"
+  },
 
-        "movementPattern": "towardPlayer",
-        "shootingPattern": "threeSimple"
-    },
+  "broccoli_v2": {
+    "length": 50,
+    "height": 50,
+    "baseHealth": 100,
+    "baseDamage": 30,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 100,
 
-    "tomato_v1": {
-        "length": 50,
-        "height": 50,
-        "baseHealth": 100,
-        "baseDamage": 30,
-        "damageMultiplier": 1.0,
-        "baseSpeed": 75,
+    "movementPattern": "towardPlayer",
+    "shootingPattern": "threeSimple"
+  },
 
-        "movementPattern": "towardPlayer",
-        "shootingPattern": "threeSimple"
-    },
+  "tomato_v1": {
+    "length": 50,
+    "height": 50,
+    "baseHealth": 100,
+    "baseDamage": 30,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 75,
 
-    "tomato_v2": {
-        "length": 50,
-        "height": 50,
-        "baseHealth": 100,
-        "baseDamage": 30,
-        "damageMultiplier": 1.0,
-        "baseSpeed": 90,
+    "movementPattern": "towardPlayer",
+    "shootingPattern": "threeSimple"
+  },
 
-        "movementPattern": "towardPlayer",
-        "shootingPattern": "threeSimple"
-    },
+  "tomato_v2": {
+    "length": 50,
+    "height": 50,
+    "baseHealth": 100,
+    "baseDamage": 30,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 90,
 
-    "spider_v1": {
-        "length": 50,
-        "height": 50,
-        "baseHealth": 100,
-        "baseDamage": 30,
-        "damageMultiplier": 1.0,
-        "baseSpeed": 200,
+    "movementPattern": "towardPlayer",
+    "shootingPattern": "threeSimple"
+  },
 
-        "movementPattern": "towardPlayer",
-        "shootingPattern": "threeSimple"
-    },
+  "spider_v1": {
+    "length": 50,
+    "height": 50,
+    "baseHealth": 100,
+    "baseDamage": 30,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 200,
 
-    "ladybug_v1": {
-        "length": 50,
-        "height": 50,
-        "baseHealth": 100,
-        "baseDamage": 30,
-        "damageMultiplier": 1.0,
-        "baseSpeed": 500,
+    "movementPattern": "towardPlayer",
+    "shootingPattern": "threeSimple"
+  },
 
-        "movementPattern": "bounceBorders",
-        "shootingPattern": "threeSimple"
-    },
+  "ladybug_v1": {
+    "length": 50,
+    "height": 50,
+    "baseHealth": 100,
+    "baseDamage": 30,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 500,
 
-    "ladybug_v2": {
-        "length": 50,
-        "height": 50,
-        "baseHealth": 100,
-        "baseDamage": 30,
-        "damageMultiplier": 1.0,
-        "baseSpeed": 500,
+    "movementPattern": "bounceBorders",
+    "shootingPattern": "threeSimple"
+  },
 
-        "movementPattern": "bounceBorders",
-        "shootingPattern": "threeSimple"
-    },
+  "ladybug_v2": {
+    "length": 50,
+    "height": 50,
+    "baseHealth": 100,
+    "baseDamage": 30,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 500,
 
-    "robotToy_v1": {
-        "length": 50,
-        "height": 50,
-        "baseHealth": 100,
-        "baseDamage": 30,
-        "damageMultiplier": 1.0,
-        "baseSpeed": 300,
+    "movementPattern": "bounceBorders",
+    "shootingPattern": "threeSimple"
+  },
 
-        "movementPattern": "bounceBorders",
-        "shootingPattern": "threeSimple"
-    },
+  "robotToy_v1": {
+    "length": 50,
+    "height": 50,
+    "baseHealth": 100,
+    "baseDamage": 30,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 300,
 
-    "robotToy_v2": {
-        "length": 50,
-        "height": 50,
-        "baseHealth": 100,
-        "baseDamage": 30,
-        "damageMultiplier": 1.0,
-        "baseSpeed": 300,
+    "movementPattern": "bounceBorders",
+    "shootingPattern": "threeSimple"
+  },
 
-        "movementPattern": "bounceBorders",
-        "shootingPattern": "threeSimple"
-    },
+  "robotToy_v2": {
+    "length": 50,
+    "height": 50,
+    "baseHealth": 100,
+    "baseDamage": 30,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 300,
 
-    "towerToy_v1": {
-        "length": 50,
-        "height": 50,
-        "baseHealth": 100,
-        "baseDamage": 30,
-        "damageMultiplier": 1.0,
-        "baseSpeed": 0,
+    "movementPattern": "bounceBorders",
+    "shootingPattern": "threeSimple"
+  },
 
-        "movementPattern": "noMove",
-        "shootingPattern": "threeSimple"
-    },
+  "towerToy_v1": {
+    "length": 50,
+    "height": 50,
+    "baseHealth": 100,
+    "baseDamage": 30,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 0,
 
-    "towerToy_v2": {
-        "length": 50,
-        "height": 50,
-        "baseHealth": 100,
-        "baseDamage": 30,
-        "damageMultiplier": 1.0,
-        "baseSpeed": 0,
+    "movementPattern": "noMove",
+    "shootingPattern": "threeSimple"
+  },
 
-        "movementPattern": "noMove",
-        "shootingPattern": "threeSimple"
-    },
+  "towerToy_v2": {
+    "length": 50,
+    "height": 50,
+    "baseHealth": 100,
+    "baseDamage": 30,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 0,
 
-    "towerToy_v3": {
-        "length": 50,
-        "height": 50,
-        "baseHealth": 100,
-        "baseDamage": 30,
-        "damageMultiplier": 1.0,
-        "baseSpeed": 0,
+    "movementPattern": "noMove",
+    "shootingPattern": "threeSimple"
+  },
 
-        "movementPattern": "noMove",
-        "shootingPattern": "threeSimple"
-    },
+  "towerToy_v3": {
+    "length": 50,
+    "height": 50,
+    "baseHealth": 100,
+    "baseDamage": 30,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 0,
 
-    "towerToy_v4": {
-        "length": 50,
-        "height": 50,
-        "baseHealth": 100,
-        "baseDamage": 30,
-        "damageMultiplier": 1.0,
-        "baseSpeed": 0,
+    "movementPattern": "noMove",
+    "shootingPattern": "threeSimple"
+  },
 
-        "movementPattern": "noMove",
-        "shootingPattern": "threeSimple"
-    },
+  "towerToy_v4": {
+    "length": 50,
+    "height": 50,
+    "baseHealth": 100,
+    "baseDamage": 30,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 0,
 
-    "projectile": {
+    "movementPattern": "noMove",
+    "shootingPattern": "threeSimple"
+  },
+
+  "projectile": {
     "length": 10,
     "height": 10
   },
 
-    "experience": {
-      "length": 20,
-      "height": 20
-    },
+  "experience": {
+    "length": 20,
+    "height": 20
+  },
 
-    "health": {
-      "length": 40,
-      "height": 40
-    },
+  "health": {
+    "length": 40,
+    "height": 40
+  },
 
-    "money": {
-      "length": 10,
-      "height": 10
-    }
+  "money": {
+    "length": 10,
+    "height": 10
+  }
 }
         
             

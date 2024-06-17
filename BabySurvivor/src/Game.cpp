@@ -137,6 +137,8 @@ void Game::run()
 			case inSettingsMenu:
 				gameMenu.renderSettingMenu(gameWindow);
 				break;
+			case inUpgradeMenu:
+				gameMenu.renderUpgradeMenu(gameWindow);
 			}
 		}
 

@@ -1,9 +1,30 @@
 #include "Player.h"
+#include <json.hpp>
+#include <fstream>
 #include <iostream>
+
+using json = nlohmann::json;
 
 Player::Player(const std::string& filePath, const std::string& saveFile) :
 	LivingEntity{ filePath, saveFile }
-{}
+{
+	for (int i = 0; i < 15; i++)
+	{
+		experienceRequierement[i] = static_cast<float>(2 * (i + 1) + 7);
+	}
+
+	for (int i = 15; i < 20; i++)
+	{
+		experienceRequierement[i] = static_cast<float>(5 * (i + 1) - 38);
+	}
+
+	std::ifstream f(filePath);
+	json allData = json::parse(f);
+
+	json playerData = allData.at(saveFile);
+	
+	money = playerData.at("money");
+}
 
 void Player::levelUp()
 {
