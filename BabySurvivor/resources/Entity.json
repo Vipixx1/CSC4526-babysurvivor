@@ -7,7 +7,7 @@
     "damageMultiplier": 1.0,
     "baseSpeed": 300,
     "shotDelay": 50,
-    "shotSpeed": 750,
+    "shotSpeed": 1000,
     "sprite": "resources/sprites/baby.png"
   },
 
@@ -19,7 +19,7 @@
     "damageMultiplier": 1.0,
     "baseSpeed": 350,
     "shotDelay": 30,
-    "shotSpeed": 900,
+    "shotSpeed": 1300,
     "sprite": "resources/sprites/baby.png"
   },
 
@@ -31,7 +31,7 @@
     "damageMultiplier": 1.0,
     "baseSpeed": 270,
     "shotDelay": 90,
-    "shotSpeed": 750,
+    "shotSpeed": 800,
     "sprite": "resources/sprites/baby.png"
   },
 

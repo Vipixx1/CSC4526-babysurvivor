@@ -16,19 +16,21 @@ public:
 
 	std::vector<std::shared_ptr<Projectile>>& getProjectiles();
 
-	float getSpeed() const;
-
-	float getDamage() const;
-	void setDamage(float newDamage);
-
-	float getDamageMultiplier() const;
-	void setDamageMultiplier(float newDamageMultiplier);
-
+	float getMaxHealth() const;
+	void setMaxHealth(float newMaxHealth);
 	float getCurrentHealth() const;
 	void setCurrentHealth(float newHealth);
 
-	float getMaxHealth() const;
-	void setMaxHealth(float newMaxHealt);
+	float getDamage() const;
+	void setDamage(float newDamage);
+	float getDamageMultiplier() const;
+	void setDamageMultiplier(float newDamageMultiplier);
+
+	float getSpeed() const;
+
+	float getShotDelay() const;
+	float getShotSpeed() const;
+
 	bool getTeam() const;
 
 	bool takeDamage(float damageValue);

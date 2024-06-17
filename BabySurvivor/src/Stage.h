@@ -34,10 +34,9 @@ public:
 
 	void update(sf::Time elapsedTime, sf::RenderWindow const& gameWindow);
 	void updatePlayer(sf::Time elapsedTime, sf::RenderWindow const& gameWindow);
-	void updateEnemies(sf::Time elapsedTime);
+	void updateEnemies(sf::Time elapsedTime) const;
 	void updateCollectibles(sf::Time elapsedTime);
 	sf::FloatRect updateView(sf::RenderWindow const& gameWindow) const;
-	void updateSpawn();
 	void render(sf::RenderWindow& gameWindow) const;
 
 	void setPlayer(std::shared_ptr<Player> setPlayer);

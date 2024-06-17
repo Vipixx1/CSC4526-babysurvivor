@@ -10,12 +10,17 @@ private:
 	float baseDamage{ 0 };
 	float damageMultiplier{ 0 };
 	float baseSpeed{ 0 };
-
+	int shotDelay{ 0 };
+	float shotSpeed{ 0 };
 
 public:
 	explicit Stats(const std::string& filePath, const std::string& livingEntityName);
 
-	float getSpeed() const;
+	float getMaxHealth() const;
+	void setMaxHealth(float newMaxHealth);
+
+	float getCurrentHealth() const;
+	void setCurrentHealth(float newHealth);
 
 	float getDamage() const;
 	void setDamage(float newDamage);
@@ -23,9 +28,12 @@ public:
 	float getDamageMultiplier() const;
 	void setDamageMultiplier(float newDamageMultiplier);
 
-	float getCurrentHealth() const;
-	void setCurrentHealth(float newHealth);
+	float getSpeed() const;
 
-	float getMaxHealth() const;
-	void setMaxHealth(float newMaxHealth);
+	float getShotDelay() const;
+	float getShotSpeed() const;
+
+	
+
+	
 };

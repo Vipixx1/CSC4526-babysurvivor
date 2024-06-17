@@ -19,6 +19,26 @@ float LivingEntity::getSpeed() const
 	return stats.getSpeed();
 }
 
+float LivingEntity::getCurrentHealth() const
+{
+	return stats.getCurrentHealth();
+}
+
+float LivingEntity::getMaxHealth() const
+{
+	return stats.getMaxHealth();
+}
+
+void LivingEntity::setMaxHealth(float newMaxHealth)
+{
+	stats.setMaxHealth(newMaxHealth);
+}
+
+void LivingEntity::setCurrentHealth(float newHealth)
+{
+	stats.setCurrentHealth(newHealth);
+}
+
 float LivingEntity::getDamage() const
 {
 	return stats.getDamage();
@@ -29,26 +49,6 @@ void LivingEntity::setDamage(float newDamage)
 	stats.setDamage(newDamage);
 }
 
-float LivingEntity::getCurrentHealth() const
-{
-	return stats.getCurrentHealth();
-}
-
-void LivingEntity::setCurrentHealth(float newHealth)
-{
-	stats.setCurrentHealth(newHealth);
-}
-
-float LivingEntity::getMaxHealth() const
-{
-	return stats.getMaxHealth();
-}
-
-void LivingEntity::setMaxHealth(float newMaxHealt)
-{
-	stats.setMaxHealth(newMaxHealt);
-}
-
 float LivingEntity::getDamageMultiplier() const
 {
 	return stats.getDamageMultiplier();
@@ -57,6 +57,17 @@ float LivingEntity::getDamageMultiplier() const
 void LivingEntity::setDamageMultiplier(float newDamageMultiplier)
 {
 	stats.setDamageMultiplier(newDamageMultiplier);
+}
+
+float LivingEntity::getShotDelay() const
+{
+	return stats.getShotDelay();
+}
+
+float LivingEntity::getShotSpeed() const
+{
+	return stats.getShotSpeed();
+
 }
 
 bool LivingEntity::getTeam() const

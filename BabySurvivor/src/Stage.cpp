@@ -87,7 +87,7 @@ void Stage::updatePlayer(sf::Time elapsedTime, sf::RenderWindow const& gameWindo
 		frameCounter++;
 
 		// Auto fire every 30 frames
-		if (frameCounter >= 30) {
+		if (static_cast<float>(frameCounter) >= player->getShotDelay()) {
 			playerAutoFire(gameWindow);
 
 			// Play the shoot sound
@@ -107,7 +107,7 @@ void Stage::updatePlayer(sf::Time elapsedTime, sf::RenderWindow const& gameWindo
 	}
 }
 
-void Stage::updateEnemies(sf::Time elapsedTime)
+void Stage::updateEnemies(sf::Time elapsedTime) const
 {
 	for (const auto& enemy : enemies) {
 		if (enemy->getActive()) {
@@ -220,7 +220,7 @@ void Stage::playerAutoFire(sf::RenderWindow const& gameWindow) const
 
 	// Calculate direction and normalize
 	direction = direction - (player->getPosition() + sf::Vector2f(player->getSize().x/2, player->getSize().y/2));
-	direction = direction * 1000.f / sqrt(direction.x * direction.x + direction.y * direction.y); //????//
+	direction = direction * player->getShotSpeed() / sqrt(direction.x * direction.x + direction.y * direction.y);
 
 	// Create and shoot a new projectile
 	player->shoot(direction);
