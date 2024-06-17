@@ -1,206 +1,275 @@
 {
-    "player1": {
-        "length": 75,
-        "height": 100,
-        "baseHealth": 500,
-        "baseDamage": 30,
-        "damageMultiplier": 1.0,
-        "baseSpeed": 300
-    },
-
-    "player2": {
-        "length": 75,
-        "height": 100,
-        "baseHealth": 500,
-        "baseDamage": 30,
-        "damageMultiplier": 1.0,
-        "baseSpeed": 300
-    },
-
-    "player3": {
-        "length": 75,
-        "height": 100,
-        "baseHealth": 500,
-        "baseDamage": 30,
-        "damageMultiplier": 1.0,
-        "baseSpeed": 300
-    },
-
-    "broccoli_v1": {
-        "length": 50,
-        "height": 50,
-        "baseHealth": 100,
-        "baseDamage": 30,
-        "damageMultiplier": 1.0,
-        "baseSpeed": 100,
-
-        "movementPattern": "towardPlayer",
-        "shootingPattern": "oneSimple"
-    },
-
-    "broccoli_v2": {
-        "length": 50,
-        "height": 50,
-        "baseHealth": 100,
-        "baseDamage": 30,
-        "damageMultiplier": 1.0,
-        "baseSpeed": 100,
-
-        "movementPattern": "towardPlayer",
-        "shootingPattern": "threeSimple"
-    },
-
-    "tomato_v1": {
-        "length": 50,
-        "height": 50,
-        "baseHealth": 100,
-        "baseDamage": 30,
-        "damageMultiplier": 1.0,
-        "baseSpeed": 75,
-
-        "movementPattern": "towardPlayer",
-        "shootingPattern": "threeSimple"
-    },
-
-    "tomato_v2": {
-        "length": 50,
-        "height": 50,
-        "baseHealth": 100,
-        "baseDamage": 30,
-        "damageMultiplier": 1.0,
-        "baseSpeed": 90,
-
-        "movementPattern": "towardPlayer",
-        "shootingPattern": "threeSimple"
-    },
-
-    "spider_v1": {
-        "length": 50,
-        "height": 50,
-        "baseHealth": 100,
-        "baseDamage": 30,
-        "damageMultiplier": 1.0,
-        "baseSpeed": 200,
-
-        "movementPattern": "towardPlayer",
-        "shootingPattern": "threeSimple"
-    },
-
-    "ladybug_v1": {
-        "length": 50,
-        "height": 50,
-        "baseHealth": 100,
-        "baseDamage": 30,
-        "damageMultiplier": 1.0,
-        "baseSpeed": 500,
-
-        "movementPattern": "bounceBorders",
-        "shootingPattern": "threeSimple"
-    },
-
-    "ladybug_v2": {
-        "length": 50,
-        "height": 50,
-        "baseHealth": 100,
-        "baseDamage": 30,
-        "damageMultiplier": 1.0,
-        "baseSpeed": 500,
-
-        "movementPattern": "bounceBorders",
-        "shootingPattern": "threeSimple"
-    },
-
-    "robotToy_v1": {
-        "length": 50,
-        "height": 50,
-        "baseHealth": 100,
-        "baseDamage": 30,
-        "damageMultiplier": 1.0,
-        "baseSpeed": 300,
-
-        "movementPattern": "bounceBorders",
-        "shootingPattern": "threeSimple"
-    },
-
-    "robotToy_v2": {
-        "length": 50,
-        "height": 50,
-        "baseHealth": 100,
-        "baseDamage": 30,
-        "damageMultiplier": 1.0,
-        "baseSpeed": 300,
-
-        "movementPattern": "bounceBorders",
-        "shootingPattern": "threeSimple"
-    },
-
-    "towerToy_v1": {
-        "length": 50,
-        "height": 50,
-        "baseHealth": 100,
-        "baseDamage": 30,
-        "damageMultiplier": 1.0,
-        "baseSpeed": 0,
-
-        "movementPattern": "noMove",
-        "shootingPattern": "threeSimple"
-    },
-
-    "towerToy_v2": {
-        "length": 50,
-        "height": 50,
-        "baseHealth": 100,
-        "baseDamage": 30,
-        "damageMultiplier": 1.0,
-        "baseSpeed": 0,
-
-        "movementPattern": "noMove",
-        "shootingPattern": "threeSimple"
-    },
-
-    "towerToy_v3": {
-        "length": 50,
-        "height": 50,
-        "baseHealth": 100,
-        "baseDamage": 30,
-        "damageMultiplier": 1.0,
-        "baseSpeed": 0,
-
-        "movementPattern": "noMove",
-        "shootingPattern": "threeSimple"
-    },
-
-    "towerToy_v4": {
-        "length": 50,
-        "height": 50,
-        "baseHealth": 100,
-        "baseDamage": 30,
-        "damageMultiplier": 1.0,
-        "baseSpeed": 0,
-
-        "movementPattern": "noMove",
-        "shootingPattern": "threeSimple"
-    },
-
-    "projectile": {
-    "length": 10,
-    "height": 10
+  "player1": {
+    "length": 60,
+    "height": 80,
+    "baseHealth": 500,
+    "baseDamage": 35,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 300,
+    "shotDelay": 50,
+    "shotSpeed": 750,
+    "sprite": "resources/sprites/baby.png"
   },
 
-    "experience": {
-      "length": 20,
-      "height": 20
-    },
+  "player2": {
+    "length": 60,
+    "height": 80,
+    "baseHealth": 300,
+    "baseDamage": 20,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 350,
+    "shotDelay": 30,
+    "shotSpeed": 900,
+    "sprite": "resources/sprites/baby.png"
+  },
 
-    "health": {
-      "length": 40,
-      "height": 40
-    },
+  "player3": {
+    "length": 60,
+    "height": 80,
+    "baseHealth": 800,
+    "baseDamage": 60,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 270,
+    "shotDelay": 90,
+    "shotSpeed": 750,
+    "sprite": "resources/sprites/baby.png"
+  },
 
-    "money": {
-      "length": 10,
-      "height": 10
-    }
+  "ghost_v1": {
+    "length": 50,
+    "height": 50,
+    "baseHealth": 100,
+    "baseDamage": 30,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 150,
+    "shotDelay": 1000,
+    "shotSpeed": 0,
+    "sprite": "resources/sprites/ghost.png",
+
+    "movementPattern": "towardPlayer",
+    "shootingPattern": ""
+  },
+
+  "spider_v1": {
+    "length": 50,
+    "height": 50,
+    "baseHealth": 100,
+    "baseDamage": 30,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 100,
+    "shotDelay": 180,
+    "shotSpeed": 400,
+    "sprite": "resources/sprites/spider.png",
+
+    "movementPattern": "towardPlayer",
+    "shootingPattern": "oneSimple"
+  },
+
+  "spider_v2": {
+    "length": 50,
+    "height": 50,
+    "baseHealth": 150,
+    "baseDamage": 50,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 100,
+    "shotDelay": 300,
+    "shotSpeed": 500,
+    "sprite": "resources/sprites/spider.png",
+
+    "movementPattern": "towardPlayer",
+    "shootingPattern": "threeSimple"
+  },
+
+  "robot_v1": {
+    "length": 50,
+    "height": 50,
+    "baseHealth": 150,
+    "baseDamage": 45,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 90,
+    "shotDelay": 180,
+    "shotSpeed": 650,
+    "sprite": "resources/sprites/robot.png",
+
+    "movementPattern": "towardPlayer",
+    "shootingPattern": "fourCross"
+  },
+
+  "robot_v2": {
+    "length": 50,
+    "height": 50,
+    "baseHealth": 170,
+    "baseDamage": 45,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 100,
+    "shotDelay": 300,
+    "shotSpeed": 250,
+    "sprite": "resources/sprites/robot.png",
+
+    "movementPattern": "towardPlayer",
+    "shootingPattern": "fourCircle"
+  },
+
+  "tomato_v1": {
+    "length": 50,
+    "height": 50,
+    "baseHealth": 130,
+    "baseDamage": 40,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 500,
+    "shotDelay": 1000,
+    "shotSpeed": 0,
+    "sprite": "resources/sprites/tomato.png",
+
+    "movementPattern": "bounceBorders",
+    "shootingPattern": ""
+  },
+
+  "tomato_v2": {
+    "length": 50,
+    "height": 50,
+    "baseHealth": 160,
+    "baseDamage": 40,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 400,
+    "shotDelay": 300,
+    "shotSpeed": 500,
+    "sprite": "resources/sprites/tomato.png",
+
+    "movementPattern": "bounceBorders",
+    "shootingPattern": "oneSimple"
+  },
+
+  "tomato_v3": {
+    "length": 50,
+    "height": 50,
+    "baseHealth": 100,
+    "baseDamage": 45,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 300,
+    "shotDelay": 350,
+    "shotSpeed": 650,
+    "sprite": "resources/sprites/tomato.png",
+
+    "movementPattern": "bounceBorders",
+    "shootingPattern": "threeSimple"
+  },
+
+  "plum_v1": {
+    "length": 50,
+    "height": 50,
+    "baseHealth": 150,
+    "baseDamage": 45,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 300,
+    "shotDelay": 250,
+    "shotSpeed": 600,
+    "sprite": "resources/sprites/plum.png",
+
+
+    "movementPattern": "bounceBorders",
+    "shootingPattern": "fourCross"
+  },
+
+  "plum_v2": {
+    "length": 50,
+    "height": 50,
+    "baseHealth": 200,
+    "baseDamage": 50,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 200,
+    "shotDelay": 500,
+    "shotSpeed": 200,
+    "sprite": "resources/sprites/plum.png",
+
+    "movementPattern": "bounceBorders",
+    "shootingPattern": "fourCircle"
+  },
+
+  "doll_v1": {
+    "length": 50,
+    "height": 50,
+    "baseHealth": 100,
+    "baseDamage": 30,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 0,
+    "shotDelay": 180,
+    "shotSpeed": 500,
+    "sprite": "resources/sprites/doll.png",
+
+    "movementPattern": "",
+    "shootingPattern": "oneSimple"
+  },
+
+  "doll_v2": {
+    "length": 50,
+    "height": 50,
+    "baseHealth": 100,
+    "baseDamage": 30,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 0,
+    "shotDelay": 300,
+    "shotSpeed": 650,
+    "sprite": "resources/sprites/doll.png",
+
+    "movementPattern": "",
+    "shootingPattern": "threeSimple"
+  },
+
+  "doll_v3": {
+    "length": 50,
+    "height": 50,
+    "baseHealth": 150,
+    "baseDamage": 40,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 0,
+    "shotDelay": 180,
+    "shotSpeed": 600,
+    "sprite": "resources/sprites/doll.png",
+
+    "movementPattern": "",
+    "shootingPattern": "fourCross"
+  },
+
+  "doll_v4": {
+    "length": 50,
+    "height": 50,
+    "baseHealth": 200,
+    "baseDamage": 50,
+    "damageMultiplier": 1.0,
+    "baseSpeed": 0,
+    "shotDelay": 500,
+    "shotSpeed": 200,
+    "sprite": "resources/sprites/doll.png",
+
+    "movementPattern": "",
+    "shootingPattern": "fourCircle"
+  },
+
+  "projectile": {
+    "length": 15,
+    "height": 15,
+    "sprite": "resources/sprites/projectile.png"
+  },
+
+
+  "experience": {
+    "length": 20,
+    "height": 20,
+    "sprite": "resources/sprites/experience.png"
+  },
+
+  "health": {
+    "length": 40,
+    "height": 40,
+    "sprite": "resources/sprites/health.png"
+  },
+
+  "money": {
+    "length": 10,
+    "height": 10,
+    "sprite": "resources/sprites/money.png"
+  }
 }
         
             
