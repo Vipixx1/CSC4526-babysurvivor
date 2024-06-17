@@ -17,12 +17,13 @@ private:
 
 public:
 	Player(const std::string& filePath, const std::string& saveFile);
+	
 	void levelUp();
+	void heal(float healValue);
+	void giveExperience(float experienceValue);
 
 	void update(sf::Time elapsedTime) override;
 	void checkBounds(sf::Vector2f stageSize) override;
 	void handleInput(sf::Keyboard::Key key, bool isPressed);
 	void shoot(sf::Vector2f projDirection) override;
-	void heal(float healValue);
-	void giveExperience(float experienceValue);
 };

@@ -40,7 +40,23 @@ void Game::changeResolution(int newResolutionIndex)
 	gameWindow.setFramerateLimit(60);
 }
 
-void Game::processEvent() 
+void Game::processGeneralEvent(sf::Event event)
+{
+	/* Handle events that set the gameWindow */
+	if (event.type == sf::Event::Closed)
+		gameWindow.close();
+
+	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F11)
+		gameWindow.create(sf::VideoMode(1920, 1080), "Baby Survivor", sf::Style::Fullscreen);
+
+	if (event.type == sf::Event::Resized)
+	{
+		sf::FloatRect visibleArea(0.f, 0.f, static_cast<float>(event.size.width), static_cast<float>(event.size.height));
+		gameWindow.setView(sf::View(visibleArea));
+	}
+}
+
+void Game::processMenuEvent()
 {
 	sf::Event event{ sf::Event::Count };
 
@@ -94,7 +110,6 @@ void Game::processInGameEvent()
 		if (event.type == sf::Event::KeyReleased)
 			player->handleInput(event.key.code, false);
 	}
-	
 }
 
 void Game::run()
@@ -113,15 +128,15 @@ void Game::run()
 			switch (gameMenu.getMenuState())
 			{
 				using enum MenuState;
-				case inMainMenu:
-					gameMenu.renderMainMenu(gameWindow);
-					break;
-				case inPlayMenu:
-					gameMenu.renderPlayMenu(gameWindow);
-					break;
-				case inSettingsMenu:
-					gameMenu.renderSettingMenu(gameWindow);
-					break;
+			case inMainMenu:
+				gameMenu.renderMainMenu(gameWindow);
+				break;
+			case inPlayMenu:
+				gameMenu.renderPlayMenu(gameWindow);
+				break;
+			case inSettingsMenu:
+				gameMenu.renderSettingMenu(gameWindow);
+				break;
 			}
 		}
 
@@ -138,7 +153,7 @@ void Game::run()
 				timeSinceLastUpdate -= TimePerFrame;
 
 				stage.update(TimePerFrame, gameWindow);
-				
+
 				view.reset(stage.updateView(gameWindow));
 				gameWindow.setView(view);
 
@@ -146,7 +161,7 @@ void Game::run()
 			}
 
 			/* Updates not based on fixed time steps */
-			
+
 			stage.render(gameWindow);
 			gameWindow.draw(statsText);
 			gameWindow.display();
