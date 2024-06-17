@@ -16,6 +16,14 @@ private:
 
 	std::array<float, 20> experienceRequierement;
 
+	bool isInvulnerable = false;
+	const float invulnerabilityDuration = 1.0f;
+	sf::Clock invulnerabilityTimer;
+	
+	bool isVisible = true;
+	const float blinkInterval = 0.1f;
+	sf::Clock blinkTimer;
+
 public:
 	Player(const std::string& filePath, const std::string& saveFile);
 	
@@ -30,6 +38,8 @@ public:
 
 	int getLevel() const;
 
+	bool takeDamage(float damageValue) override;
+	void render(sf::RenderWindow& gameWindow) const override;
 	void update(sf::Time elapsedTime) override;
 	void checkBounds(sf::Vector2f stageSize) override;
 	void handleInput(sf::Keyboard::Key key, bool isPressed);
