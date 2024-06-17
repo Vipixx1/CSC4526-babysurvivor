@@ -1,5 +1,6 @@
 #pragma once
 #include "LivingEntity.h"
+#include "Collectible.h"
 #include <string>
 
 enum class EnemyType {
@@ -29,12 +30,15 @@ private:
 
 	void initializeRandomDirection();
 
+	std::optional<CollectibleType> getRandomCollectible() const;
+
 public:
 	Enemy(const std::string& filePath, const std::string& enemyType, Entity& target);
 	void update(sf::Time elapsedTime) override;
 	void checkBounds(sf::Vector2f stageSize) override;
 
 	void shoot(sf::Vector2f projDirection) override;
+	std::optional<Collectible> dropCollectible() const;
 };
 
 

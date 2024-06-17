@@ -18,10 +18,13 @@ public:
 
 	float getSpeed() const;
 	float getDamage() const;
+	float getMaxHealth() const;
+	float getCurrentHealth() const;
+	void setCurrentHealth(float newHealth);
 
 	bool getTeam() const;
 
-	void takeDamage(float damageValue);
+	bool takeDamage(float damageValue);
+
 	virtual void shoot(sf::Vector2f direction) = 0;
-	
 };

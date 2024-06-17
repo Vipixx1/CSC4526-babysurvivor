@@ -30,17 +30,15 @@ private:
 	sf::Text statsText;
 	sf::Font font;
 	
-
 	GameState gameState;
 	GameMenu gameMenu;
 
 	SoundManager soundManager;
 
-	int money{ 0 };
-
 	std::shared_ptr<Player> player;
 	Stage stage{ "stage_1" };
-	
+
+	std::vector<std::unique_ptr<Collectible>> collectibles;
 
 	void changeResolution(int newResolutionIndex);
 

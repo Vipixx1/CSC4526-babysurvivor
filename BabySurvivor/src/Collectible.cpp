@@ -5,14 +5,17 @@ Collectible::Collectible(const std::string& filePath, const std::string& entityN
 	type{type},
 	value{value} {}
 
+void Collectible::update(sf::Time elapsedTime)
+{
+	//
+}
 
-float Collectible::collect() const
+CollectibleType Collectible::getCollectibleType() const
+{
+	return type;
+}
+
+float Collectible::getCollectibleValue() const
 {
 	return value;
 }
-
-//Collectible Collectible::drop(const std::string& entityName, sf::Vector2f coords, CollectibleType type, float value)
-//{
-//	Collectible newCollectible{ "resources/Entity.json", entityName, coords, type, value };
-//	return newCollectible;
-//}

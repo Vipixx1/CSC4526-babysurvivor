@@ -86,3 +86,71 @@ void Enemy::initializeRandomDirection() {
 	direction = direction * (getSpeed() / length);
 }
 
+std::optional<CollectibleType> Enemy::getRandomCollectible() const
+{
+	using enum CollectibleType;
+
+	static std::mt19937 rng(std::random_device{}());
+	static std::uniform_int_distribution dist(0, 3);
+
+	int collectible = dist(rng);
+
+	switch (collectible) 
+	{
+		case 0:
+			return experience;
+		case 1:
+			return health;
+		case 2:
+			return money;
+		case 3:
+			return std::nullopt;
+		default:
+			return std::nullopt;
+	}
+		
+}
+
+std::optional<Collectible> Enemy::dropCollectible() const
+{
+	using enum CollectibleType;
+
+	std::optional<CollectibleType> collectibleType = getRandomCollectible();
+
+	std::string collectibleName;
+	float collectibleValue;
+
+	if (!collectibleType.has_value())
+	{
+		return std::nullopt;
+	}
+
+	else {
+		switch (collectibleType.value())
+		{
+		case experience:
+			collectibleName = "experience";
+			collectibleValue = 10.f;
+			break;
+
+		case health:
+			collectibleName = "health";
+			collectibleValue = 50.f;
+			break;
+
+		case money:
+			collectibleName = "money";
+			collectibleValue = 1.f;
+			break;
+
+		default:
+			return std::nullopt;
+			break;
+		}
+
+		Collectible newCollectible{ "resources/Entity.json" ,collectibleName, getCoords(), collectibleType.value(), collectibleValue};
+
+		return newCollectible;
+	}
+}
+
