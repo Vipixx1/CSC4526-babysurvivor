@@ -17,10 +17,9 @@ float LivingEntity::getSpeed() const
 	return stats.getSpeed();
 }
 
-<<<<<<< HEAD
-float LivingEntity::getCurrentHealth() const
+float LivingEntity::getDamage() const
 {
-	return stats.getCurrentHealth();
+	return stats.getDamage();
 }
 
 float LivingEntity::getMaxHealth() const
@@ -28,14 +27,14 @@ float LivingEntity::getMaxHealth() const
 	return stats.getMaxHealth();
 }
 
+float LivingEntity::getCurrentHealth() const
+{
+	return stats.getCurrentHealth();
+}
+
 void LivingEntity::setCurrentHealth(float newHealth)
 {
 	stats.setCurrentHealth(newHealth);
-=======
-float LivingEntity::getDamage() const
-{
-	return stats.getDamage();
->>>>>>> a1cc045a302734ba0d616dd906f76d950ce2d4bd
 }
 
 bool LivingEntity::getTeam() const
@@ -43,16 +42,16 @@ bool LivingEntity::getTeam() const
 	return isAlly;
 }
 
-void LivingEntity::takeDamage(float damageValue) 
+bool LivingEntity::takeDamage(float damageValue) 
 {
 	float currentHealth = stats.getCurrentHealth();
 
 	if (currentHealth - damageValue < 0)
 	{
 		setActive(false);
+		return true;
 	}
-	else
-	{
-		stats.setCurrentHealth(currentHealth - damageValue);
-	}
+
+	stats.setCurrentHealth(currentHealth - damageValue);
+	return false;
 }

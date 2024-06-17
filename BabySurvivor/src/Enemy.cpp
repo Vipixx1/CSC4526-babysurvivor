@@ -66,6 +66,7 @@ void Enemy::checkBounds(sf::Vector2f stageSize)
 	else { Entity::checkBounds(stageSize); }
 }
 
+
 void Enemy::shoot(sf::Vector2f projDirection)
 {
 	auto newProjectile = std::make_unique<Projectile>("resources/Entity.json", getDamage(), false);
@@ -148,7 +149,8 @@ std::optional<Collectible> Enemy::dropCollectible() const
 			break;
 		}
 
-		Collectible newCollectible{ "resources/Entity.json" ,collectibleName, getCoords(), collectibleType.value(), collectibleValue};
+		Collectible newCollectible{ "resources/Entity.json" , collectibleName, collectibleType.value(), collectibleValue};
+		newCollectible.setPosition(getPosition());
 
 		return newCollectible;
 	}

@@ -20,13 +20,15 @@ Stage::Stage(std::string_view name) : name{ name }
 	
 }
 
-void Stage::update(sf::Time elapsedTime, sf::RenderWindow const& gameWindow) {
+void Stage::update(sf::Time elapsedTime, sf::RenderWindow const& gameWindow) 
+{
 	/* Spawning the Enemies */
 	if (isWaveBeginning) {
 		spawn();
 		isWaveBeginning = false;
 	}
 
+	/* Update the player */
 	if (player->getActive()) {
 		player->update(elapsedTime);
 		player->checkBounds(size);
@@ -54,6 +56,7 @@ void Stage::update(sf::Time elapsedTime, sf::RenderWindow const& gameWindow) {
 
 	}
 
+	/* Update the enemies */
 	for (const auto& enemy : enemies) {
 		if (enemy->getActive()) {
 			enemy->update(elapsedTime);
@@ -68,6 +71,18 @@ void Stage::update(sf::Time elapsedTime, sf::RenderWindow const& gameWindow) {
 			}
 		}
 	}
+
+	/* Update the collectibles */
+	for (const auto& collectible : collectibles)
+	{
+		if (collectible->getActive()) {
+			collectible->update(elapsedTime);
+			collectibleCheckCollision();
+		}
+		
+	}
+
+	
 }
 
 void Stage::render(sf::RenderWindow& gameWindow) const
@@ -96,7 +111,12 @@ void Stage::render(sf::RenderWindow& gameWindow) const
 					projectile->render(gameWindow);
 			}
 		}
-		
+	}
+
+	for (const auto& collectible : collectibles)
+	{
+		if (collectible->getActive())
+			collectible->render(gameWindow);
 	}
 	
 }
@@ -160,12 +180,37 @@ void Stage::enemyProjectileCheckCollisions(Projectile& projectile) const
 	}
 }
 
-void Stage::playerProjectileCheckCollisions(Projectile& projectile) const
-{
+void Stage::playerProjectileCheckCollisions(Projectile& projectile) {
 	for (auto const& enemy : enemies) {
 		if (enemy->getActive() && enemy->getTeam() != projectile.getTeam() && projectile.getGlobalBounds().intersects(enemy->getGlobalBounds())) {
-			enemy->takeDamage(projectile.getDamage());
 			projectile.setActive(false);
+			if (enemy->takeDamage(projectile.getDamage())) { // takeDamage returns true if the enemy is dead
+				if (std::optional<Collectible> dropedCollectible = enemy->dropCollectible(); dropedCollectible.has_value()) {
+					collectibles.push_back(std::make_unique<Collectible>(dropedCollectible.value()));
+				}
+			}
+		}
+	}
+}
+
+void Stage::collectibleCheckCollision() {
+	for (auto const& collectible : collectibles) {
+		if (collectible->getGlobalBounds().intersects(player->getGlobalBounds()))
+		{
+			switch (collectible->getCollectibleType())
+			{
+			case CollectibleType::money:
+				money += static_cast<int>(collectible->getCollectibleValue());
+				
+				break;
+			case CollectibleType::health:
+				player->heal(collectible->getCollectibleValue());
+				break;
+			case CollectibleType::experience:
+				player->giveExperience(collectible->getCollectibleValue());
+				break;
+			}
+			collectible->setActive(false);
 		}
 	}
 }

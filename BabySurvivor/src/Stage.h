@@ -16,6 +16,9 @@ private:
 
 	std::shared_ptr<Player> player;
 	std::vector<std::unique_ptr<Enemy>> enemies;
+	std::vector<std::unique_ptr<Collectible>> collectibles;
+	int money{ 0 };
+
 	int frameCounter = 0;
 
 public:
@@ -34,6 +37,7 @@ public:
 	sf::FloatRect updateView(sf::RenderWindow const& gameWindow) const;
 
 	void enemyProjectileCheckCollisions(Projectile& projectile) const;
-	void playerProjectileCheckCollisions(Projectile& projectile) const;
+	void playerProjectileCheckCollisions(Projectile& projectile);
+	void collectibleCheckCollision();
 
 };
