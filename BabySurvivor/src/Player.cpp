@@ -6,7 +6,7 @@
 using json = nlohmann::json;
 
 Player::Player(const std::string& filePath, const std::string& saveFile) :
-	LivingEntity{ filePath, saveFile }
+	LivingEntity{ filePath, saveFile, true }
 {
 	for (int i = 0; i < 15; i++)
 	{
@@ -32,6 +32,7 @@ void Player::levelUp()
 
 	// Does the actual level up and update the experience requierment for the next level
 	level++;
+	nextLevelExperienceRequierement = experienceRequierement[level-1];
 
 	// Boost player stat after each level up
 	float currentMaxHealth = getMaxHealth();

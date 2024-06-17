@@ -2,12 +2,15 @@
 #include <fstream>
 #include <random>
 #include <cmath>
-
+#include <iostream>
 
 using json = nlohmann::json;
 
+const float Enemy::cosTheta = 0.92f;
+const float Enemy::sinTheta = 0.38f;
+
 Enemy::Enemy(const std::string& filePath, const std::string& enemyType, Entity& target) :
-	LivingEntity{ filePath, enemyType},
+	LivingEntity{ filePath, enemyType, false },
 	enemyType{ enemyType },
 	target{ target }
 {
@@ -20,7 +23,6 @@ Enemy::Enemy(const std::string& filePath, const std::string& enemyType, Entity& 
 	shootingPattern = enemyData.at("shootingPattern");
 
 	initializeRandomDirection();
-
 }
 
 void Enemy::update(sf::Time elapsedTime)
@@ -35,6 +37,12 @@ void Enemy::update(sf::Time elapsedTime)
 
 	else if (movementPattern == "bounceBorders") {
 		moveEntity(direction * elapsedTime.asSeconds());
+	}
+	
+	frameCounter++;
+	if (static_cast<float>(frameCounter) >= getShotDelay()) {
+		shoot(sf::Vector2f(0, 0));
+		frameCounter = 0;
 	}
 }
 
@@ -66,13 +74,75 @@ void Enemy::checkBounds(sf::Vector2f stageSize)
 	else { Entity::checkBounds(stageSize); }
 }
 
-
 void Enemy::shoot(sf::Vector2f projDirection)
 {
-	auto newProjectile = std::make_unique<Projectile>("resources/Entity.json", getDamage(), false);
-	newProjectile->setPosition(getPosition() + sf::Vector2f(getSize().x / 2, getSize().y / 2));
-	newProjectile->setDirection(projDirection);
-	getProjectiles().push_back(std::move(newProjectile));
+	if (shootingPattern == "oneSimple")
+	{
+		projDirection = target.getPosition() - getPosition();
+		projDirection = projDirection * getShotSpeed() / sqrt(projDirection.x * projDirection.x + projDirection.y * projDirection.y);
+
+		auto newProjectile = std::make_unique<Projectile>("resources/Entity.json", getDamage(), false);
+		newProjectile->setPosition(getPosition() + sf::Vector2f(getSize().x / 2, getSize().y / 2));
+		newProjectile->setDirection(projDirection);
+		getProjectiles().push_back(std::move(newProjectile));
+	}
+
+	else if (shootingPattern == "threeSimple") 
+	{
+		projDirection = target.getPosition() - getPosition();
+		projDirection = projDirection * getShotSpeed() / sqrt(projDirection.x * projDirection.x + projDirection.y * projDirection.y);
+
+		auto newProjectile1 = std::make_unique<Projectile>("resources/Entity.json", getDamage(), false);
+		newProjectile1->setPosition(getPosition() + sf::Vector2f(getSize().x / 2, getSize().y / 2));
+		newProjectile1->setDirection(projDirection);
+
+		auto newProjectile2 = std::make_unique<Projectile>("resources/Entity.json", getDamage(), false);
+		newProjectile2->setPosition(getPosition() + sf::Vector2f(getSize().x / 2, getSize().y / 2));
+		newProjectile2->setDirection(sf::Vector2f(projDirection.x*cosTheta - projDirection.y*sinTheta,
+													projDirection.x*sinTheta + projDirection.y*cosTheta));
+
+		auto newProjectile3 = std::make_unique<Projectile>("resources/Entity.json", getDamage(), false);
+		newProjectile3->setPosition(getPosition() + sf::Vector2f(getSize().x / 2, getSize().y / 2));
+		newProjectile3->setDirection(sf::Vector2f(projDirection.x * cosTheta + projDirection.y * sinTheta,
+									-projDirection.x * sinTheta + projDirection.y * cosTheta));
+
+		getProjectiles().push_back(std::move(newProjectile1));
+		getProjectiles().push_back(std::move(newProjectile2));
+		getProjectiles().push_back(std::move(newProjectile3));
+	}
+
+	else if (shootingPattern == "fourCircle")
+	{
+		//
+	}
+	
+	else if (shootingPattern == "fourCross")
+	{
+		projDirection = target.getPosition() - getPosition();
+		projDirection = projDirection * getShotSpeed() / sqrt(projDirection.x * projDirection.x + projDirection.y * projDirection.y);
+
+		auto newProjectile1 = std::make_unique<Projectile>("resources/Entity.json", getDamage(), false);
+		newProjectile1->setPosition(getPosition() + sf::Vector2f(getSize().x / 2, getSize().y / 2));
+		newProjectile1->setDirection(projDirection);
+
+		auto newProjectile2 = std::make_unique<Projectile>("resources/Entity.json", getDamage(), false);
+		newProjectile2->setPosition(getPosition() + sf::Vector2f(getSize().x / 2, getSize().y / 2));
+		newProjectile2->setDirection(sf::Vector2f(-projDirection.y, projDirection.x));
+
+		auto newProjectile3 = std::make_unique<Projectile>("resources/Entity.json", getDamage(), false);
+		newProjectile3->setPosition(getPosition() + sf::Vector2f(getSize().x / 2, getSize().y / 2));
+		newProjectile3->setDirection(sf::Vector2f(-projDirection.x, -projDirection.y));
+
+		auto newProjectile4 = std::make_unique<Projectile>("resources/Entity.json", getDamage(), false);
+		newProjectile3->setPosition(getPosition() + sf::Vector2f(getSize().x / 2, getSize().y / 2));
+		newProjectile3->setDirection(sf::Vector2f(projDirection.y, -projDirection.x));
+
+		getProjectiles().push_back(std::move(newProjectile1));
+		getProjectiles().push_back(std::move(newProjectile2));
+		getProjectiles().push_back(std::move(newProjectile3));
+		getProjectiles().push_back(std::move(newProjectile4));
+	}
+
 }
 
 void Enemy::initializeRandomDirection() {

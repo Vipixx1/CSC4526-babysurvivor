@@ -167,6 +167,9 @@ void Game::run()
 
 void Game::updateStatsText(sf::Time elapsedTime)
 {
+	/*std::cout << gameWindow.getPosition().x << "," << gameWindow.getPosition().y << std::endl;
+	std::cout << view.getCenter().x << "," << view.getCenter().y << std::endl;*/
+
 	statsText.setPosition(view.getCenter().x - view.getSize().x/2 + 10.f, view.getCenter().y - view.getSize().y/2 + 10.f);
 	statsUpdateTime += elapsedTime;
 	numFrames += 1;

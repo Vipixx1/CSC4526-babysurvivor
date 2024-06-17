@@ -14,8 +14,9 @@ Stats::Stats(const std::string& filePath, const std::string& livingEntityName)
 	baseDamage = entityData.at("baseDamage");
 	damageMultiplier = entityData.at("damageMultiplier");
 	baseSpeed = entityData.at("baseSpeed");
+	shotDelay = entityData.at("shotDelay");
+	shotSpeed = entityData.at("shotSpeed");
 }
-
 
 float Stats::getSpeed() const
 {
@@ -61,3 +62,14 @@ void Stats::setDamageMultiplier(float newDamageMultiplier)
 {
 	damageMultiplier = newDamageMultiplier;
 }
+
+float Stats::getShotDelay() const
+{
+	return shotDelay;
+}
+
+float Stats::getShotSpeed() const
+{
+	return shotSpeed;
+}
+
