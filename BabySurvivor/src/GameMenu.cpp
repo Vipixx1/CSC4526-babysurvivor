@@ -31,6 +31,8 @@ void GameMenu::updateUpgradeMenu()
 	upgradeLevel[3] = playerData.at("speedUpgrade");
 
 	playerMoney = playerData.at("money");
+
+	moneyText.setString(std::format("Money: {}", playerMoney));
 	
 	for (int i = 1; i < 5; i++) {
 		upgradeOptions[i].setString(std::format("{}{}/5", upgradeNames[i - 1], upgradeLevel[i - 1]));
@@ -102,6 +104,8 @@ GameMenu::GameMenu()
 	initializeText(baseHealth, "Health", 30, sf::Vector2f(380.f, 365.f), sf::Color::White);
 	initializeText(baseSpeed, "Speed", 30, sf::Vector2f(380.f, 420.f), sf::Color::White);
 
+	initializeText(moneyText, "Money: ", 30, sf::Vector2f(700.f, 500.f), sf::Color(255, 215, 0));
+
 	// Add the texts to the vector containing all texts
 	textVector.push_back(playButtonText);
 	textVector.push_back(settingsButtonText);
@@ -157,7 +161,6 @@ void GameMenu::renderMenu(sf::RenderWindow& gameWindow, int currentMenu)
 
 	case 4:
 		menuState = MenuState::inUpgradeMenu;
-		updateUpgradeMenu();
 		renderUpgradeMenu(gameWindow);
 		break;
 
@@ -217,9 +220,13 @@ void GameMenu::renderSettingMenu(sf::RenderWindow& gameWindow) const
 	gameWindow.display();
 }
 
-void GameMenu::renderUpgradeMenu(sf::RenderWindow& gameWindow) const
+void GameMenu::renderUpgradeMenu(sf::RenderWindow& gameWindow)
 {
+	updateUpgradeMenu();
+
 	gameWindow.clear(sf::Color(185, 119, 201));
+
+	gameWindow.draw(moneyText);
 	
 	for (const auto& upgrade : upgradeOptions)
 	{
@@ -475,8 +482,12 @@ int GameMenu::processUpgradeMenuEvent(sf::Event event, sf::RenderWindow& gameWin
 			upgradeLevel[currentUpgrade - 1]++;
 			playerMoney -= upgradeCost;
 			updateJson(currentUpgrade - 1);
-			updateUpgradeMenu();
 		}
+	}
+
+	if (event.key.code == sf::Keyboard::Enter && currentUpgrade == 0)
+	{
+		return currentSaveFile;
 	}
 
 	return -1;

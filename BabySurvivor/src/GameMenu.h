@@ -18,6 +18,7 @@ private:
 	sf::Text gameTitle;
 	sf::Text controlsText;
 	sf::Font font;
+	sf::Text moneyText;
 
 	bool insideOption{ false };
 
@@ -60,7 +61,7 @@ public:
 
 	void renderMainMenu(sf::RenderWindow& gameWindow) const;
 	void renderPlayMenu(sf::RenderWindow& gameWindow) const;
-	void renderUpgradeMenu(sf::RenderWindow& gameWindow) const;
+	void renderUpgradeMenu(sf::RenderWindow& gameWindow);
 	void renderSettingMenu(sf::RenderWindow& gameWindow) const;
 
 	int processMenuEvent(sf::Event event, sf::RenderWindow& gameWindow);
