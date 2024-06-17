@@ -15,12 +15,6 @@ enum class GameState {
 
 class Game {
 private:
-	std::vector<std::tuple<int, int>> resolutionVector{ std::make_tuple(1920, 1080),
-														std::make_tuple(1280, 800),
-														std::make_tuple(1024, 768) };
-
-	int currentResolution{ 0 };
-
 	sf::RenderWindow gameWindow;
 	sf::View view;
 
@@ -39,8 +33,6 @@ private:
 	Stage stage{ "stage_1" };
 
 	std::vector<std::unique_ptr<Collectible>> collectibles;
-
-	void changeResolution(int newResolutionIndex);
 
 	void processGeneralEvent(sf::Event event);
 	void processMenuEvent();

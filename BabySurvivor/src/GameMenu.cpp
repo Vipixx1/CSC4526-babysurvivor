@@ -48,13 +48,7 @@ GameMenu::GameMenu()
 	sf::Text playButtonText;
 	sf::Text settingsButtonText;
 	sf::Text exitButtonText;
-
-	sf::Text resolutionText;
-	sf::Text resolution1;
-	sf::Text resolution2;
-	sf::Text resolution3;
 	
-	sf::Text volumeText;
 	sf::Text volumeLevel0;
 	sf::Text volumeLevel1;
 	sf::Text volumeLevel2;
@@ -78,10 +72,6 @@ GameMenu::GameMenu()
 
 	initializeText(gameTitle, "Baby Survivor", 75, sf::Vector2f(300.f, 100.f), sf::Color(122, 103, 6));
 
-	initializeText(resolutionText, "Resolution:", 30, sf::Vector2f(380.f, 200.f), sf::Color::Yellow);
-	initializeText(resolution1, "1920x1080", 20, sf::Vector2f(550.f, 210.f), sf::Color::White);
-	initializeText(resolution2, "1280x800", 20, sf::Vector2f(660.f, 210.f), sf::Color::White);
-	initializeText(resolution3, "1024x768", 20, sf::Vector2f(760.f, 210.f), sf::Color::White);
 	initializeText(controlsText, "Controls:\nZQSD to move\nAutofire at the mouse\n\nPress esc to get back to the previous menu"
 		, 30, sf::Vector2f(380.f, 300.f), sf::Color::White);
 
@@ -89,7 +79,7 @@ GameMenu::GameMenu()
 	initializeText(saveFile2, "Save file 2", 30, sf::Vector2f(380.f, 255.f), sf::Color::White);
 	initializeText(saveFile3, "Save file 3", 30, sf::Vector2f(380.f, 310.f), sf::Color::White);
 
-	initializeText(volumeText, "Volume: ", 30, sf::Vector2f(380.f, 260.f), sf::Color::White);
+	initializeText(volumeText, "Volume: ", 30, sf::Vector2f(380.f, 260.f), sf::Color::Yellow);
 
 	initializeText(volumeLevel0, "0", 20, sf::Vector2f(500.f, 270.f), sf::Color::White);
 	initializeText(volumeLevel1, "1", 20, sf::Vector2f(520.f, 270.f), sf::Color::White);
@@ -111,10 +101,6 @@ GameMenu::GameMenu()
 	textVector.push_back(settingsButtonText);
 	textVector.push_back(exitButtonText);
 
-	currentResVector.push_back(resolution1);
-	currentResVector.push_back(resolution2);
-	currentResVector.push_back(resolution3);
-
 	saveFileVector.push_back(saveFile1);
 	saveFileVector.push_back(saveFile2);
 	saveFileVector.push_back(saveFile3);
@@ -125,9 +111,6 @@ GameMenu::GameMenu()
 	volumeLevelVector.push_back(volumeLevel3);
 	volumeLevelVector.push_back(volumeLevel4);
 	volumeLevelVector.push_back(volumeLevel5);
-
-	settingOptions.push_back(resolutionText);
-	settingOptions.push_back(volumeText);
 
 	upgradeOptions.push_back(play);
 	upgradeOptions.push_back(baseDamage);
@@ -200,15 +183,7 @@ void GameMenu::renderSettingMenu(sf::RenderWindow& gameWindow) const
 {
 	gameWindow.clear(sf::Color(128, 128, 128));
 
-	for (const auto& settingOption : settingOptions)
-	{
-		gameWindow.draw(settingOption);
-	}
-	
-	for (const auto& res : currentResVector)
-	{
-		gameWindow.draw(res);
-	}
+	gameWindow.draw(volumeText);
 
 	for (const auto& volume : volumeLevelVector)
 	{
@@ -259,8 +234,6 @@ int GameMenu::processMenuEvent(sf::Event event, sf::RenderWindow& gameWindow)
 		{
 			return processUpgradeMenuEvent(event, gameWindow);
 		}
-
-		return -1;
 	}
 	return -1;
 }
@@ -273,8 +246,6 @@ int GameMenu::processMainMenuEvent(sf::Event event, sf::RenderWindow& gameWindow
 
 		textVector[currentMainMenuButton - 1].setFillColor(sf::Color::White);
 		textVector[currentMainMenuButton].setFillColor(sf::Color::Yellow);
-
-		return -1;
 	}
 
 	if (event.key.code == sf::Keyboard::Up && currentMainMenuButton > 0)
@@ -283,20 +254,16 @@ int GameMenu::processMainMenuEvent(sf::Event event, sf::RenderWindow& gameWindow
 
 		textVector[currentMainMenuButton + 1].setFillColor(sf::Color::White);
 		textVector[currentMainMenuButton].setFillColor(sf::Color::Yellow);
-
-		return -1;
 	}
 
 	if (event.key.code == sf::Keyboard::Enter)
 	{
 		renderMenu(gameWindow, currentMainMenuButton);
-		return -1;
 	}
 
 	if (event.key.code == sf::Keyboard::Escape)
 	{
 		gameWindow.close();
-		return -1;
 	}
 	return -1;
 }
@@ -311,7 +278,7 @@ int GameMenu::processPlayMenuEvent(sf::Event event, sf::RenderWindow& gameWindow
 	if (event.key.code == sf::Keyboard::Escape)
 	{
 		renderMenu(gameWindow, 3);
-		return 6;
+		return 9;
 	}
 
 	if (event.key.code == sf::Keyboard::Down && currentSaveFile < 2)
@@ -337,73 +304,30 @@ int GameMenu::processSettingsMenuEvent(sf::Event event, sf::RenderWindow& gameWi
 {
 	if (event.key.code == sf::Keyboard::Enter && !insideOption)
 	{
-		if (currentSettingButton == 0)
-		{
-			settingOptions[0].setFillColor(sf::Color::White);
-			currentResVector[currentResolution].setFillColor(sf::Color::Yellow);
-		}
-
-		if (currentSettingButton == 1)
-		{
-			settingOptions[1].setFillColor(sf::Color::White);
-			volumeLevelVector[currentVolumeLevel].setFillColor(sf::Color::Yellow);
-		}
-		
+		volumeText.setFillColor(sf::Color::White);
+		volumeLevelVector[currentVolumeLevel].setFillColor(sf::Color::Yellow);
 		insideOption = true;
-
-		return -1;
 	}
 
 	if (event.key.code == sf::Keyboard::Enter && insideOption)
 	{
-		if (currentSettingButton == 0)
-		{
-			return currentResolution + 3;
-		}
-		else
-		{
-			return currentVolumeLevel + 7;
-		}
+			return currentVolumeLevel + 3;
 	}
 
-	if (event.key.code == sf::Keyboard::Right && insideOption)
+	if (event.key.code == sf::Keyboard::Right && insideOption && currentVolumeLevel < 5)
 	{
-		if (currentSettingButton == 0 && currentResolution < 2)
-		{
-			currentResolution++;
+		currentVolumeLevel++;
 
-			currentResVector[currentResolution - 1].setFillColor(sf::Color::White);
-			currentResVector[currentResolution].setFillColor(sf::Color::Yellow);
-		}
-
-		if (currentSettingButton == 1 && currentVolumeLevel < 5)
-		{
-			currentVolumeLevel++;
-
-			volumeLevelVector[currentVolumeLevel - 1].setFillColor(sf::Color::White);
-			volumeLevelVector[currentVolumeLevel].setFillColor(sf::Color::Yellow);
-		}
-		
+		volumeLevelVector[currentVolumeLevel - 1].setFillColor(sf::Color::White);
+		volumeLevelVector[currentVolumeLevel].setFillColor(sf::Color::Yellow);		
 	}
 
-	if (event.key.code == sf::Keyboard::Left && insideOption)
+	if (event.key.code == sf::Keyboard::Left && insideOption && currentVolumeLevel > 0)
 	{
-		if (currentSettingButton == 0 && currentResolution > 0)
-		{
-			currentResolution--;
+		currentVolumeLevel--;
 
-			currentResVector[currentResolution + 1].setFillColor(sf::Color::White);
-			currentResVector[currentResolution].setFillColor(sf::Color::Yellow);
-		}
-
-		if (currentSettingButton == 1 && currentVolumeLevel > 0)
-		{
-			currentVolumeLevel--;
-
-			volumeLevelVector[currentVolumeLevel + 1].setFillColor(sf::Color::White);
-			volumeLevelVector[currentVolumeLevel].setFillColor(sf::Color::Yellow);
-		}
-		
+		volumeLevelVector[currentVolumeLevel + 1].setFillColor(sf::Color::White);
+		volumeLevelVector[currentVolumeLevel].setFillColor(sf::Color::Yellow);	
 	}
 
 	if (event.key.code == sf::Keyboard::Escape)
@@ -411,42 +335,17 @@ int GameMenu::processSettingsMenuEvent(sf::Event event, sf::RenderWindow& gameWi
 		if (!insideOption)
 		{
 			renderMenu(gameWindow, 3);
-			return 6;
+			return 9;
 		}
 
 		if (insideOption)
 		{
-			if (currentSettingButton == 0)
-			{
-				currentResVector[currentResolution].setFillColor(sf::Color::White);
-			}
-			if (currentSettingButton == 1)
-			{
-				volumeLevelVector[currentVolumeLevel].setFillColor(sf::Color::White);
-			}
-
+			volumeLevelVector[currentVolumeLevel].setFillColor(sf::Color::White);
 			insideOption = false;
-			settingOptions[currentSettingButton].setFillColor(sf::Color::Yellow);
+			volumeText.setFillColor(sf::Color::Yellow);
 		}
 		
 	}
-
-	if (event.key.code == sf::Keyboard::Down && currentSettingButton < 1)
-	{
-		currentSettingButton++;
-
-		settingOptions[currentSettingButton - 1].setFillColor(sf::Color::White);
-		settingOptions[currentSettingButton].setFillColor(sf::Color::Yellow);
-	}
-
-	if (event.key.code == sf::Keyboard::Up && currentSettingButton > 0)
-	{
-		currentSettingButton--;
-
-		settingOptions[currentSettingButton + 1].setFillColor(sf::Color::White);
-		settingOptions[currentSettingButton].setFillColor(sf::Color::Yellow);
-	}
-
 	return -1;
 }
 

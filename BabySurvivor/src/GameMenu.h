@@ -19,13 +19,13 @@ private:
 	sf::Text controlsText;
 	sf::Font font;
 	sf::Text moneyText;
+	sf::Text volumeText;
 
 	bool insideOption{ false };
 
 	int currentMainMenuButton{ 0 };
 	int currentResolution{ 0 };
 	int currentSaveFile{ 0 };
-	int currentSettingButton{ 0 };
 	int currentVolumeLevel{ 0 };
 	int currentUpgrade{ 0 };
 
@@ -38,10 +38,8 @@ private:
 										   50, 150, 300, 500, 1000 };
 
 	std::vector<sf::Text> textVector;
-	std::vector<sf::Text> currentResVector;
 	std::vector<sf::Text> saveFileVector;
 	std::vector<sf::Text> volumeLevelVector;
-	std::vector<sf::Text> settingOptions;
 	std::vector<sf::Text> upgradeOptions;
 
 	void renderMenu(sf::RenderWindow& gameWindow, int currentMenu);

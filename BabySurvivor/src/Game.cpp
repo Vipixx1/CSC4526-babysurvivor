@@ -15,7 +15,7 @@ int startGame() {
 
 Game::Game()
 {
-	gameWindow.create(sf::VideoMode(std::get<0>(resolutionVector[currentResolution]), std::get<1>(resolutionVector[currentResolution])), "Baby Survivor");
+	gameWindow.create(sf::VideoMode(1920, 1080), "Baby Survivor");
 	view = gameWindow.getDefaultView();
 
 	font.loadFromFile("resources/Sansation.ttf");
@@ -32,12 +32,6 @@ void Game::loadPlayer(int saveFileNumber)
 	if (saveFileNumber == 0) { player = std::make_shared<Player>( "resources/Entity.json", "player1" ); }
 	if (saveFileNumber == 1) { player = std::make_shared<Player>( "resources/Entity.json", "player2" ); }
 	if (saveFileNumber == 2) { player = std::make_shared<Player>( "resources/Entity.json", "player3" ); }
-}
-
-void Game::changeResolution(int newResolutionIndex)
-{
-	gameWindow.create(sf::VideoMode(std::get<0>(resolutionVector[newResolutionIndex]), std::get<1>(resolutionVector[newResolutionIndex])), "Baby Survivor");
-	gameWindow.setFramerateLimit(60);
 }
 
 void Game::processGeneralEvent(sf::Event event)
@@ -77,22 +71,16 @@ void Game::processMenuEvent()
 			gameState = GameState::inGame;
 		}
 
-		// From 3 to 5: loading a save file and launching a game
-		if (returnValue >= 3 && returnValue < 6)
+		// From 3 to 8: loading a save file and launching a game
+		if (returnValue >= 3 && returnValue < 9)
 		{
-			changeResolution(returnValue - 3);
+			soundManager.changeVolume(returnValue - 3);
 		}
 
-		// 6 means we are going back to the main menu
-		if (returnValue == 6)
+		// 9 means we are going back to the main menu
+		if (returnValue == 9)
 		{
 			gameMenu.renderMainMenu(gameWindow);
-		}
-
-		// From 7 to 12 : changing the volume setting
-		if (returnValue >= 7 && returnValue < 13)
-		{
-			soundManager.changeVolume(returnValue - 7);
 		}
 	}
 }
