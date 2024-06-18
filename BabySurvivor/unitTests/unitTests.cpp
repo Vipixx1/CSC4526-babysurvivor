@@ -13,9 +13,9 @@ namespace Baby_Survivor_Test {
 
 	TEST(TestReadPlayer, TestAttributes) {
 		//Check all the attributes of the player one
-
+	
 		Player playerTest{ "resources/Entity.json", "player1"};
-
+	
 		EXPECT_EQ(playerTest.getMaxHealth(), 500);
 		EXPECT_EQ(playerTest.getDamage(), 35);
 		EXPECT_EQ(playerTest.getDamageMultiplier(), 1.0);
@@ -23,16 +23,16 @@ namespace Baby_Survivor_Test {
 		EXPECT_EQ(playerTest.getShotDelay(), 50);
 		EXPECT_EQ(playerTest.getShotSpeed(), 1000);
 	}
-
+	
 	TEST(TestReadPlayer, TestOtherPlayer) {
 		//Check that if we select the second player, its file is selected
-
+	
 		
 		Game game;
 		game.loadPlayer(1);
-
+	
 		std::shared_ptr<Player> playerTest = game.getGamePlayer();
-
+	
 		EXPECT_EQ(playerTest->getMaxHealth(), 300);
 		EXPECT_EQ(playerTest->getDamage(), 20);
 		EXPECT_EQ(playerTest->getDamageMultiplier(), 1.0);
@@ -40,13 +40,13 @@ namespace Baby_Survivor_Test {
 		EXPECT_EQ(playerTest->getShotDelay(), 30);
 		EXPECT_EQ(playerTest->getShotSpeed(), 1300);
 	}
-
+	
 	TEST(TestReadEnemy, TestAttributes) {
 		//Check all the attributes of several enemies types
-
+	
 		// The player is needed to instantiate an enemy as he requiers a target
 		Player playerTest{ "resources/Entity.json", "player1" };
-
+	
 		Enemy enemyTest1{ "resources/Entity.json", "ghost_v1", playerTest };
 		Enemy enemyTest2{ "resources/Entity.json", "tomato_v1", playerTest };
 		Enemy enemyTest3{ "resources/Entity.json", "doll_v1", playerTest };
@@ -103,7 +103,7 @@ namespace Baby_Survivor_Test {
 		// We move the player to the heal collectible
 		playerTest->setPosition(position);
 
-		stage.collectibleCheckCollision();
+		stage.collectibleCheckCollisions();
 
 		// We check if the player healed for 10 hp
 		EXPECT_EQ(playerTest->getCurrentHealth(), playerTest->getMaxHealth() - 40);
@@ -114,7 +114,7 @@ namespace Baby_Survivor_Test {
 		// We move the player to the second test position
 		playerTest->setPosition(position2);
 
-		stage.collectibleCheckCollision();
+		stage.collectibleCheckCollisions();
 
 		// We check if the player gained the money and experience
 		EXPECT_EQ(playerTest->getMoney(), prevMoney + 1);
@@ -155,7 +155,7 @@ namespace Baby_Survivor_Test {
 
 		// We do the same for the enemy and its bullet
 		enemyTest.setPosition(position2);
-		stage.addEnemy(enemyTest);
+		stage.addEnemy(std::move(enemyTest));
 		stage.enemyProjectileCheckCollisions(enemyProjectile);
 		EXPECT_EQ(enemyTest.getCurrentHealth(), enemyTest.getMaxHealth());
 
@@ -166,7 +166,7 @@ namespace Baby_Survivor_Test {
 
 		// We do the same for the enemy
 		enemyTest.setPosition(allyProjectile.getPosition());
-		stage.addEnemy(enemyTest);
+		stage.addEnemy(std::move(enemyTest));
 		stage.playerProjectileCheckCollisions(allyProjectile);
 		EXPECT_EQ(stage.getEnemyHealth(1), enemyTest.getMaxHealth() - 10);
 	}

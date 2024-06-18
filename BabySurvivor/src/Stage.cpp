@@ -338,7 +338,7 @@ void Stage::enemyPlayerCheckCollisions(Enemy const& enemy) const
 	}
 }
 
-void Stage::enemyProjectileCheckCollisions(Projectile& projectile) const
+void Stage::enemyProjectileCheckCollisions(Projectile& projectile)
 {
 	if (player->getActive() && player->getTeam() != projectile.getTeam() && projectile.getGlobalBounds().intersects(player->getGlobalBounds())) {
 		player->takeDamage(projectile.getDamage());
@@ -399,9 +399,9 @@ void Stage::addCollectible(Collectible newCollectible)
 	collectibles.push_back(std::make_unique<Collectible>(newCollectible));
 }
 
-void Stage::addEnemy(Enemy newEnemy)
+void Stage::addEnemy(Enemy&& newEnemy)
 {
-	enemies.push_back(std::make_unique<Enemy>(newEnemy));
+	enemies.push_back(std::make_unique<Enemy>(std::move(newEnemy)));
 }
 
 float Stage::getEnemyHealth(int enemyIndex)

@@ -57,7 +57,7 @@ public:
 	void playerAutoFire(sf::RenderWindow const& gameWindow);	
 
 	void enemyPlayerCheckCollisions(Enemy const& enemy) const;
-	void enemyProjectileCheckCollisions(Projectile& projectile) const;
+	void enemyProjectileCheckCollisions(Projectile& projectile);
 	void playerProjectileCheckCollisions(Projectile& projectile);
 	void collectibleCheckCollisions();
 
@@ -67,8 +67,8 @@ public:
 
 	void changeVolume(int newVolumeLevel);
 
-	// Method used for testing purposes
+	/* Method used for testing purposes */
 	void addCollectible(Collectible newCollectible);
-	void addEnemy(Enemy newEnemy);
+	void addEnemy(Enemy&& newEnemy);
 	float getEnemyHealth(int enemyIndex);
 };

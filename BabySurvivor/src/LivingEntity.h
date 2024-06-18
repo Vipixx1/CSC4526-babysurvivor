@@ -16,7 +16,6 @@ public:
 	LivingEntity(const std::string& filePath, const std::string& livingEntityName, bool isAlly);
 
 	std::vector<std::unique_ptr<Projectile>>& getProjectiles();
-	std::unique_ptr<Projectile> findInactiveProjectile();
 
 	float getMaxHealth() const;
 	void setMaxHealth(float newMaxHealth);
