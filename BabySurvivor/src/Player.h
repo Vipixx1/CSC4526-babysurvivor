@@ -12,6 +12,8 @@ private:
 	int level{ 1 };
 	float experience{ 0 };
 
+	std::string saveFileName;
+
 	int money;
 
 	std::array<float, 20> experienceRequierement;
@@ -36,6 +38,8 @@ public:
 	float getExperienceRequierment() const;
 	int getMoney() const;
 
+	std::string getSaveFileName() const;
+
 	int getLevel() const;
 
 	bool takeDamage(float damageValue) override;
@@ -44,4 +48,5 @@ public:
 	void checkBounds(sf::Vector2f stageSize) override;
 	void handleInput(sf::Keyboard::Key key, bool isPressed);
 	void shoot(sf::Vector2f projDirection) override;
+
 };

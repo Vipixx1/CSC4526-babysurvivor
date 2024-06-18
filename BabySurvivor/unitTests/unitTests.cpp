@@ -129,8 +129,8 @@ namespace Baby_Survivor_Test {
 		sf::Vector2f position{ 100.f, 100.f };
 		sf::Vector2f position2{ 200.f, 200.f };
 
-		Projectile allyProjectile{ "resources/Entity.json", 10, true };
-		Projectile enemyProjectile{ "resources/Entity.json", 10, false };
+		Projectile allyProjectile{ "resources/Entity.json", "projectileAlly", 10, true};
+		Projectile enemyProjectile{ "resources/Entity.json", "projectileEnemy", 10, false };
 		allyProjectile.setPosition(position);
 		allyProjectile.setDirection(sf::Vector2f(0.f, 0.f));
 		enemyProjectile.setPosition(position2);

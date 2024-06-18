@@ -9,7 +9,7 @@
   "player1": {
     "length": 120,
     "height": 160,
-    "baseHealth": 500,
+    "baseHealth": 50,
     "baseDamage": 35,
     "damageMultiplier": 1.0,
     "baseSpeed": 300,

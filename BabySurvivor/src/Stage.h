@@ -43,12 +43,14 @@ private:
 	sf::Sprite sprite{};
 	sf::Texture texture;
 
+	void updateJsonMoney() const;
+
 public:
 	explicit Stage(std::string_view name);
 
 	void handleInput(sf::Keyboard::Key key, bool isPressed);
 
-	void update(sf::Time elapsedTime, sf::RenderWindow const& gameWindow);
+	int update(sf::Time elapsedTime, sf::RenderWindow const& gameWindow);
 	void updatePlayer(sf::Time elapsedTime, sf::RenderWindow const& gameWindow);
 	void updateEnemies(sf::Time elapsedTime);
 	void updateCollectibles(sf::Time elapsedTime);

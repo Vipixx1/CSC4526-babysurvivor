@@ -1,6 +1,5 @@
 #include "Game.h"
 #include "StringHelpers.hpp"
-#include <iostream>
 #include <fstream>
 
 using json = nlohmann::json;
@@ -26,11 +25,6 @@ Game::Game()
 
 	gameState = GameState::inMenu;
 }
-
-//std::shared_ptr<Player> Game::getGamePlayer()
-//{
-//	return player;
-//}
 
 std::unique_ptr<Player> Game::loadPlayer(int saveFileNumber)
 {
@@ -134,6 +128,15 @@ void Game::run()
 				break;
 			case inUpgradeMenu:
 				gameMenu.renderUpgradeMenu(gameWindow);
+				break;
+			case inGameOverMenu:
+				gameMenu.renderGameOverMenu(gameWindow);
+				break;
+			case inWinMenu:
+				gameMenu.renderWinMenu(gameWindow);
+				break;
+			default:
+				break;
 			}
 		}
 
@@ -149,7 +152,21 @@ void Game::run()
 			{
 				timeSinceLastUpdate -= TimePerFrame;
 
-				stage.update(TimePerFrame, gameWindow);
+				int returnValue = stage.update(TimePerFrame, gameWindow);
+
+				// If the value returned by stage.update is 1 then the player died
+				if (returnValue == 1)
+				{
+					gameState = GameState::inMenu;
+					gameMenu.renderGameOverMenu(gameWindow);
+				}
+
+				// If the return value is 2 then the player won
+				else if (returnValue == 2)
+				{
+					gameState = GameState::inMenu;
+					gameMenu.renderWinMenu(gameWindow);
+				}
 
 				view.reset(stage.updateView(gameWindow));
 				gameWindow.setView(view);

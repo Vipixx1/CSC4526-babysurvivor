@@ -1,7 +1,6 @@
 #include "GameMenu.h"
 #include "json.hpp"
 #include <fstream>
-#include <iostream>
 
 using json = nlohmann::json;
 
@@ -95,6 +94,9 @@ GameMenu::GameMenu()
 
 	initializeText(moneyText, "Money: ", 30, sf::Vector2f(700.f, 500.f), sf::Color(255, 215, 0));
 
+	initializeText(gameOverText, "Game over !", 75, sf::Vector2f(380.f, 200.f), sf::Color::Red);
+	initializeText(winText, "You win !", 75, sf::Vector2f(380.f, 200.f), sf::Color(255, 215, 0));
+
 	// Add the texts to the vector containing all texts
 	textVector.push_back(playButtonText);
 	textVector.push_back(settingsButtonText);
@@ -145,6 +147,13 @@ void GameMenu::renderMenu(sf::RenderWindow& gameWindow, int currentMenu)
 		menuState = MenuState::inUpgradeMenu;
 		renderUpgradeMenu(gameWindow);
 		break;
+	
+	case 5:
+		menuState = MenuState::inGameOverMenu;
+		renderGameOverMenu(gameWindow);
+	case 6:
+		menuState = MenuState::inWinMenu;
+		renderWinMenu(gameWindow);
 
 	default:
 		break;
@@ -210,6 +219,22 @@ void GameMenu::renderUpgradeMenu(sf::RenderWindow& gameWindow)
 	gameWindow.display();
 }
 
+void GameMenu::renderGameOverMenu(sf::RenderWindow& gameWindow)
+{
+	menuState = MenuState::inGameOverMenu;
+	gameWindow.clear(sf::Color(250, 84, 72));
+	gameWindow.draw(gameOverText);
+	gameWindow.display();
+}
+
+void GameMenu::renderWinMenu(sf::RenderWindow& gameWindow)
+{
+	menuState = MenuState::inWinMenu;
+	gameWindow.clear(sf::Color(59, 179, 50));
+	gameWindow.draw(winText);
+	gameWindow.display();
+}
+
 int GameMenu::processMenuEvent(sf::Event event, sf::RenderWindow& gameWindow)
 {
 	if (event.type == sf::Event::KeyPressed)
@@ -232,6 +257,11 @@ int GameMenu::processMenuEvent(sf::Event event, sf::RenderWindow& gameWindow)
 		if (menuState == inUpgradeMenu)
 		{
 			return processUpgradeMenuEvent(event, gameWindow);
+		}
+
+		if (menuState == inGameOverMenu || menuState == inWinMenu) 
+		{
+			return processEndMenuEvent(event, gameWindow);
 		}
 	}
 	return -1;
@@ -391,6 +421,16 @@ int GameMenu::processUpgradeMenuEvent(sf::Event event, sf::RenderWindow& gameWin
 	return -1;
 }
 
+int GameMenu::processEndMenuEvent(sf::Event event, sf::RenderWindow& gameWindow) const
+{
+	if (event.key.code == sf::Keyboard::Escape)
+	{
+		gameWindow.close();
+	}
+
+	return -1;
+}
+
 void GameMenu::updateJson(int changedUpgrade)
 {
 	std::string player = std::format("player{}", currentSaveFile + 1);
@@ -424,7 +464,6 @@ void GameMenu::updateJson(int changedUpgrade)
 	f.close();
 
 	allData[player]["money"] = playerMoney;
-	std::cout << upgradeLevel[changedUpgrade] << std::endl;
 	allData[player][statName] = static_cast<float>(allData.at("upgradeValue").at(upgradeName)[upgradeLevel[changedUpgrade] - 1]);
 
 	allData[player][upgradeName] = static_cast<int>(allData.at(player).at(upgradeName)) + 1;

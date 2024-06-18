@@ -1,12 +1,12 @@
 #include "Player.h"
 #include <json.hpp>
 #include <fstream>
-#include <iostream>
 
 using json = nlohmann::json;
 
 Player::Player(const std::string& filePath, const std::string& saveFile) :
-	LivingEntity{ filePath, saveFile, true }
+	LivingEntity{ filePath, saveFile, true },
+	saveFileName{saveFile}
 {
 	for (int i = 0; i < 15; i++)
 	{
@@ -28,8 +28,6 @@ Player::Player(const std::string& filePath, const std::string& saveFile) :
 
 void Player::levelUp()
 {
-	std::cout << "Level up!" << std::endl;
-
 	// Does the actual level up and update the experience requierment for the next level
 	level++;
 
@@ -98,8 +96,15 @@ bool Player::takeDamage(float damageValue)
 		}
 	}
 
-	if (LivingEntity::takeDamage(damageValue)) {
+	if (getCurrentHealth() - damageValue <= 0)
+	{
+		setCurrentHealth(0);
 		return true;
+	}
+
+	else 
+	{
+		setCurrentHealth(getCurrentHealth() - damageValue);
 	}
 
 	isInvulnerable = true;
@@ -200,4 +205,9 @@ int Player::getLevel() const
 int Player::getMoney() const
 {
 	return money;
+}
+
+std::string Player::getSaveFileName() const
+{
+	return saveFileName;
 }

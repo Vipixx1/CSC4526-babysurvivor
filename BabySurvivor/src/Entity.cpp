@@ -1,6 +1,5 @@
 #include "Entity.h"
 #include <fstream>
-#include <iostream>
 
 using json = nlohmann::json;
 
@@ -18,9 +17,6 @@ Entity::Entity(const std::string& filePath, const std::string& entityName)
 	entityBox.setSize(sf::Vector2f(length, height));
 
 	spriteFile = entityData.at("sprite");
-
-	/* test pour afficher le sprite */
-	std::cout << spriteFile << std::endl;
 
 	texture.loadFromFile(spriteFile);
 	sprite.setTexture(texture);

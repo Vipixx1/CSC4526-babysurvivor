@@ -34,6 +34,3 @@ public:
 
 	std::optional<std::unique_ptr<Collectible>> dropCollectible() const;
 };
-
-
-

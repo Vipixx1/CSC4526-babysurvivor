@@ -8,7 +8,9 @@ enum class MenuState {
 	inMainMenu,
 	inPlayMenu,
 	inSettingsMenu,
-	inUpgradeMenu
+	inUpgradeMenu,
+	inGameOverMenu,
+	inWinMenu
 };
 
 class GameMenu {
@@ -20,6 +22,8 @@ private:
 	sf::Font font;
 	sf::Text moneyText;
 	sf::Text volumeText;
+	sf::Text gameOverText;
+	sf::Text winText;
 
 	bool insideOption{ false };
 
@@ -51,6 +55,7 @@ private:
 	int processPlayMenuEvent(sf::Event event, sf::RenderWindow& gameWindow);
 	int processSettingsMenuEvent(sf::Event event, sf::RenderWindow& gameWindow);
 	int processUpgradeMenuEvent(sf::Event event, sf::RenderWindow& gameWindow);
+	int processEndMenuEvent(sf::Event event, sf::RenderWindow& gameWindow) const;
 
 public:
 	explicit GameMenu();
@@ -59,6 +64,8 @@ public:
 	void renderPlayMenu(sf::RenderWindow& gameWindow) const;
 	void renderUpgradeMenu(sf::RenderWindow& gameWindow);
 	void renderSettingMenu(sf::RenderWindow& gameWindow) const;
+	void renderGameOverMenu(sf::RenderWindow& gameWindow);
+	void renderWinMenu(sf::RenderWindow& gameWindow);
 
 	int processMenuEvent(sf::Event event, sf::RenderWindow& gameWindow);
 

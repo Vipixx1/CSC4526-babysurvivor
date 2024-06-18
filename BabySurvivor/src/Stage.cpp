@@ -1,6 +1,6 @@
 #include "Stage.h"
+#include "json.hpp"
 #include <fstream>
-#include <iostream>
 
 using json = nlohmann::json;
 
@@ -102,8 +102,38 @@ void Stage::handleInput(sf::Keyboard::Key key, bool isPressed)
 	player->handleInput(key, isPressed);
 }
 
-void Stage::update(sf::Time elapsedTime, sf::RenderWindow const& gameWindow)
+void Stage::updateJsonMoney() const
 {
+	int newMoney = player->getMoney();
+	std::string saveFileName = player->getSaveFileName();
+
+	std::ifstream f("resources/Entity.json");
+	json allData = json::parse(f);
+	f.close();
+
+	allData[saveFileName]["money"] = newMoney;
+
+	std::ofstream fout("resources/Entity.json");
+	fout << allData.dump(4);
+
+	fout.flush();
+	fout.close();
+}
+
+int Stage::update(sf::Time elapsedTime, sf::RenderWindow const& gameWindow)
+{
+	if (player->getCurrentHealth() <= 0)
+	{
+		updateJsonMoney();
+		return 1;
+	}
+
+	if (currentWaveNumber == totalWaveNumber && enemies.empty())
+	{
+		updateJsonMoney();
+		return 2;
+	}
+
 	/* Spawning the Enemies */
 	if (isWaveBeginning)
 	{
@@ -158,6 +188,8 @@ void Stage::update(sf::Time elapsedTime, sf::RenderWindow const& gameWindow)
 
 	/* Update the collectibles */
 	updateCollectibles(elapsedTime);
+
+	return -1;
 }
 
 void Stage::updatePlayer(sf::Time elapsedTime, sf::RenderWindow const& gameWindow) 

@@ -1,5 +1,4 @@
 #include "Projectile.h"
-#include <iostream>
 
 Projectile::Projectile(const std::string& filePath, const std::string& entity, float damage, bool isAlly) :
 	Entity{ filePath, entity },

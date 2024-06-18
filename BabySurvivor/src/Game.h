@@ -4,7 +4,6 @@
 #include "Player.h"
 #include "Stage.h"
 #include "GameMenu.h"
-#include "SoundManager.h"
 
 int startGame();
 
@@ -27,7 +26,8 @@ private:
 	GameState gameState;
 	GameMenu gameMenu;
 
-	//std::shared_ptr<Player> player;
+	bool gameOver{ false };
+
 	Stage stage{ "stage_1" };
 
 	std::vector<std::unique_ptr<Collectible>> collectibles;
