@@ -9,6 +9,10 @@ private:
 	float height;
 	bool isActive = true;
 
+	std::string spriteFile;
+	sf::Sprite sprite{};
+	sf::Texture texture;
+
 public:
 	explicit Entity(const std::string& filePath, const std::string& entityName);
 	Entity() = default;

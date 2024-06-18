@@ -14,7 +14,6 @@ private:
 	float value;
 
 public:
-
 	explicit Collectible(const std::string& filePath, const std::string& entityName, CollectibleType type, float value);
 	void update(sf::Time elapsedTime) override;
 

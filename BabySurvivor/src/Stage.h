@@ -32,6 +32,7 @@ private:
 
 	sf::Text levelText;
 	sf::Text moneyText;
+	sf::Text waveText;
 
 	sf::Text xpText;
 	sf::RectangleShape xpBar;
@@ -44,6 +45,8 @@ private:
 
 public:
 	explicit Stage(std::string_view name);
+
+	void handleInput(sf::Keyboard::Key key, bool isPressed);
 
 	void update(sf::Time elapsedTime, sf::RenderWindow const& gameWindow);
 	void updatePlayer(sf::Time elapsedTime, sf::RenderWindow const& gameWindow);
@@ -68,6 +71,9 @@ public:
 	void changeVolume(int newVolumeLevel);
 
 	/* Method used for testing purposes */
+	sf::Vector2f getSize();
+	std::vector<std::unique_ptr<Enemy>>& getEnemies();
+	int getCurrentWave() const;
 	void addCollectible(Collectible newCollectible);
 	void addEnemy(Enemy&& newEnemy);
 	float getEnemyHealth(int enemyIndex);

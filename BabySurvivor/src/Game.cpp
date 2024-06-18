@@ -27,16 +27,18 @@ Game::Game()
 	gameState = GameState::inMenu;
 }
 
-std::shared_ptr<Player> Game::getGamePlayer()
-{
-	return player;
-}
+//std::shared_ptr<Player> Game::getGamePlayer()
+//{
+//	return player;
+//}
 
-void Game::loadPlayer(int saveFileNumber)
+std::unique_ptr<Player> Game::loadPlayer(int saveFileNumber)
 {
-	if (saveFileNumber == 0) { player = std::make_shared<Player>( "resources/Entity.json", "player1" ); }
-	if (saveFileNumber == 1) { player = std::make_shared<Player>( "resources/Entity.json", "player2" ); }
-	if (saveFileNumber == 2) { player = std::make_shared<Player>( "resources/Entity.json", "player3" ); }
+	if (saveFileNumber == 0) { return std::make_unique<Player>( "resources/Entity.json", "player1" ); }
+	if (saveFileNumber == 1) { return std::make_unique<Player>( "resources/Entity.json", "player2" ); }
+	if (saveFileNumber == 2) { return std::make_unique<Player>( "resources/Entity.json", "player3" ); }
+
+	return std::make_unique<Player>("resources/Entity.json", "player1");
 }
 
 void Game::processGeneralEvent(sf::Event event)
@@ -70,8 +72,8 @@ void Game::processMenuEvent()
 		{
 			// LOAD THE GAME HERE...
 			//stage = Stage{ "stage_1" };
-			loadPlayer(returnValue);
-			stage.setPlayer(player);
+			auto player = loadPlayer(returnValue);
+			stage.setPlayer(std::move(player));
 
 			gameState = GameState::inGame;
 		}
@@ -98,10 +100,10 @@ void Game::processInGameEvent()
 	{
 		processGeneralEvent(event);
 		if (event.type == sf::Event::KeyPressed)
-			player->handleInput(event.key.code, true);
+			stage.handleInput(event.key.code, true);
 
 		if (event.type == sf::Event::KeyReleased)
-			player->handleInput(event.key.code, false);
+			stage.handleInput(event.key.code, false);
 	}
 }
 

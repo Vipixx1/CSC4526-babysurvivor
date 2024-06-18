@@ -27,7 +27,7 @@ private:
 	GameState gameState;
 	GameMenu gameMenu;
 
-	std::shared_ptr<Player> player;
+	//std::shared_ptr<Player> player;
 	Stage stage{ "stage_1" };
 
 	std::vector<std::unique_ptr<Collectible>> collectibles;
@@ -42,6 +42,6 @@ public:
 	void run();
 	
 	// Functions needed for testing purposes
-	void loadPlayer(int saveFileNumber);
+	std::unique_ptr<Player> loadPlayer(int saveFileNumber);
 	std::shared_ptr<Player> getGamePlayer();
 };
