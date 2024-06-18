@@ -7,85 +7,143 @@ skinparam class {
   BorderColor Black
 }
 
-class Main {
- + main()
+class myMain {
+ + myMain()
 }
 
 class Game {
- - saveFile : JSON file
- - money
- + renderEntities()
- + renderCollectibles()
- + renderProjectiles()
- + update()
+ - gameState : GameState
+ - stage: Stage
+ - gameMenu : gameMenu
+ + run()
+}
+
+enum GameState <<enum>> {
+ - inGame
+ - inMenu
+}
+
+class GameMenu {
+ - menuState : MenuState
+ + renderMainMenu()
+ + renderSettingMenu()
+ + renderPlayMenu()
+ + renderUpgradeMenu()
+ + processMenuEvent()
+}
+
+enum MenuState <<enum>> {
+ - inMainMenu
+ - inPlayMenu
+ - inSettingsMenu
+ - inUpgradeMenu
 }
 
 class Stage {
- - size
- - waveNumber
- + spawnEnemy(waveNumber)
- + renderStage()
+ - size : sf::Vector2f
+ - name : string
+ - player : std::shared_ptr<Player>
+ - enemies : std::unique_ptr<Enemy>
+ - collectibles : std::unique_ptr<Collectible>
+ + update()
+ + checkColision()
+ + render()
 }
 
 class Entity {
- - stats: Stats
- - coords : Vector2f
- + shoot()
- + takeDamage()
- + kill()
+ - entityBox : sf::RectangleShape
+ - length : float
+ - height : float
+ + moveEntity()
 }
 
 class Stats {
- - baseHealth
- - currentHealth
- - baseDamage
- - baseSpeed
- - damageMultiplier
- - ...
+ - baseHealth : float
+ - currentHealth : float
+ - baseDamage : float
+ - damageMultiplier : float
+ - baseSpeed : float
+ - shotDelay : float
+ - shotSpeed : float
 }
 
 class Player {
- - level
+ - level : int
+ - experience : float
+ - money : int
  + levelUp()
+ + takeDamage()
+ + render()
+ + update()
+ + shoot()
 }
 
 class Enemy {
+ - enemyType : string
+ - movementPatern : string
+ - shootingPatern : string
+ - target : sf::Entity
+ + update()
+ + checkBounds()
+ + shoot()
+ + dropCollectible()
 }
-
 
 class Projectile {
  - isAlly : bool
- - damage
- - coords : Vector2f
+ - damage : float
+ - direction: sf::Vector2f
+ + update()
 }
 
 class Collectible {
- + collect()
- + drop()
+ - type : CollectibleType
+ - value : float
+ + getCollectibleType()
+ + getCollectibleValue()
 }
 
-class Money {}
+enum CollectibleType <<enum>> {
+ - experience
+ - health
+ - money
+}
 
-class Experience {}
+class LivingEntity {
+ - stats : Stats
+ - isAlly : bool
+ - projectiles : std::shared_ptr<Projectile>
+ + takeDamage()
+ + shoot()
+}
 
-class Heal {}
+class SoundManager {
+ - soundBuffers : std::vector<sf::SoundBuffer>
+ - sounds : std::vector<sf::Sound>
+ + playSound()
+ + changeVolume()
 
 'Liens entre les classes'
 
-Main --> Game
+myMain --> Game
+
 Game -- Stage
-Game --> Entity
-Game --> Collectible
-Game --> Projectile
-Entity <|-- Enemy
-Entity <|-- Player
-Stats <-- Entity
-Projectile -- Player
-Projectile -- Enemy
-Collectible -- Player
-Collectible -- Enemy
-Collectible  <|-- Money
-Collectible  <|-- Heal
-Collectible  <|-- Experience
+Game -- GameMenu
+
+Entity <|-- LivingEntity
+Entity <|-- Projectile
+Entity <|-- Collectible
+
+LivingEntity <|-- Player
+LivingEntity <|-- Enemy
+
+Stage --> Player
+Stage --> "0..n" Enemy
+Stage --> "0..n" Collectible
+Stage -- SoundManager
+
+Projectile "0..n" -- LivingEntity
+
+LivingEntity --> Stats
 
 @enduml
