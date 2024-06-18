@@ -2,6 +2,7 @@
 #include "LivingEntity.h"
 #include "Collectible.h"
 #include <string>
+#include <memory>
 
 class Enemy : public LivingEntity {
 private:
@@ -31,7 +32,7 @@ public:
 
 	void shoot(sf::Vector2f projDirection) override;
 
-	std::optional<Collectible> dropCollectible() const;
+	std::optional<std::unique_ptr<Collectible>> dropCollectible() const;
 };
 
 

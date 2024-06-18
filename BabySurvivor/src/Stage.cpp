@@ -51,15 +51,21 @@ void Stage::renderLevelMoney(sf::RenderWindow& gameWindow)
 	levelText.setString(std::format("Level: {}", player->getLevel()));
 	levelText.setCharacterSize(30);
 	levelText.setFillColor(sf::Color::Black);
-	levelText.setPosition(sf::Vector2f(x + 750, y - 480));
+	levelText.setPosition(sf::Vector2f(x + 750, y - 500));
+
+	waveText.setString(std::format("Wave: {}/{}", currentWaveNumber, totalWaveNumber));
+	waveText.setCharacterSize(30);
+	waveText.setFillColor(sf::Color::Black);
+	waveText.setPosition(sf::Vector2f(x, y - 500));
 
 	moneyText.setString(std::format("Money: {}", player->getMoney()));
 	moneyText.setCharacterSize(30);
 	moneyText.setFillColor(sf::Color::Black);
-	moneyText.setPosition(sf::Vector2f(x + 750, y - 440));
+	moneyText.setPosition(sf::Vector2f(x + 750, y - 460));
 
 	gameWindow.draw(levelText);
 	gameWindow.draw(moneyText);
+	gameWindow.draw(waveText);
 }
 
 void Stage::changeVolume(int newVolumeLevel)
@@ -81,13 +87,19 @@ Stage::Stage(std::string_view name) : name{ name }
 	texture.loadFromFile("resources/sprites/floor.png");
 	sprite.setTexture(texture);
 	sprite.setPosition(sf::Vector2f(0, 0));
-	sprite.setScale(sf::Vector2f(size.x / texture.getSize().x, size.y / texture.getSize().y));
+	sprite.setScale(sf::Vector2f(size.x / static_cast<float>(texture.getSize().x), size.y / static_cast<float>(texture.getSize().y)));
 
 	font.loadFromFile("resources/Sansation.ttf");
 	xpText.setFont(font);
 	hpText.setFont(font);
 	moneyText.setFont(font);
 	levelText.setFont(font);
+	waveText.setFont(font);
+}
+
+void Stage::handleInput(sf::Keyboard::Key key, bool isPressed)
+{
+	player->handleInput(key, isPressed);
 }
 
 void Stage::update(sf::Time elapsedTime, sf::RenderWindow const& gameWindow)
@@ -351,9 +363,9 @@ void Stage::playerProjectileCheckCollisions(Projectile& projectile) {
 		if (enemy->getActive() && enemy->getTeam() != projectile.getTeam() && projectile.getGlobalBounds().intersects(enemy->getGlobalBounds())) {
 			projectile.setActive(false);
 			if (enemy->takeDamage(projectile.getDamage())) { // takeDamage returns true if the enemy is dead
-				if (player->giveExperience(3.f)) { soundManager.playSound(4); }
-				if (std::optional<Collectible> dropedCollectible = enemy->dropCollectible(); dropedCollectible.has_value()) {
-					collectibles.push_back(std::make_unique<Collectible>(dropedCollectible.value()));
+				if (player->giveExperience(2.f)) { soundManager.playSound(4); }
+				if (std::optional<std::unique_ptr<Collectible>> dropedCollectible = enemy->dropCollectible(); dropedCollectible.has_value()) {
+					collectibles.push_back(std::move(dropedCollectible.value()));
 				}
 			}
 		}
@@ -394,6 +406,8 @@ void Stage::collectibleCheckCollisions() {
 	}
 }
 
+
+
 void Stage::addCollectible(Collectible newCollectible)
 {
 	collectibles.push_back(std::make_unique<Collectible>(newCollectible));
@@ -407,4 +421,19 @@ void Stage::addEnemy(Enemy&& newEnemy)
 float Stage::getEnemyHealth(int enemyIndex)
 {
 	return enemies[enemyIndex].get()->getCurrentHealth();
+}
+
+sf::Vector2f Stage::getSize()
+{
+	return size;
+}
+
+std::vector<std::unique_ptr<Enemy>>& Stage::getEnemies()
+{
+	return enemies;
+}
+
+int Stage::getCurrentWave() const
+{
+	return currentWaveNumber;
 }

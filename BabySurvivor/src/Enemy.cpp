@@ -150,7 +150,7 @@ std::optional<CollectibleType> Enemy::getRandomCollectible() const
 		
 }
 
-std::optional<Collectible> Enemy::dropCollectible() const
+std::optional<std::unique_ptr<Collectible>> Enemy::dropCollectible() const
 {
 	using enum CollectibleType;
 
@@ -169,17 +169,17 @@ std::optional<Collectible> Enemy::dropCollectible() const
 		{
 		case experience:
 			collectibleName = "experience";
-			collectibleValue = 10.f;
+			collectibleValue = 5.f;
 			break;
 
 		case health:
 			collectibleName = "health";
-			collectibleValue = 50.f;
+			collectibleValue = 20.f;
 			break;
 
 		case money:
 			collectibleName = "money";
-			collectibleValue = 1.f;
+			collectibleValue = 5.f;
 			break;
 
 		default:
@@ -187,10 +187,10 @@ std::optional<Collectible> Enemy::dropCollectible() const
 			break;
 		}
 
-		Collectible newCollectible{ "resources/Entity.json" , collectibleName, collectibleType.value(), collectibleValue};
-		newCollectible.setPosition(getPosition());
+		auto newCollectible = std::make_unique<Collectible>( "resources/Entity.json" , collectibleName, collectibleType.value(), collectibleValue);
+		newCollectible->setPosition(getPosition());
 
-		return newCollectible;
+		return std::move(newCollectible);
 	}
 }
 

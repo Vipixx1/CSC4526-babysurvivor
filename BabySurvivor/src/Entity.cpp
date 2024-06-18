@@ -16,6 +16,16 @@ Entity::Entity(const std::string& filePath, const std::string& entityName)
 
 	entityBox.setFillColor(sf::Color::White);
 	entityBox.setSize(sf::Vector2f(length, height));
+
+	spriteFile = entityData.at("sprite");
+
+	/* test pour afficher le sprite */
+	std::cout << spriteFile << std::endl;
+
+	texture.loadFromFile(spriteFile);
+	sprite.setTexture(texture);
+	sprite.setPosition(sf::Vector2f(0, 0));
+	sprite.setScale(sf::Vector2f(entityBox.getSize().x / static_cast<float>(texture.getSize().x), entityBox.getSize().y / static_cast<float>(texture.getSize().y)));
 }
 
 sf::Vector2f Entity::getPosition() const
@@ -26,6 +36,7 @@ sf::Vector2f Entity::getPosition() const
 void Entity::setPosition(const sf::Vector2f& position)
 {
 	entityBox.setPosition(position);
+	sprite.setPosition(position);
 }
 
 sf::Vector2f Entity::getSize() const
@@ -50,7 +61,7 @@ sf::FloatRect Entity::getGlobalBounds() const
 
 void Entity::render(sf::RenderWindow& gameWindow) const
 {
-	gameWindow.draw(entityBox);
+	gameWindow.draw(sprite);
 }
 
 void Entity::checkBounds(sf::Vector2f stageSize)
