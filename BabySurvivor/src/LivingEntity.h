@@ -9,12 +9,14 @@ class LivingEntity : public Entity {
 private:
 	Stats stats;
 	bool isAlly;
-	std::vector<std::shared_ptr<Projectile>> projectiles;
+
+	std::vector<std::unique_ptr<Projectile>> projectiles;
 	
 public:
 	LivingEntity(const std::string& filePath, const std::string& livingEntityName, bool isAlly);
 
-	std::vector<std::shared_ptr<Projectile>>& getProjectiles();
+	std::vector<std::unique_ptr<Projectile>>& getProjectiles();
+	std::unique_ptr<Projectile> findInactiveProjectile();
 
 	float getMaxHealth() const;
 	void setMaxHealth(float newMaxHealth);

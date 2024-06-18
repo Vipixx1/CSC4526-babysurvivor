@@ -35,16 +35,16 @@ private:
 
 	int frameCounter = 0;
 
-public:
 	/* test pour afficher les sprites */
 	sf::Sprite sprite{};
 	sf::Texture texture;
 
+public:
 	explicit Stage(std::string_view name);
 
 	void update(sf::Time elapsedTime, sf::RenderWindow const& gameWindow);
 	void updatePlayer(sf::Time elapsedTime, sf::RenderWindow const& gameWindow);
-	void updateEnemies(sf::Time elapsedTime) const;
+	void updateEnemies(sf::Time elapsedTime);
 	void updateCollectibles(sf::Time elapsedTime);
 	sf::FloatRect updateView(sf::RenderWindow const& gameWindow) const;
 	void render(sf::RenderWindow& gameWindow);
@@ -56,7 +56,7 @@ public:
 	void enemyPlayerCheckCollisions(Enemy const& enemy) const;
 	void enemyProjectileCheckCollisions(Projectile& projectile) const;
 	void playerProjectileCheckCollisions(Projectile& projectile);
-	void collectibleCheckCollision();
+	void collectibleCheckCollisions();
 
 	void renderHpBar(sf::RenderWindow& gameWindow);
 	void renderXpBar(sf::RenderWindow& gameWindow);

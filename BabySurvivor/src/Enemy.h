@@ -16,10 +16,11 @@ private:
 
 	int frameCounter = 0;
 	
-	
 	Entity& target;
 
 	void initializeRandomDirection();
+
+	void createProjectile(sf::Vector2f projDirection);
 
 	std::optional<CollectibleType> getRandomCollectible() const;
 
@@ -29,6 +30,7 @@ public:
 	void checkBounds(sf::Vector2f stageSize) override;
 
 	void shoot(sf::Vector2f projDirection) override;
+
 	std::optional<Collectible> dropCollectible() const;
 };
 

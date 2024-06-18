@@ -11,6 +11,8 @@ private:
 
 public:
 	explicit Entity(const std::string& filePath, const std::string& entityName);
+	Entity() = default;
+	virtual ~Entity() = default;
 
 	sf::Vector2f getPosition() const;
 	void setPosition(const sf::Vector2f& position);

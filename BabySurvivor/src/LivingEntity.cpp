@@ -9,9 +9,19 @@ LivingEntity::LivingEntity(const std::string& filePath, const std::string& livin
 	isAlly{ isAlly }
 {}
 
-std::vector<std::shared_ptr<Projectile>>& LivingEntity::getProjectiles() 
+std::vector<std::unique_ptr<Projectile>>& LivingEntity::getProjectiles() 
 {
 	return projectiles;
+}
+
+std::unique_ptr<Projectile> LivingEntity::findInactiveProjectile()
+{
+	for (auto& projectile :projectiles) {
+		if (!projectile->getActive()) {
+			return std::move(projectile);
+		}
+	}
+	return nullptr;
 }
 
 float LivingEntity::getSpeed() const

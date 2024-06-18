@@ -1,9 +1,11 @@
 #include "Projectile.h"
+#include <iostream>
 
 Projectile::Projectile(const std::string& filePath, float damage, bool isAlly) :
 	Entity{ filePath, "projectile" },
 	damage{ damage },
-	isAlly{ isAlly } {}
+	isAlly{ isAlly } 
+{}
 
 void Projectile::update(sf::Time elapsedTime)
 {

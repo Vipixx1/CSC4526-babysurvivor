@@ -99,6 +99,7 @@ void Stage::update(sf::Time elapsedTime, sf::RenderWindow const& gameWindow)
 			subwaveTimer.restart(); // Start timer for subwave delay
 		}
 	}
+
 	else if (subwaveTimer.getElapsedTime().asSeconds() >= 10.0f)
 	{
 		// Check if all enemies from previous subwave are inactive before spawning next
@@ -143,8 +144,7 @@ void Stage::update(sf::Time elapsedTime, sf::RenderWindow const& gameWindow)
 }
 
 
-void Stage::updatePlayer(sf::Time elapsedTime, sf::RenderWindow const& gameWindow) 
-{
+void Stage::updatePlayer(sf::Time elapsedTime, sf::RenderWindow const& gameWindow) {
 	if (player->getActive()) {
 		player->update(elapsedTime);
 		player->checkBounds(size);
@@ -153,7 +153,9 @@ void Stage::updatePlayer(sf::Time elapsedTime, sf::RenderWindow const& gameWindo
 
 		// Auto fire every 30 frames
 		if (static_cast<float>(frameCounter) >= player->getShotDelay()) {
+			
 			playerAutoFire(gameWindow);
+			
 
 			// Play the shoot sound
 			// soundManager.playSound("resources/audio/playerShoot.wav"); // Uncomment this line if soundManager is defined
@@ -162,31 +164,58 @@ void Stage::updatePlayer(sf::Time elapsedTime, sf::RenderWindow const& gameWindo
 			frameCounter = 0;
 		}
 
-		for (const auto& projectile : player->getProjectiles()) {
-			if (projectile->getActive()) {
-				projectile->update(elapsedTime);
-				projectile->checkBounds(size);
-				playerProjectileCheckCollisions(*projectile);
+		// Update and check collisions for projectiles
+		auto& projectiles = player->getProjectiles();
+		for (auto it = projectiles.begin(); it != projectiles.end();) {
+			auto& projectile = **it;  // Dereference std::unique_ptr
+
+			if (projectile.getActive()) {
+				projectile.update(elapsedTime);
+				projectile.checkBounds(size);
+				playerProjectileCheckCollisions(projectile);
+				++it;
+			}
+			else {
+				// Remove inactive projectile by dereferencing and erasing from vector
+				it = projectiles.erase(it);
 			}
 		}
 	}
 }
 
-void Stage::updateEnemies(sf::Time elapsedTime) const
+void Stage::updateEnemies(sf::Time elapsedTime) 
 {
-	for (const auto& enemy : enemies) {
+	for (auto it = enemies.begin(); it != enemies.end();) {
+		auto const& enemy = *it;  // Dereference std::unique_ptr
+
 		if (enemy->getActive()) {
-			enemy->update(elapsedTime); /*  the position and the shooting */
+			enemy->update(elapsedTime);
+			
 			enemy->checkBounds(size);
 			enemyPlayerCheckCollisions(*enemy);
 
-			for (const auto& projectile : enemy->getProjectiles()) {
-				if (projectile->getActive()) {
-					projectile->update(elapsedTime);
-					projectile->checkBounds(size);
-					enemyProjectileCheckCollisions(*projectile);
+			// Handle enemy projectiles similarly if needed
+			auto& projectiles = enemy->getProjectiles();
+			for (auto itP = projectiles.begin(); itP != projectiles.end();) {
+				auto& projectile = **itP;  // Dereference std::unique_ptr
+
+				if (projectile.getActive()) {
+					projectile.update(elapsedTime);
+					projectile.checkBounds(size);
+					enemyProjectileCheckCollisions(projectile);
+					++itP;
+				}
+				else {
+					// Remove inactive projectile by dereferencing and erasing from vector
+					itP = projectiles.erase(itP);
 				}
 			}
+
+			++it;  // Move to the next enemy
+		}
+		else {
+			// Remove inactive enemy by erasing from vector
+			it = enemies.erase(it);
 		}
 	}
 }
@@ -197,7 +226,7 @@ void Stage::updateCollectibles(sf::Time elapsedTime)
 	{
 		if (collectible->getActive()) {
 			collectible->update(elapsedTime);
-			collectibleCheckCollision();
+			collectibleCheckCollisions();
 		}
 	}
 }
@@ -293,6 +322,7 @@ void Stage::playerAutoFire(sf::RenderWindow const& gameWindow) const
 
 	// Create and shoot a new projectile
 	player->shoot(direction);
+	
 }
 
 void Stage::enemyPlayerCheckCollisions(Enemy const& enemy) const
@@ -324,7 +354,7 @@ void Stage::playerProjectileCheckCollisions(Projectile& projectile) {
 	}
 }
 
-void Stage::collectibleCheckCollision() {
+void Stage::collectibleCheckCollisions() {
 	using enum CollectibleType;
 
 	for (auto const& collectible : collectibles) {

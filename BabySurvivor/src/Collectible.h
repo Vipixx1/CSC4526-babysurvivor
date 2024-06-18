@@ -20,5 +20,4 @@ public:
 
 	CollectibleType getCollectibleType() const;
 	float getCollectibleValue() const;
-
 };
