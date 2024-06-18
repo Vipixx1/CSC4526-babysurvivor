@@ -20,6 +20,7 @@ private:
 	static const sf::Time TimePerFrame;
 	sf::Time statsUpdateTime;
 	std::size_t numFrames{ 0 };
+
 	sf::Text statsText;
 	sf::Font font;
 	
@@ -30,8 +31,6 @@ private:
 
 	Stage stage{ "stage_1" };
 
-	std::vector<std::unique_ptr<Collectible>> collectibles;
-
 	void processGeneralEvent(sf::Event event);
 	void processMenuEvent();
 	void processInGameEvent();
@@ -40,8 +39,8 @@ private:
 public:
 	Game();
 	void run();
-	
-	// Functions needed for testing purposes
+
 	std::unique_ptr<Player> loadPlayer(int saveFileNumber);
-	std::shared_ptr<Player> getGamePlayer();
+	
+	/* Functions needed for testing purposes */
 };

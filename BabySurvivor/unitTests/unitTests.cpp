@@ -11,7 +11,8 @@
 
 namespace Baby_Survivor_Test {
 
-	TEST(TestReadPlayer, TestAttributes) {
+	TEST(TestReadPlayer, TestAttributes) 
+	{
 		//Check all the attributes of the player one
 	
 		Player playerTest{ "resources/Entity.json", "player1"};
@@ -19,24 +20,22 @@ namespace Baby_Survivor_Test {
 		EXPECT_EQ(playerTest.getMaxHealth(), 500);
 		EXPECT_EQ(playerTest.getDamage(), 35);
 		EXPECT_EQ(playerTest.getDamageMultiplier(), 1.0);
-		EXPECT_EQ(playerTest.getSpeed(), 300);
+		EXPECT_EQ(playerTest.getSpeed(), 400);
 		EXPECT_EQ(playerTest.getShotDelay(), 50);
 		EXPECT_EQ(playerTest.getShotSpeed(), 1000);
 	}
 	
-	TEST(TestReadPlayer, TestOtherPlayer) {
+	TEST(TestReadPlayer, TestOtherPlayer) 
+	{
 		//Check that if we select the second player, its file is selected
-	
-		
 		Game game;
-		game.loadPlayer(1);
-	
-		std::shared_ptr<Player> playerTest = game.getGamePlayer();
+
+		std::unique_ptr<Player> playerTest = game.loadPlayer(1);
 	
 		EXPECT_EQ(playerTest->getMaxHealth(), 300);
 		EXPECT_EQ(playerTest->getDamage(), 20);
 		EXPECT_EQ(playerTest->getDamageMultiplier(), 1.0);
-		EXPECT_EQ(playerTest->getSpeed(), 350);
+		EXPECT_EQ(playerTest->getSpeed(), 500);
 		EXPECT_EQ(playerTest->getShotDelay(), 30);
 		EXPECT_EQ(playerTest->getShotSpeed(), 1300);
 	}
@@ -54,22 +53,48 @@ namespace Baby_Survivor_Test {
 		EXPECT_EQ(enemyTest1.getDamage(), 30);
 		EXPECT_EQ(enemyTest2.getDamage(), 40);
 		EXPECT_EQ(enemyTest3.getDamage(), 30);
+
 		EXPECT_EQ(enemyTest1.getMaxHealth(), 100);
 		EXPECT_EQ(enemyTest2.getMaxHealth(), 130);
 		EXPECT_EQ(enemyTest3.getMaxHealth(), 100);
-		EXPECT_EQ(enemyTest1.getSpeed(), 150);
-		EXPECT_EQ(enemyTest2.getSpeed(), 500);
+
+		EXPECT_EQ(enemyTest1.getSpeed(), 200);
+		EXPECT_EQ(enemyTest2.getSpeed(), 400);
 		EXPECT_EQ(enemyTest3.getSpeed(), 0);
 	}
 
-	TEST(TestStage, TestCreation) {
-		//Check that the stage is created with the good size
-		//Check that the first wave is spawning
-	}
+	TEST(TestStage, TestCreation) 
+	{
+		// Check that the stage is created with the correct size
+		Stage stage{ "stage_1" };
+		EXPECT_EQ(stage.getSize(), sf::Vector2f(3800, 2500));
 
-	TEST(TestPlayer, TestMovement) {
-		//Check that the 4 directions work
-		//Check that the player can't be OOB
+		// Check that the first wave is not spawning
+		EXPECT_FALSE(stage.hasEnemies());
+
+		// Check that the first wave is spawning
+		stage.spawnWave();
+		EXPECT_TRUE(stage.hasEnemies());
+
+		// Check that the second wave is not spawning
+		stage.spawnWave();
+		EXPECT_EQ(stage.getCurrentWave(), 1);
+
+		// Simulate killing all enemies of the first wave
+		stage.killEnemies();
+		stage.updateEnemies(sf::seconds(0.1f));
+		EXPECT_FALSE(stage.hasEnemies());
+		stage.updateEnemies(sf::seconds(0.1f));
+
+		EXPECT_FALSE(stage.getIsWaveBeginning());
+		// This will check if there is subWaves, since it does not have one is make isWaveBeginning true
+		stage.spawnWave();
+		EXPECT_TRUE(stage.getIsWaveBeginning());
+		
+		// Check that the second wave is now spawning
+		stage.spawnWave();
+		EXPECT_TRUE(stage.hasEnemies()) << "Second wave should be spawning";
+		EXPECT_EQ(stage.getCurrentWave(), 2) << "Second wave should be spawning after the first wave is killed";
 	}
 
 	TEST(TestStage, TestCollectibleCollection) {
@@ -77,7 +102,7 @@ namespace Baby_Survivor_Test {
 
 		Stage stage{"stage_1"};
 		sf::Vector2f position{ 100.f, 100.f };
-		sf::Vector2f position2{ 200.f, 200.f };
+		sf::Vector2f position2{ 300.f, 300.f };
 
 		Collectible hp{"resources/Entity.json", "health", CollectibleType::health, 10 };
 		hp.setPosition(position);

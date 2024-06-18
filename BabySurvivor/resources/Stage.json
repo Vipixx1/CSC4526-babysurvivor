@@ -371,6 +371,7 @@
         },
         "enemy_3": {
           "type": "tomato_v3",
+          "coords_spawn_x": 3000,
           "coords_spawn_y": 1100
         }
       }
@@ -448,12 +449,12 @@
           "coords_spawn_y": 50
         },
         "enemy_4": {
-          "type": "towerToy_v4",
+          "type": "doll_v4",
           "coords_spawn_x": 1445,
           "coords_spawn_y": 1250
         },
         "enemy_5": {
-          "type": "towerToy_v4",
+          "type": "doll_v4",
           "coords_spawn_x": 2475,
           "coords_spawn_y": 1250
         }
@@ -479,22 +480,22 @@
           "coords_spawn_y": 1250
         },
         "enemy_4": {
-          "type": "robotToy_v1",
+          "type": "robot_v1",
           "coords_spawn_x": 950,
           "coords_spawn_y": 200
         },
         "enemy_5": {
-          "type": "robotToy_v1",
+          "type": "robot_v1",
           "coords_spawn_x": 2850,
           "coords_spawn_y": 200
         },
         "enemy_6": {
-          "type": "robotToy_v1",
+          "type": "robot_v1",
           "coords_spawn_x": 600,
           "coords_spawn_y": 1100
         },
         "enemy_7": {
-          "type": "robotToy_v1",
+          "type": "robot_v1",
           "coords_spawn_x": 2200,
           "coords_spawn_y": 1100
         },
@@ -540,12 +541,12 @@
       "sub_wave_3": {
         "totalEnemyNumber": 4,
         "enemy_1": {
-          "type": "robotToy_v1",
+          "type": "robot_v1",
           "coords_spawn_x": 600,
           "coords_spawn_y": 1100
         },
         "enemy_2": {
-          "type": "robotToy_v1",
+          "type": "robot_v1",
           "coords_spawn_x": 2200,
           "coords_spawn_y": 1100
         },
@@ -556,6 +557,7 @@
         },
         "enemy_4": {
           "type": "spider_v2",
+          "coords_spawn_x": 2150,
           "coords_spawn_y": 2150
         }
       }
@@ -565,37 +567,37 @@
       "sub_wave_1": {
         "totalEnemyNumber": 10,
         "enemy_1": {
-          "type": "robotToy_v1",
+          "type": "robot_v1",
           "coords_spawn_x": 200,
           "coords_spawn_y": 625
         },
         "enemy_2": {
-          "type": "robotToy_v1",
+          "type": "robot_v1",
           "coords_spawn_x": 3600,
           "coords_spawn_y": 625
         },
         "enemy_3": {
-          "type": "robotToy_v2",
+          "type": "robot_v2",
           "coords_spawn_x": 950,
           "coords_spawn_y": 200
         },
         "enemy_4": {
-          "type": "robotToy_v2",
+          "type": "robot_v2",
           "coords_spawn_x": 1920,
           "coords_spawn_y": 200
         },
         "enemy_5": {
-          "type": "robotToy_v2",
+          "type": "robot_v2",
           "coords_spawn_x": 2850,
           "coords_spawn_y": 200
         },
         "enemy_6": {
-          "type": "robotToy_v2",
+          "type": "robot_v2",
           "coords_spawn_x": 600,
           "coords_spawn_y": 1100
         },
         "enemy_7": {
-          "type": "robotToy_v2",
+          "type": "robot_v2",
           "coords_spawn_x": 2200,
           "coords_spawn_y": 1100
         },
@@ -633,12 +635,13 @@
           "coords_spawn_y": 625
         },
         "enemy_4": {
-          "type": "robotToy_v1",
+          "type": "robot_v1",
           "coords_spawn_x": 475,
           "coords_spawn_y": 200
         },
         "enemy_5": {
-          "type": "robotToy_v1",
+          "type": "robot_v1",
+          "coords_spawn_x": 1100,
           "coords_spawn_y": 1100
         }
       },
@@ -660,12 +663,12 @@
           "coords_spawn_y": 625
         },
         "enemy_4": {
-          "type": "robotToy_v2",
+          "type": "robot_v2",
           "coords_spawn_x": 475,
           "coords_spawn_y": 200
         },
         "enemy_5": {
-          "type": "robotToy_v2",
+          "type": "robot_v2",
           "coords_spawn_x": 3325,
           "coords_spawn_y": 200
         }

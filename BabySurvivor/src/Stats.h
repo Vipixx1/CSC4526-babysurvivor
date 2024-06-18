@@ -32,8 +32,4 @@ public:
 
 	float getShotDelay() const;
 	float getShotSpeed() const;
-
-	
-
-	
 };

@@ -86,13 +86,18 @@ void Enemy::shoot(sf::Vector2f projDirection)
 
 	else if (shootingPattern == "threeSimple")
 	{
+		/* Create 3 projectiles: -22.5°, 0°, +22.5° toward the target */
 		createProjectile(projDirection);
+
 		createProjectile(sf::Vector2f(projDirection.x * cosTheta - projDirection.y * sinTheta,
 						projDirection.x * sinTheta + projDirection.y * cosTheta));
+
 		createProjectile(sf::Vector2f(projDirection.x * cosTheta + projDirection.y * sinTheta,
 						-projDirection.x * sinTheta + projDirection.y * cosTheta));
 		
 	}
+
+	/* fourCircle has not been implemented yet... */
 	else if (shootingPattern == "fourCross" || shootingPattern == "fourCircle")
 	{
 		createProjectile(projDirection);

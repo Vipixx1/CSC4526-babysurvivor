@@ -4,75 +4,6 @@
 
 using json = nlohmann::json;
 
-void Stage::renderHpBar(sf::RenderWindow& gameWindow)
-{
-	sf::View view = gameWindow.getView();
-	float x = view.getCenter().x;
-	float y = view.getCenter().y;
-
-	hpText.setString(std::format("{}/{}", player->getCurrentHealth(), player->getMaxHealth()));
-	hpText.setCharacterSize(40);
-	hpText.setFillColor(sf::Color::Black);
-	hpText.setPosition(x , y + 450);
-
-	hpBar.setPosition(x - 200, y + 450);
-	hpBar.setSize(sf::Vector2f(500.f, 50.f));
-	hpBar.setFillColor(sf::Color::Red);
-	
-	gameWindow.draw(hpBar);
-	gameWindow.draw(hpText);
-}
-
-void Stage::renderXpBar(sf::RenderWindow& gameWindow)
-{
-	sf::View view = gameWindow.getView();
-	float x = view.getCenter().x;
-	float y = view.getCenter().y;
-
-	xpText.setString(std::format("{}/{}", player->getExperience(), player->getExperienceRequierment()));
-	xpText.setCharacterSize(40);
-	xpText.setFillColor(sf::Color::Black);
-	xpText.setPosition(sf::Vector2f(x, y + 390));
-
-	xpBar.setPosition(sf::Vector2f(x - 200, y + 390));
-	xpBar.setSize(sf::Vector2f(500.f, 50.f));
-	xpBar.setFillColor(sf::Color(93, 207, 6));
-
-	gameWindow.draw(xpBar);
-	gameWindow.draw(xpText);
-}
-
-void Stage::renderLevelMoney(sf::RenderWindow& gameWindow)
-{
-	sf::View view = gameWindow.getView();
-	float x = view.getCenter().x;
-	float y = view.getCenter().y;
-
-	levelText.setString(std::format("Level: {}", player->getLevel()));
-	levelText.setCharacterSize(30);
-	levelText.setFillColor(sf::Color::Black);
-	levelText.setPosition(sf::Vector2f(x + 750, y - 500));
-
-	waveText.setString(std::format("Wave: {}/{}", currentWaveNumber, totalWaveNumber));
-	waveText.setCharacterSize(30);
-	waveText.setFillColor(sf::Color::Black);
-	waveText.setPosition(sf::Vector2f(x, y - 500));
-
-	moneyText.setString(std::format("Money: {}", player->getMoney()));
-	moneyText.setCharacterSize(30);
-	moneyText.setFillColor(sf::Color::Black);
-	moneyText.setPosition(sf::Vector2f(x + 750, y - 460));
-
-	gameWindow.draw(levelText);
-	gameWindow.draw(moneyText);
-	gameWindow.draw(waveText);
-}
-
-void Stage::changeVolume(int newVolumeLevel)
-{
-	soundManager.changeVolume(newVolumeLevel);
-}
-
 Stage::Stage(std::string_view name) : name{ name }
 {
 	std::ifstream f("resources/Stage.json");
@@ -83,7 +14,6 @@ Stage::Stage(std::string_view name) : name{ name }
 	size = sf::Vector2f(stageData.at("length"), stageData.at("height"));
 	totalWaveNumber = stageData.at("totalWaveNumber");
 
-	/* test pour afficher le stage */
 	texture.loadFromFile("resources/sprites/floor.png");
 	sprite.setTexture(texture);
 	sprite.setPosition(sf::Vector2f(0, 0));
@@ -97,9 +27,20 @@ Stage::Stage(std::string_view name) : name{ name }
 	waveText.setFont(font);
 }
 
+/***
+ * Using a shared_ptr instead of a unique_ptr for the tests only
+ * so there is no problem of moving ptr, and callin them in the test...
+ ***/
+void Stage::setPlayer(std::shared_ptr<Player> setPlayer)
+{
+	player = std::move(setPlayer);
+	player->setPosition(sf::Vector2f(size.x / 2 - player->getSize().x / 2, size.y / 2 - player->getSize().y / 2));
+}
+
 void Stage::handleInput(sf::Keyboard::Key key, bool isPressed)
 {
 	player->handleInput(key, isPressed);
+
 }
 
 void Stage::updateJsonMoney() const
@@ -120,6 +61,7 @@ void Stage::updateJsonMoney() const
 	fout.close();
 }
 
+
 int Stage::update(sf::Time elapsedTime, sf::RenderWindow const& gameWindow)
 {
 	if (player->getCurrentHealth() <= 0)
@@ -133,52 +75,8 @@ int Stage::update(sf::Time elapsedTime, sf::RenderWindow const& gameWindow)
 		updateJsonMoney();
 		return 2;
 	}
-
-	/* Spawning the Enemies */
-	if (isWaveBeginning)
-	{
-		if (currentWaveNumber < totalWaveNumber)
-		{
-			currentWaveNumber++;
-			currentSubWaveNumber = 1;
-			spawn();
-			isWaveBeginning = false;
-			subwaveTimer.restart(); // Start timer for subwave delay
-		}
-	}
-
-	else if (subwaveTimer.getElapsedTime().asSeconds() >= 10.0f)
-	{
-		// Check if all enemies from previous subwave are inactive before spawning next
-		bool allInactive = true;
-		for (const auto& enemy : enemies) {
-			if (enemy->getActive()) {
-				allInactive = false;
-				break;
-			}
-		}
-		if (allInactive)
-		{
-			std::ifstream f("resources/Stage.json");
-			json allData = json::parse(f);
-
-			json waveData = allData.at(name).at(std::format("wave_{}", currentWaveNumber));
-
-			if (waveData.contains(std::format("sub_wave_{}", currentSubWaveNumber + 1)))
-			{
-				currentSubWaveNumber++;
-				spawn();
-				subwaveTimer.restart();
-			}
-			else if (currentWaveNumber < totalWaveNumber)
-			{
-				currentWaveNumber++;
-				currentSubWaveNumber = 1;
-				spawn();
-				subwaveTimer.restart();
-			}
-		}
-	}
+	/* Update the spawning */
+	spawnWave();
 
 	/* Update the player */
 	updatePlayer(elapsedTime, gameWindow);
@@ -259,7 +157,6 @@ void Stage::updateEnemies(sf::Time elapsedTime)
 					itP = projectiles.erase(itP);
 				}
 			}
-
 			++it;  // Move to the next enemy
 		}
 		else {
@@ -295,51 +192,56 @@ sf::FloatRect Stage::updateView(sf::RenderWindow const& gameWindow) const
 	return sf::FloatRect(cameraPosition.x, cameraPosition.y, static_cast<float>(gameWindow.getSize().x), static_cast<float>(gameWindow.getSize().y));
 }
 
-void Stage::render(sf::RenderWindow& gameWindow)
+
+void Stage::spawnWave()
 {
-	gameWindow.clear(sf::Color::Black);
-
-	gameWindow.draw(sprite);
-
-	if (player->getActive()) {
-		player->render(gameWindow);
-		for (const auto& projectile : player->getProjectiles())
+	if (isWaveBeginning)
+	{
+		if (currentWaveNumber < totalWaveNumber)
 		{
-			if (projectile->getActive())
-				projectile->render(gameWindow);
+			currentWaveNumber++;
+			currentSubWaveNumber = 1;
+			spawnSubWave();
+			isWaveBeginning = false;
+			subwaveTimer.restart(); // Start timer for subwave delay
 		}
 	}
-
-
-	for (const auto& enemy : enemies)
+	else
 	{
-		if (enemy->getActive()) {
-			enemy->render(gameWindow);
-			for (const auto& projectile : enemy->getProjectiles())
+		bool allInactive = true;
+		for (const auto& enemy : enemies)
+		{
+			if (enemy->getActive())
 			{
-				if (projectile->getActive())
-					projectile->render(gameWindow);
+				allInactive = false;
+				break;
+			}
+		}
+
+		// Move to the next subwave if the timer has passed 10 seconds or all enemies are inactive
+		if (subwaveTimer.getElapsedTime().asSeconds() >= 10.0f || allInactive)
+		{
+			std::ifstream f("resources/Stage.json");
+			json allData = json::parse(f);
+
+			json waveData = allData.at(name).at(std::format("wave_{}", currentWaveNumber));
+
+			if (waveData.contains(std::format("sub_wave_{}", currentSubWaveNumber + 1)))
+			{
+				currentSubWaveNumber++;
+				spawnSubWave();
+				subwaveTimer.restart();
+			}
+			else if (allInactive && currentWaveNumber < totalWaveNumber)
+			{
+				// Only start a new wave if all enemies are inactive
+				isWaveBeginning = true;
 			}
 		}
 	}
-
-	for (const auto& collectible : collectibles)
-	{
-		if (collectible->getActive())
-			collectible->render(gameWindow);
-	}
-	
-	renderHpBar(gameWindow);
-	renderXpBar(gameWindow);
 }
 
-void Stage::setPlayer(std::shared_ptr<Player> setPlayer)
-{
-	player = setPlayer;
-	player->setPosition(sf::Vector2f(size.x/2 - player->getSize().x/2, size.y/2 - player->getSize().y/2));
-}
-
-void Stage::spawn()
+void Stage::spawnSubWave()
 {
 	std::ifstream f("resources/Stage.json");
 	json allData = json::parse(f);
@@ -358,6 +260,7 @@ void Stage::spawn()
 	}
 }
 
+
 void Stage::playerAutoFire(sf::RenderWindow const& gameWindow)
 {
 	// Get the mouse position in the window
@@ -374,6 +277,7 @@ void Stage::playerAutoFire(sf::RenderWindow const& gameWindow)
 
 	soundManager.playSound(0);
 }
+
 
 void Stage::enemyPlayerCheckCollisions(Enemy const& enemy) const
 {
@@ -439,6 +343,116 @@ void Stage::collectibleCheckCollisions() {
 }
 
 
+void Stage::render(sf::RenderWindow& gameWindow)
+{
+	gameWindow.clear(sf::Color::Black);
+
+	gameWindow.draw(sprite);
+
+	if (player->getActive()) {
+		player->render(gameWindow);
+		for (const auto& projectile : player->getProjectiles())
+		{
+			if (projectile->getActive())
+				projectile->render(gameWindow);
+		}
+	}
+
+
+	for (const auto& enemy : enemies)
+	{
+		if (enemy->getActive()) {
+			enemy->render(gameWindow);
+			for (const auto& projectile : enemy->getProjectiles())
+			{
+				if (projectile->getActive())
+					projectile->render(gameWindow);
+			}
+		}
+	}
+
+	for (const auto& collectible : collectibles)
+	{
+		if (collectible->getActive())
+			collectible->render(gameWindow);
+	}
+
+	renderHpBar(gameWindow);
+	renderXpBar(gameWindow);
+}
+
+void Stage::renderHpBar(sf::RenderWindow& gameWindow)
+{
+	sf::View view = gameWindow.getView();
+	float x0 = view.getCenter().x;
+	float y0 = view.getCenter().y;
+
+	hpText.setString(std::format("Health {}/{}", player->getCurrentHealth(), player->getMaxHealth()));
+	hpText.setCharacterSize(27);
+	hpText.setFillColor(sf::Color::Black);
+	hpText.setPosition(x0 - 130, y0 + 380);
+
+	hpBar.setPosition(x0 - hpBar.getSize().x/2, y0 + 380);
+	hpBar.setSize(sf::Vector2f(500.f, 30.f));
+	hpBar.setFillColor(sf::Color::Red);
+
+	gameWindow.draw(hpBar);
+	gameWindow.draw(hpText);
+}
+
+void Stage::renderXpBar(sf::RenderWindow& gameWindow)
+{
+	sf::View view = gameWindow.getView();
+	float x0 = view.getCenter().x;
+	float y0 = view.getCenter().y;
+
+	xpText.setString(std::format("EXP {}/{}", player->getExperience(), player->getExperienceRequierment()));
+	xpText.setCharacterSize(27);
+	xpText.setFillColor(sf::Color::Black);
+	xpText.setPosition(sf::Vector2f(x0 - 130, y0 + 420));
+
+	xpBar.setPosition(sf::Vector2f(x0 - xpBar.getSize().x / 2, y0 + 420));
+	xpBar.setSize(sf::Vector2f(500.f, 30.f));
+	xpBar.setFillColor(sf::Color::Blue);
+
+	gameWindow.draw(xpBar);
+	gameWindow.draw(xpText);
+}
+
+void Stage::renderLevelMoney(sf::RenderWindow& gameWindow)
+{
+	sf::View view = gameWindow.getView();
+	float x = view.getCenter().x;
+	float y = view.getCenter().y;
+
+	levelText.setString(std::format("Level: {}", player->getLevel()));
+	levelText.setCharacterSize(30);
+	levelText.setFillColor(sf::Color::Black);
+	levelText.setPosition(sf::Vector2f(x + 750, y - 500));
+
+	waveText.setString(std::format("Wave: {}/{}", currentWaveNumber, totalWaveNumber));
+	waveText.setCharacterSize(30);
+	waveText.setFillColor(sf::Color::Black);
+	waveText.setPosition(sf::Vector2f(x - 50, y - 500));
+
+	moneyText.setString(std::format("Money: {}", player->getMoney()));
+	moneyText.setCharacterSize(30);
+	moneyText.setFillColor(sf::Color::Black);
+	moneyText.setPosition(sf::Vector2f(x + 750, y - 460));
+
+	gameWindow.draw(levelText);
+	gameWindow.draw(moneyText);
+	gameWindow.draw(waveText);
+}
+
+
+void Stage::changeVolume(int newVolumeLevel)
+{
+	soundManager.changeVolume(newVolumeLevel);
+}
+
+
+/* unitTests purpose : */
 
 void Stage::addCollectible(Collectible newCollectible)
 {
@@ -455,14 +469,27 @@ float Stage::getEnemyHealth(int enemyIndex)
 	return enemies[enemyIndex].get()->getCurrentHealth();
 }
 
-sf::Vector2f Stage::getSize()
+bool Stage::getIsWaveBeginning() const
+{
+	return isWaveBeginning;
+}
+
+sf::Vector2f Stage::getSize() const
 {
 	return size;
 }
 
-std::vector<std::unique_ptr<Enemy>>& Stage::getEnemies()
+bool Stage::hasEnemies() const
 {
-	return enemies;
+	return !enemies.empty();
+}
+
+void Stage::killEnemies() const
+{
+	for (auto const& enemy : enemies)
+	{
+		enemy->setActive(false);
+	}
 }
 
 int Stage::getCurrentWave() const

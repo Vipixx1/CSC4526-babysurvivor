@@ -9,11 +9,11 @@
   "player1": {
     "length": 120,
     "height": 160,
-    "baseHealth": 50,
+    "baseHealth": 500,
     "baseDamage": 35,
     "damageMultiplier": 1.0,
-    "baseSpeed": 300,
-    "money": 10000,
+    "baseSpeed": 400,
+    "money": 1000,
     "damageUpgrade": 0,
     "damageMultiplierUpgrade": 0,
     "healthUpgrade": 0,
@@ -29,8 +29,8 @@
     "baseHealth": 300,
     "baseDamage": 20,
     "damageMultiplier": 1.0,
-    "baseSpeed": 350,
-    "money": 0,
+    "baseSpeed": 500,
+    "money": 1000,
     "damageUpgrade": 0,
     "damageMultiplierUpgrade": 0,
     "healthUpgrade": 0,
@@ -43,17 +43,17 @@
   "player3": {
     "length": 120,
     "height": 160,
-    "baseHealth": 800,
-    "baseDamage": 60,
+    "baseHealth": 10000,
+    "baseDamage": 100,
     "damageMultiplier": 1.0,
-    "baseSpeed": 270,
-    "money": 0,
+    "baseSpeed": 500,
+    "money": 10000,
     "damageUpgrade": 0,
     "damageMultiplierUpgrade": 0,
     "healthUpgrade": 0,
     "speedUpgrade": 0,
-    "shotDelay": 90,
-    "shotSpeed": 800,
+    "shotDelay": 20,
+    "shotSpeed": 1000,
     "sprite": "resources/sprites/baby.png"
   },
 
@@ -63,7 +63,7 @@
     "baseHealth": 100,
     "baseDamage": 30,
     "damageMultiplier": 1.0,
-    "baseSpeed": 150,
+    "baseSpeed": 200,
     "shotDelay": 1000,
     "shotSpeed": 0,
     "sprite": "resources/sprites/ghost.png",
@@ -74,7 +74,7 @@
 
   "spider_v1": {
     "length": 100,
-    "height": 100,
+    "height": 70,
     "baseHealth": 100,
     "baseDamage": 30,
     "damageMultiplier": 1.0,
@@ -103,8 +103,8 @@
   },
 
   "robot_v1": {
-    "length": 100,
-    "height": 100,
+    "length": 120,
+    "height": 120,
     "baseHealth": 150,
     "baseDamage": 45,
     "damageMultiplier": 1.0,
@@ -118,8 +118,8 @@
   },
 
   "robot_v2": {
-    "length": 100,
-    "height": 100,
+    "length": 200,
+    "height": 200,
     "baseHealth": 170,
     "baseDamage": 45,
     "damageMultiplier": 1.0,
@@ -133,12 +133,12 @@
   },
 
   "tomato_v1": {
-    "length": 100,
-    "height": 100,
+    "length": 200,
+    "height": 200,
     "baseHealth": 130,
     "baseDamage": 40,
     "damageMultiplier": 1.0,
-    "baseSpeed": 500,
+    "baseSpeed": 400,
     "shotDelay": 1000,
     "shotSpeed": 0,
     "sprite": "resources/sprites/tomato.png",
@@ -148,8 +148,8 @@
   },
 
   "tomato_v2": {
-    "length": 100,
-    "height": 100,
+    "length": 200,
+    "height": 200,
     "baseHealth": 160,
     "baseDamage": 40,
     "damageMultiplier": 1.0,
@@ -163,8 +163,8 @@
   },
 
   "tomato_v3": {
-    "length": 100,
-    "height": 100,
+    "length": 200,
+    "height": 200,
     "baseHealth": 100,
     "baseDamage": 45,
     "damageMultiplier": 1.0,
@@ -178,8 +178,8 @@
   },
 
   "plum_v1": {
-    "length": 100,
-    "height": 100,
+    "length": 200,
+    "height": 200,
     "baseHealth": 150,
     "baseDamage": 45,
     "damageMultiplier": 1.0,
@@ -194,8 +194,8 @@
   },
 
   "plum_v2": {
-    "length": 100,
-    "height": 100,
+    "length": 200,
+    "height": 200,
     "baseHealth": 200,
     "baseDamage": 50,
     "damageMultiplier": 1.0,
@@ -239,8 +239,8 @@
   },
 
   "doll_v3": {
-    "length": 100,
-    "height": 100,
+    "length": 200,
+    "height": 200,
     "baseHealth": 150,
     "baseDamage": 40,
     "damageMultiplier": 1.0,
@@ -254,8 +254,8 @@
   },
 
   "doll_v4": {
-    "length": 100,
-    "height": 100,
+    "length": 200,
+    "height": 200,
     "baseHealth": 200,
     "baseDamage": 50,
     "damageMultiplier": 1.0,
@@ -287,14 +287,14 @@
   },
 
   "health": {
-    "length": 40,
-    "height": 40,
+    "length": 75,
+    "height": 75,
     "sprite": "resources/sprites/health.png"
   },
 
   "money": {
-    "length": 20,
-    "height": 20,
+    "length": 30,
+    "height": 30,
     "sprite": "resources/sprites/money.png"
   }
 }

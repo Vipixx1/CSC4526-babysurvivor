@@ -64,8 +64,7 @@ void Game::processMenuEvent()
 		// From 0 to 2: changing the resolution
 		if (returnValue >= 0 && returnValue < 3)
 		{
-			// LOAD THE GAME HERE...
-			//stage = Stage{ "stage_1" };
+			// LOAD EVERYTHING NEEDED FOR THE REAL GAME HERE...
 			auto player = loadPlayer(returnValue);
 			stage.setPlayer(std::move(player));
 
@@ -184,7 +183,6 @@ void Game::run()
 			stage.renderLevelMoney(gameWindow);
 
 			gameWindow.display();
-			//stage.playMusic();
 		}
 	}
 }

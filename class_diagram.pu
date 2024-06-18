@@ -37,6 +37,8 @@ enum MenuState <<enum>> {
  - inPlayMenu
  - inSettingsMenu
  - inUpgradeMenu
+ - inGameOverMenu
+ - inWinMenu
 }
 
 class Stage {
@@ -122,6 +124,7 @@ class SoundManager {
  - sounds : std::vector<sf::Sound>
  + playSound()
  + changeVolume()
+}
 
 'Liens entre les classes'
 

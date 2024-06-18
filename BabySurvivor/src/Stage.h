@@ -18,6 +18,7 @@ private:
 	int currentSubWaveNumber = 0;
 	sf::Clock subwaveTimer;
 	bool isWaveBeginning = true;
+	bool isSubWaveBeginning = true;
 
 	std::shared_ptr<Player> player;
 	std::vector<std::unique_ptr<Enemy>> enemies;
@@ -25,21 +26,18 @@ private:
 
 	SoundManager soundManager;
 
+	/* Regroup to an eventual other class UI */
 	sf::Font font;
-
 	sf::Text hpText;
 	sf::RectangleShape hpBar;
-
 	sf::Text levelText;
 	sf::Text moneyText;
 	sf::Text waveText;
-
 	sf::Text xpText;
 	sf::RectangleShape xpBar;
 
 	int frameCounter = 0;
 
-	/* test pour afficher les sprites */
 	sf::Sprite sprite{};
 	sf::Texture texture;
 
@@ -48,6 +46,7 @@ private:
 public:
 	explicit Stage(std::string_view name);
 
+	void setPlayer(std::shared_ptr<Player> setPlayer);
 	void handleInput(sf::Keyboard::Key key, bool isPressed);
 
 	int update(sf::Time elapsedTime, sf::RenderWindow const& gameWindow);
@@ -55,28 +54,31 @@ public:
 	void updateEnemies(sf::Time elapsedTime);
 	void updateCollectibles(sf::Time elapsedTime);
 	sf::FloatRect updateView(sf::RenderWindow const& gameWindow) const;
-	void render(sf::RenderWindow& gameWindow);
 
-	void setPlayer(std::shared_ptr<Player> setPlayer);
-	void spawn();
-	void playerAutoFire(sf::RenderWindow const& gameWindow);	
+	void spawnWave();
+	void spawnSubWave();
+
+	void playerAutoFire(sf::RenderWindow const& gameWindow);
 
 	void enemyPlayerCheckCollisions(Enemy const& enemy) const;
 	void enemyProjectileCheckCollisions(Projectile& projectile);
 	void playerProjectileCheckCollisions(Projectile& projectile);
 	void collectibleCheckCollisions();
 
+	void render(sf::RenderWindow& gameWindow);
 	void renderHpBar(sf::RenderWindow& gameWindow);
 	void renderXpBar(sf::RenderWindow& gameWindow);
 	void renderLevelMoney(sf::RenderWindow& gameWindow);
 
 	void changeVolume(int newVolumeLevel);
 
-	/* Method used for testing purposes */
-	sf::Vector2f getSize();
-	std::vector<std::unique_ptr<Enemy>>& getEnemies();
+	/* Method used only for testing purposes */
+	sf::Vector2f getSize() const;
+	bool hasEnemies() const;
+	void killEnemies() const;
 	int getCurrentWave() const;
 	void addCollectible(Collectible newCollectible);
 	void addEnemy(Enemy&& newEnemy);
 	float getEnemyHealth(int enemyIndex);
+	bool getIsWaveBeginning() const;
 };
