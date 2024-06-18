@@ -62,6 +62,11 @@ void Stage::renderLevelMoney(sf::RenderWindow& gameWindow)
 	gameWindow.draw(moneyText);
 }
 
+void Stage::changeVolume(int newVolumeLevel)
+{
+	soundManager.changeVolume(newVolumeLevel);
+}
+
 Stage::Stage(std::string_view name) : name{ name }
 {
 	std::ifstream f("resources/Stage.json");
@@ -141,7 +146,6 @@ void Stage::update(sf::Time elapsedTime, sf::RenderWindow const& gameWindow)
 	/* Update the collectibles */
 	updateCollectibles(elapsedTime);
 }
-
 
 void Stage::updatePlayer(sf::Time elapsedTime, sf::RenderWindow const& gameWindow) 
 {
@@ -279,7 +283,7 @@ void Stage::spawn()
 	}
 }
 
-void Stage::playerAutoFire(sf::RenderWindow const& gameWindow) const
+void Stage::playerAutoFire(sf::RenderWindow const& gameWindow)
 {
 	// Get the mouse position in the window
 	sf::Vector2i mousePos = sf::Mouse::getPosition(gameWindow);
@@ -292,6 +296,7 @@ void Stage::playerAutoFire(sf::RenderWindow const& gameWindow) const
 
 	// Create and shoot a new projectile
 	player->shoot(direction);
+	soundManager.playSound(0);
 }
 
 void Stage::enemyProjectileCheckCollisions(Projectile& projectile) const
@@ -307,7 +312,7 @@ void Stage::playerProjectileCheckCollisions(Projectile& projectile) {
 		if (enemy->getActive() && enemy->getTeam() != projectile.getTeam() && projectile.getGlobalBounds().intersects(enemy->getGlobalBounds())) {
 			projectile.setActive(false);
 			if (enemy->takeDamage(projectile.getDamage())) { // takeDamage returns true if the enemy is dead
-				player->giveExperience(3.f);
+				if (player->giveExperience(3.f)) { soundManager.playSound(4); }
 				if (std::optional<Collectible> dropedCollectible = enemy->dropCollectible(); dropedCollectible.has_value()) {
 					collectibles.push_back(std::make_unique<Collectible>(dropedCollectible.value()));
 				}
@@ -320,23 +325,47 @@ void Stage::collectibleCheckCollision() {
 	using enum CollectibleType;
 
 	for (auto const& collectible : collectibles) {
-		if (collectible->getGlobalBounds().intersects(player->getGlobalBounds()))
+		if (collectible->getActive() && collectible->getGlobalBounds().intersects(player->getGlobalBounds()))
 		{
+			collectible->setActive(false);
 			switch (collectible->getCollectibleType())
 			{
 			case money:
-				player->giveMoney(static_cast<int>(collectible->getCollectibleValue()));
 				collectible->setActive(false);
+				player->giveMoney(static_cast<int>(collectible->getCollectibleValue()));
+				soundManager.playSound(2);
 				break;
 			case health:
-				player->heal(collectible->getCollectibleValue());
 				collectible->setActive(false);
+				player->heal(collectible->getCollectibleValue());
+				soundManager.playSound(1);
 				break;
 			case experience:
-				if (player->getLevel() < 20) {player->giveExperience(collectible->getCollectibleValue());}
 				collectible->setActive(false);
+				if (player->getLevel() < 20) 
+				{
+					// We play the level up sound effect when needed
+					if (player->giveExperience(collectible->getCollectibleValue())) { soundManager.playSound(4); }
+					soundManager.playSound(3);
+				}
+				
 				break;
 			}
 		}
 	}
+}
+
+void Stage::addCollectible(Collectible newCollectible)
+{
+	collectibles.push_back(std::make_unique<Collectible>(newCollectible));
+}
+
+void Stage::addEnemy(Enemy newEnemy)
+{
+	enemies.push_back(std::make_unique<Enemy>(newEnemy));
+}
+
+float Stage::getEnemyHealth(int enemyIndex)
+{
+	return enemies[enemyIndex].get()->getCurrentHealth();
 }

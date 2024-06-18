@@ -27,8 +27,6 @@ private:
 	GameState gameState;
 	GameMenu gameMenu;
 
-	SoundManager soundManager;
-
 	std::shared_ptr<Player> player;
 	Stage stage{ "stage_1" };
 
@@ -37,13 +35,13 @@ private:
 	void processGeneralEvent(sf::Event event);
 	void processMenuEvent();
 	void processInGameEvent();
-
-	void loadPlayer(int saveFileNumber);
-
 	void updateStatsText(sf::Time elapsedTime);
 
 public:
 	Game();
 	void run();
 	
+	// Functions needed for testing purposes
+	void loadPlayer(int saveFileNumber);
+	std::shared_ptr<Player> getGamePlayer();
 };

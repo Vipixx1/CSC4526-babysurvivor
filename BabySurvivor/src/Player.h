@@ -21,7 +21,7 @@ public:
 	
 	void levelUp();
 	void heal(float healValue);
-	void giveExperience(float experienceValue);
+	bool giveExperience(float experienceValue);
 	void giveMoney(int moneyValue);
 
 	float getExperience() const;

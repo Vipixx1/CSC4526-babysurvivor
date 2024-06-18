@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Projectile.h"
+#include "SoundManager.h"
 
 class Stage {
 private:
@@ -21,6 +22,8 @@ private:
 	std::shared_ptr<Player> player;
 	std::vector<std::unique_ptr<Enemy>> enemies;
 	std::vector<std::unique_ptr<Collectible>> collectibles;
+
+	SoundManager soundManager;
 
 	sf::Font font;
 
@@ -51,7 +54,7 @@ public:
 
 	void setPlayer(std::shared_ptr<Player> setPlayer);
 	void spawn();
-	void playerAutoFire(sf::RenderWindow const& gameWindow) const;	
+	void playerAutoFire(sf::RenderWindow const& gameWindow);	
 	void enemyProjectileCheckCollisions(Projectile& projectile) const;
 	void playerProjectileCheckCollisions(Projectile& projectile);
 	void collectibleCheckCollision();
@@ -59,4 +62,11 @@ public:
 	void renderHpBar(sf::RenderWindow& gameWindow);
 	void renderXpBar(sf::RenderWindow& gameWindow);
 	void renderLevelMoney(sf::RenderWindow& gameWindow);
+
+	void changeVolume(int newVolumeLevel);
+
+	// Method used for testing purposes
+	void addCollectible(Collectible newCollectible);
+	void addEnemy(Enemy newEnemy);
+	float getEnemyHealth(int enemyIndex);
 };
