@@ -30,6 +30,6 @@ public:
 
 	float getSpeed() const;
 
-	float getShotDelay() const;
+	int getShotDelay() const;
 	float getShotSpeed() const;
 };

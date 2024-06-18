@@ -63,7 +63,7 @@ void Stats::setDamageMultiplier(float newDamageMultiplier)
 	damageMultiplier = newDamageMultiplier;
 }
 
-float Stats::getShotDelay() const
+int Stats::getShotDelay() const
 {
 	return shotDelay;
 }

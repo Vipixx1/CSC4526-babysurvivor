@@ -124,39 +124,58 @@ void GameMenu::renderMenu(sf::RenderWindow& gameWindow, int currentMenu)
 {
 	switch (currentMenu)
 	{
-	case 0:
-		menuState = MenuState::inPlayMenu;
-		renderPlayMenu(gameWindow);
-		break;
+		case 0:
+		{
+			menuState = MenuState::inPlayMenu;
+			renderPlayMenu(gameWindow);
+			break;
+		}
+		
+		case 1:
+		{
+			menuState = MenuState::inSettingsMenu;
+			renderSettingMenu(gameWindow);
+			break;
+		}
 
-	case 1:
-		menuState = MenuState::inSettingsMenu;
-		renderSettingMenu(gameWindow);
-		break;
+		case 2:
+		{
+			gameWindow.close();
+			break;
+		}
 
-	case 2:
-		gameWindow.close();
-		break;
+		case 3:
+		{
+			menuState = MenuState::inMainMenu;
+			renderMainMenu(gameWindow);
+			break;
+		}
 
-	case 3:
-		menuState = MenuState::inMainMenu;
-		renderMainMenu(gameWindow);
-		break;
-
-	case 4:
-		menuState = MenuState::inUpgradeMenu;
-		renderUpgradeMenu(gameWindow);
-		break;
+		case 4:
+		{
+			menuState = MenuState::inUpgradeMenu;
+			renderUpgradeMenu(gameWindow);
+			break;
+		}
 	
-	case 5:
-		menuState = MenuState::inGameOverMenu;
-		renderGameOverMenu(gameWindow);
-	case 6:
-		menuState = MenuState::inWinMenu;
-		renderWinMenu(gameWindow);
+		case 5:
+		{
+			menuState = MenuState::inGameOverMenu;
+			renderGameOverMenu(gameWindow);
+			break;
+		}
 
-	default:
-		break;
+		case 6:
+		{
+			menuState = MenuState::inWinMenu;
+			renderWinMenu(gameWindow);
+			break;
+		}
+
+		default:
+		{
+			break;
+		}
 	}
 
 }

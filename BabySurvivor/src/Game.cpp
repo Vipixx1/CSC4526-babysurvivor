@@ -41,9 +41,6 @@ void Game::processGeneralEvent(sf::Event event)
 	if (event.type == sf::Event::Closed)
 		gameWindow.close();
 
-	if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::F11)
-		gameWindow.create(sf::VideoMode(1920, 1080), "Baby Survivor", sf::Style::Fullscreen);
-
 	if (event.type == sf::Event::Resized)
 	{
 		sf::FloatRect visibleArea(0.f, 0.f, static_cast<float>(event.size.width), static_cast<float>(event.size.height));
