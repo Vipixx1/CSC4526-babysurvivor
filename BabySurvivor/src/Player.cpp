@@ -185,7 +185,7 @@ float Player::getExperienceRequierment() const
 void Player::shoot(sf::Vector2f projDirection)
 {
 	auto projPosition = getPosition() + sf::Vector2f(getSize().x / 2, getSize().y / 2);
-	auto newProjectile = std::make_unique<Projectile>("resources/Entity.json", getDamage(), true);
+	auto newProjectile = std::make_unique<Projectile>("resources/Entity.json", "projectileAlly", getDamage(), true);
 	newProjectile->setPosition(projPosition);
 	newProjectile->setDirection(projDirection);
 

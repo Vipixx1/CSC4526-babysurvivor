@@ -107,7 +107,7 @@ void Enemy::createProjectile(sf::Vector2f projDirection)
 {
 	auto projPosition = getPosition() + sf::Vector2f(getSize().x / 2, getSize().y / 2);
 
-	auto projectile = std::make_unique<Projectile>("resources/Entity.json", getDamage(), false);
+	auto projectile = std::make_unique<Projectile>("resources/Entity.json", "projectileEnemy", getDamage(), false);
 	projectile->setPosition(projPosition);
 	projectile->setDirection(projDirection);
 	getProjectiles().push_back(std::move(projectile));

@@ -8,7 +8,7 @@ private:
 	bool isAlly;
 
 public:
-	explicit Projectile(const std::string& filePath, float damage, bool isAlly);
+	explicit Projectile(const std::string& filePath, const std::string& entity, float damage, bool isAlly);
 	void update(sf::Time elapsedTime) override;
 	void checkBounds(sf::Vector2f stageSize) override;
 

@@ -200,7 +200,7 @@ namespace Baby_Survivor_Test {
 
 		EXPECT_EQ(allData2.at("player1").at("damageUpgrade"), 1);
 
-		// We make sure to clean up the Json after modifing it in order to not mess with other tests
+		// We make sure to clean up the Json after modifying it in order to not mess with other tests
 		std::ifstream f3("resources/Entity.json");
 		json allData3 = json::parse(f3);
 		f3.close();

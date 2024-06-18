@@ -268,12 +268,17 @@
     "shootingPattern": "fourCircle"
   },
 
-  "projectile": {
+  "projectileAlly": {
     "length": 15,
     "height": 15,
     "sprite": "resources/sprites/projectile.png"
   },
 
+  "projectileEnemy": {
+    "length": 30,
+    "height": 30,
+    "sprite": "resources/sprites/projectileEnemy.png"
+  },
 
   "experience": {
     "length": 20,
