@@ -27,6 +27,11 @@ Game::Game()
 	gameState = GameState::inMenu;
 }
 
+std::shared_ptr<Player> Game::getGamePlayer()
+{
+	return player;
+}
+
 void Game::loadPlayer(int saveFileNumber)
 {
 	if (saveFileNumber == 0) { player = std::make_shared<Player>( "resources/Entity.json", "player1" ); }
@@ -74,7 +79,7 @@ void Game::processMenuEvent()
 		// From 3 to 8: loading a save file and launching a game
 		if (returnValue >= 3 && returnValue < 9)
 		{
-			soundManager.changeVolume(returnValue - 3);
+			stage.changeVolume(returnValue - 3);
 		}
 
 		// 9 means we are going back to the main menu

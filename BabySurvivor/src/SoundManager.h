@@ -1,17 +1,18 @@
 #pragma once
 
 #include <SFML/Audio.hpp>
+#include <vector>
 
 class SoundManager {
 private:
-	sf::Sound sound;
-	sf::SoundBuffer soundBuffer;
+	float volumeLevel{ 100.f };
 
-	void loadSoundInBuffer(const std::string& filePath);
+	std::vector<sf::SoundBuffer> soundBuffers;
+	std::vector<sf::Sound> sounds;
 
 public:
-	SoundManager() = default;
+	SoundManager();
 
-	void playSound(const std::string& filePath);
+	void playSound(int soundIndex);
 	void changeVolume(int newVolumeLevel);
 };

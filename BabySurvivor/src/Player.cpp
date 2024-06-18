@@ -65,17 +65,19 @@ void Player::heal(float healValue)
 	}
 }
 
-void Player::giveExperience(float experienceValue)
+bool Player::giveExperience(float experienceValue)
 {
 	if ((experience + experienceValue) >= experienceRequierement[level - 1])
 	{
-		experience = (experience + experienceValue) - experienceRequierement[level - 1];
+		experience = 0;
 		levelUp();
+		return true;
 	}
 
 	else
 	{
 		experience += experienceValue;
+		return false;
 	}
 }
 

@@ -45,14 +45,12 @@ private:
 	void renderMenu(sf::RenderWindow& gameWindow, int currentMenu);
 
 	void initializeText(sf::Text& text, const std::string& textString, int size, sf::Vector2f position, sf::Color color) const;
-	void updateUpgradeMenu();
+	
 
 	int processMainMenuEvent(sf::Event event, sf::RenderWindow& gameWindow);
 	int processPlayMenuEvent(sf::Event event, sf::RenderWindow& gameWindow);
 	int processSettingsMenuEvent(sf::Event event, sf::RenderWindow& gameWindow);
 	int processUpgradeMenuEvent(sf::Event event, sf::RenderWindow& gameWindow);
-
-	void updateJson(int changedUpgrade);
 
 public:
 	explicit GameMenu();
@@ -65,4 +63,12 @@ public:
 	int processMenuEvent(sf::Event event, sf::RenderWindow& gameWindow);
 
 	MenuState getMenuState() const;
+
+	// This function is public for testing purposes
+	void updateUpgradeMenu();
+	void updateJson(int changedUpgrade);
+
+	// These functions are added for testing purposes
+	void setCurrentSaveFile(int newSaveFileIndex);
+	void setUpgradeLevel(int upgradeIndex, int newLevel);
 };

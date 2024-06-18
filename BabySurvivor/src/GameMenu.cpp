@@ -20,6 +20,7 @@ void GameMenu::updateUpgradeMenu()
 
 	std::ifstream f("resources/Entity.json");
 	json allData = json::parse(f);
+	f.close();
 
 	json playerData = allData.at(player);
 
@@ -37,8 +38,6 @@ void GameMenu::updateUpgradeMenu()
 	for (int i = 1; i < 5; i++) {
 		upgradeOptions[i].setString(std::format("{}{}/5", upgradeNames[i - 1], upgradeLevel[i - 1]));
 	}
-
-	f.close();
 }
 
 GameMenu::GameMenu()
@@ -425,6 +424,7 @@ void GameMenu::updateJson(int changedUpgrade)
 	f.close();
 
 	allData[player]["money"] = playerMoney;
+	std::cout << upgradeLevel[changedUpgrade] << std::endl;
 	allData[player][statName] = static_cast<float>(allData.at("upgradeValue").at(upgradeName)[upgradeLevel[changedUpgrade] - 1]);
 
 	allData[player][upgradeName] = static_cast<int>(allData.at(player).at(upgradeName)) + 1;
@@ -433,7 +433,6 @@ void GameMenu::updateJson(int changedUpgrade)
 
 	fout << allData.dump(4);
 
-	f.close();
 	fout.flush();
 	fout.close();
 }
@@ -441,4 +440,14 @@ void GameMenu::updateJson(int changedUpgrade)
 MenuState GameMenu::getMenuState() const
 {
 	return menuState;
+}
+
+void GameMenu::setCurrentSaveFile(int newSaveFileIndex)
+{
+	currentSaveFile = newSaveFileIndex;
+}
+
+void GameMenu::setUpgradeLevel(int upgradeIndex, int newLevel)
+{
+	upgradeLevel[upgradeIndex] = newLevel;
 }
