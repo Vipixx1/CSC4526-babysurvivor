@@ -269,8 +269,8 @@
   },
 
   "projectile": {
-    "length": 10,
-    "height": 10,
+    "length": 15,
+    "height": 15,
     "sprite": "resources/sprites/projectile.png"
   },
 

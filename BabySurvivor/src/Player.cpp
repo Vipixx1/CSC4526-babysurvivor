@@ -85,6 +85,36 @@ void Player::giveMoney(int moneyValue)
 {
 	money += moneyValue;
 }
+bool Player::takeDamage(float damageValue)
+{
+	if (isInvulnerable) {
+
+		if (invulnerabilityTimer.getElapsedTime().asSeconds() >= invulnerabilityDuration) {
+			isInvulnerable = false;
+			isVisible = true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	if (LivingEntity::takeDamage(damageValue)) {
+		return true;
+	}
+
+	isInvulnerable = true;
+	invulnerabilityTimer.restart();
+	blinkTimer.restart();
+	isVisible = true;
+	return false;
+}
+
+void Player::render(sf::RenderWindow& gameWindow) const
+{
+	if (isVisible) {
+		LivingEntity::render(gameWindow);
+	}
+}
 
 void Player::update(sf::Time elapsedTime)
 {
@@ -100,6 +130,19 @@ void Player::update(sf::Time elapsedTime)
 	sf::Vector2f newPosition = position + velocity * elapsedTime.asSeconds();
 
 	setPosition(newPosition);
+
+	if (isInvulnerable) {
+		if (invulnerabilityTimer.getElapsedTime().asSeconds() >= invulnerabilityDuration) {
+			isInvulnerable = false;
+			isVisible = true;
+		}
+		else {
+			if (blinkTimer.getElapsedTime().asSeconds() >= blinkInterval) {
+				isVisible = !isVisible;
+				blinkTimer.restart();
+			}
+		}
+	}
 }
 
 float Player::getExperience() const

@@ -55,6 +55,8 @@ public:
 	void setPlayer(std::shared_ptr<Player> setPlayer);
 	void spawn();
 	void playerAutoFire(sf::RenderWindow const& gameWindow);	
+
+	void enemyPlayerCheckCollisions(Enemy const& enemy) const;
 	void enemyProjectileCheckCollisions(Projectile& projectile) const;
 	void playerProjectileCheckCollisions(Projectile& projectile);
 	void collectibleCheckCollision();

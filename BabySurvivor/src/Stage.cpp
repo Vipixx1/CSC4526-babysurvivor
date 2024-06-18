@@ -182,6 +182,7 @@ void Stage::updateEnemies(sf::Time elapsedTime) const
 		if (enemy->getActive()) {
 			enemy->update(elapsedTime); /*  the position and the shooting */
 			enemy->checkBounds(size);
+			enemyPlayerCheckCollisions(*enemy);
 
 			for (const auto& projectile : enemy->getProjectiles()) {
 				if (projectile->getActive()) {
@@ -297,6 +298,13 @@ void Stage::playerAutoFire(sf::RenderWindow const& gameWindow)
 	// Create and shoot a new projectile
 	player->shoot(direction);
 	soundManager.playSound(0);
+}
+
+void Stage::enemyPlayerCheckCollisions(Enemy const& enemy) const
+{
+	if (player->getActive() && enemy.getGlobalBounds().intersects(player->getGlobalBounds())) {
+		player->takeDamage(enemy.getDamage());
+	}
 }
 
 void Stage::enemyProjectileCheckCollisions(Projectile& projectile) const

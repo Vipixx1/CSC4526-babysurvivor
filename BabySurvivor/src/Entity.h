@@ -19,7 +19,7 @@ public:
 	bool getActive() const;
 	void setActive(bool active);
 	
-	void render(sf::RenderWindow& gameWindow) const;
+	virtual void render(sf::RenderWindow& gameWindow) const;
 	virtual void update(sf::Time elapsedTime) = 0;
 	virtual void checkBounds(sf::Vector2f stageSize);
 	void moveEntity(sf::Vector2f movement);

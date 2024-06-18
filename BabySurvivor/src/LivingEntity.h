@@ -33,7 +33,7 @@ public:
 
 	bool getTeam() const;
 
-	bool takeDamage(float damageValue);
+	virtual bool takeDamage(float damageValue);
 
 	virtual void shoot(sf::Vector2f direction) = 0;
 };
