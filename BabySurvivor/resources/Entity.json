@@ -7,8 +7,8 @@
   },
 
   "player1": {
-    "length": 60,
-    "height": 80,
+    "length": 120,
+    "height": 160,
     "baseHealth": 500,
     "baseDamage": 35,
     "damageMultiplier": 1.0,
@@ -24,8 +24,8 @@
   },
 
   "player2": {
-    "length": 60,
-    "height": 80,
+    "length": 120,
+    "height": 160,
     "baseHealth": 300,
     "baseDamage": 20,
     "damageMultiplier": 1.0,
@@ -41,8 +41,8 @@
   },
 
   "player3": {
-    "length": 60,
-    "height": 80,
+    "length": 120,
+    "height": 160,
     "baseHealth": 800,
     "baseDamage": 60,
     "damageMultiplier": 1.0,
@@ -58,8 +58,8 @@
   },
 
   "ghost_v1": {
-    "length": 50,
-    "height": 50,
+    "length": 100,
+    "height": 100,
     "baseHealth": 100,
     "baseDamage": 30,
     "damageMultiplier": 1.0,
@@ -73,8 +73,8 @@
   },
 
   "spider_v1": {
-    "length": 50,
-    "height": 50,
+    "length": 100,
+    "height": 100,
     "baseHealth": 100,
     "baseDamage": 30,
     "damageMultiplier": 1.0,
@@ -88,7 +88,7 @@
   },
 
   "spider_v2": {
-    "length": 50,
+    "length": 100,
     "height": 50,
     "baseHealth": 150,
     "baseDamage": 50,
@@ -103,8 +103,8 @@
   },
 
   "robot_v1": {
-    "length": 50,
-    "height": 50,
+    "length": 100,
+    "height": 100,
     "baseHealth": 150,
     "baseDamage": 45,
     "damageMultiplier": 1.0,
@@ -118,8 +118,8 @@
   },
 
   "robot_v2": {
-    "length": 50,
-    "height": 50,
+    "length": 100,
+    "height": 100,
     "baseHealth": 170,
     "baseDamage": 45,
     "damageMultiplier": 1.0,
@@ -133,8 +133,8 @@
   },
 
   "tomato_v1": {
-    "length": 50,
-    "height": 50,
+    "length": 100,
+    "height": 100,
     "baseHealth": 130,
     "baseDamage": 40,
     "damageMultiplier": 1.0,
@@ -148,8 +148,8 @@
   },
 
   "tomato_v2": {
-    "length": 50,
-    "height": 50,
+    "length": 100,
+    "height": 100,
     "baseHealth": 160,
     "baseDamage": 40,
     "damageMultiplier": 1.0,
@@ -163,8 +163,8 @@
   },
 
   "tomato_v3": {
-    "length": 50,
-    "height": 50,
+    "length": 100,
+    "height": 100,
     "baseHealth": 100,
     "baseDamage": 45,
     "damageMultiplier": 1.0,
@@ -178,8 +178,8 @@
   },
 
   "plum_v1": {
-    "length": 50,
-    "height": 50,
+    "length": 100,
+    "height": 100,
     "baseHealth": 150,
     "baseDamage": 45,
     "damageMultiplier": 1.0,
@@ -194,8 +194,8 @@
   },
 
   "plum_v2": {
-    "length": 50,
-    "height": 50,
+    "length": 100,
+    "height": 100,
     "baseHealth": 200,
     "baseDamage": 50,
     "damageMultiplier": 1.0,
@@ -209,8 +209,8 @@
   },
 
   "doll_v1": {
-    "length": 50,
-    "height": 50,
+    "length": 100,
+    "height": 100,
     "baseHealth": 100,
     "baseDamage": 30,
     "damageMultiplier": 1.0,
@@ -224,8 +224,8 @@
   },
 
   "doll_v2": {
-    "length": 50,
-    "height": 50,
+    "length": 100,
+    "height": 100,
     "baseHealth": 100,
     "baseDamage": 30,
     "damageMultiplier": 1.0,
@@ -239,8 +239,8 @@
   },
 
   "doll_v3": {
-    "length": 50,
-    "height": 50,
+    "length": 100,
+    "height": 100,
     "baseHealth": 150,
     "baseDamage": 40,
     "damageMultiplier": 1.0,
@@ -254,8 +254,8 @@
   },
 
   "doll_v4": {
-    "length": 50,
-    "height": 50,
+    "length": 100,
+    "height": 100,
     "baseHealth": 200,
     "baseDamage": 50,
     "damageMultiplier": 1.0,
@@ -269,27 +269,27 @@
   },
 
   "projectile": {
-    "length": 15,
-    "height": 15,
+    "length": 30,
+    "height": 30,
     "sprite": "resources/sprites/projectile.png"
   },
 
 
   "experience": {
-    "length": 20,
-    "height": 20,
+    "length": 40,
+    "height": 40,
     "sprite": "resources/sprites/experience.png"
   },
 
   "health": {
-    "length": 20,
-    "height": 20,
+    "length": 40,
+    "height": 40,
     "sprite": "resources/sprites/health.png"
   },
 
   "money": {
-    "length": 10,
-    "height": 10,
+    "length": 20,
+    "height": 20,
     "sprite": "resources/sprites/money.png"
   }
 }
