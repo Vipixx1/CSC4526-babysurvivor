@@ -44,9 +44,6 @@ enum MenuState <<enum>> {
 class Stage {
  - size : sf::Vector2f
  - name : string
- - player : std::shared_ptr<Player>
- - enemies : std::unique_ptr<Enemy>
- - collectibles : std::unique_ptr<Collectible>
  + update()
  + checkColision()
  + render()
@@ -73,6 +70,7 @@ class Player {
  - level : int
  - experience : float
  - money : int
+ - saveFileName : std::string
  + levelUp()
  + takeDamage()
  + render()
@@ -114,7 +112,6 @@ enum CollectibleType <<enum>> {
 class LivingEntity {
  - stats : Stats
  - isAlly : bool
- - projectiles : std::shared_ptr<Projectile>
  + takeDamage()
  + shoot()
 }
