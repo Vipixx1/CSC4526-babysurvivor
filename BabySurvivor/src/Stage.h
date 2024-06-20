@@ -43,6 +43,10 @@ private:
 
 	void updateJsonMoney() const;
 
+	//ADDED LAST MINUTE :
+	bool initialDelayDone = false;
+	sf::Clock initialDelayTimer;
+
 public:
 	explicit Stage(std::string_view name);
 
@@ -72,6 +76,7 @@ public:
 
 	void changeVolume(int newVolumeLevel);
 
+	void startStage();
 	/* Method used only for testing purposes */
 	sf::Vector2f getSize() const;
 	bool hasEnemies() const;
@@ -81,4 +86,5 @@ public:
 	void addEnemy(Enemy&& newEnemy);
 	float getEnemyHealth(int enemyIndex);
 	bool getIsWaveBeginning() const;
+	void setInitialDelayDone(bool initialDelay);
 };

@@ -58,17 +58,17 @@ void Game::processMenuEvent()
 		// We check the returned value to know if we are launching a game or we are changing the resolution
 		int returnValue = gameMenu.processMenuEvent(event, gameWindow);
 
-		// From 0 to 2: changing the resolution
+		// From 0 to 2: load a save file and launch the game
 		if (returnValue >= 0 && returnValue < 3)
 		{
 			// LOAD EVERYTHING NEEDED FOR THE REAL GAME HERE...
 			auto player = loadPlayer(returnValue);
 			stage.setPlayer(std::move(player));
-
+			stage.startStage();
 			gameState = GameState::inGame;
 		}
 
-		// From 3 to 8: loading a save file and launching a game
+		// From 3 to 8: changeVolume
 		if (returnValue >= 3 && returnValue < 9)
 		{
 			stage.changeVolume(returnValue - 3);
@@ -110,6 +110,11 @@ void Game::run()
 		if (gameState == GameState::inMenu)
 		{
 			processMenuEvent();
+
+			view.reset(sf::FloatRect(0, 0, 1920, 1080));
+			gameWindow.setView(view);
+
+
 			switch (gameMenu.getMenuState())
 			{
 				using enum MenuState;

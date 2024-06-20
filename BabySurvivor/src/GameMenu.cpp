@@ -75,7 +75,7 @@ GameMenu::GameMenu()
 
 	initializeText(saveFile1, "Save file 1", 30, sf::Vector2f(380.f, 200.f), sf::Color::Yellow);
 	initializeText(saveFile2, "Save file 2", 30, sf::Vector2f(380.f, 255.f), sf::Color::White);
-	initializeText(saveFile3, "Save file 3", 30, sf::Vector2f(380.f, 310.f), sf::Color::White);
+	initializeText(saveFile3, "Save file 3 (cheat)", 30, sf::Vector2f(380.f, 310.f), sf::Color::White);
 
 	initializeText(volumeText, "Volume: ", 30, sf::Vector2f(380.f, 260.f), sf::Color::Yellow);
 

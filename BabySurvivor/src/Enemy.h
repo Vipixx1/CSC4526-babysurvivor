@@ -9,7 +9,6 @@ private:
 	std::string enemyType;
 	std::string movementPattern;
 	std::string shootingPattern;
-	float shootDelay = 0;
 	sf::Vector2f direction{ 0,0 };
 
 	static const float cosTheta;

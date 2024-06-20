@@ -4,6 +4,7 @@
 
 using json = nlohmann::json;
 
+
 Stage::Stage(std::string_view name) : name{ name }
 {
 	std::ifstream f("resources/Stage.json");
@@ -37,10 +38,17 @@ void Stage::setPlayer(std::shared_ptr<Player> setPlayer)
 	player->setPosition(sf::Vector2f(size.x / 2 - player->getSize().x / 2, size.y / 2 - player->getSize().y / 2));
 }
 
+void Stage::startStage()
+{
+	initialDelayTimer.restart();
+	isWaveBeginning = true;
+	initialDelayDone = false;
+}
+
+
 void Stage::handleInput(sf::Keyboard::Key key, bool isPressed)
 {
 	player->handleInput(key, isPressed);
-
 }
 
 void Stage::updateJsonMoney() const
@@ -100,13 +108,7 @@ void Stage::updatePlayer(sf::Time elapsedTime, sf::RenderWindow const& gameWindo
 
 		// Auto fire every 30 frames
 		if (static_cast<float>(frameCounter) >= player->getShotDelay()) {
-			
 			playerAutoFire(gameWindow);
-			
-
-			// Play the shoot sound
-			// soundManager.playSound("resources/audio/playerShoot.wav"); // Uncomment this line if soundManager is defined
-
 			// Reset the frame counter
 			frameCounter = 0;
 		}
@@ -195,6 +197,20 @@ sf::FloatRect Stage::updateView(sf::RenderWindow const& gameWindow) const
 
 void Stage::spawnWave()
 {
+	if (!initialDelayDone)
+	{
+		// Check if the initial delay of 5 seconds is done
+		if (initialDelayTimer.getElapsedTime().asSeconds() >= 1.0f)
+		{
+			initialDelayDone = true;
+			// Proceed to spawn the first wave
+		}
+		else
+		{
+			// Not yet time to spawn the first wave
+			return;
+		}
+	}
 	if (isWaveBeginning)
 	{
 		if (currentWaveNumber < totalWaveNumber)
@@ -472,6 +488,11 @@ float Stage::getEnemyHealth(int enemyIndex)
 bool Stage::getIsWaveBeginning() const
 {
 	return isWaveBeginning;
+}
+
+void Stage::setInitialDelayDone(bool initialDelay)
+{
+	initialDelayDone = initialDelay;
 }
 
 sf::Vector2f Stage::getSize() const

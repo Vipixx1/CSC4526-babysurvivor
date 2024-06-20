@@ -73,6 +73,7 @@ namespace Baby_Survivor_Test {
 		EXPECT_FALSE(stage.hasEnemies());
 
 		// Check that the first wave is spawning
+		stage.setInitialDelayDone(true);
 		stage.spawnWave();
 		EXPECT_TRUE(stage.hasEnemies());
 
