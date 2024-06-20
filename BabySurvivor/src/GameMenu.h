@@ -55,7 +55,7 @@ private:
 	int processPlayMenuEvent(sf::Event event, sf::RenderWindow& gameWindow);
 	int processSettingsMenuEvent(sf::Event event, sf::RenderWindow& gameWindow);
 	int processUpgradeMenuEvent(sf::Event event, sf::RenderWindow& gameWindow);
-	int processEndMenuEvent(sf::Event event, sf::RenderWindow& gameWindow) const;
+	int processEndMenuEvent(sf::Event event, sf::RenderWindow& gameWindow);
 
 public:
 	explicit GameMenu();

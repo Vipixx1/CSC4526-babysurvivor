@@ -440,11 +440,11 @@ int GameMenu::processUpgradeMenuEvent(sf::Event event, sf::RenderWindow& gameWin
 	return -1;
 }
 
-int GameMenu::processEndMenuEvent(sf::Event event, sf::RenderWindow& gameWindow) const
+int GameMenu::processEndMenuEvent(sf::Event event, sf::RenderWindow& gameWindow)
 {
 	if (event.key.code == sf::Keyboard::Escape)
 	{
-		gameWindow.close();
+		renderMenu(gameWindow, 3);
 	}
 
 	return -1;
