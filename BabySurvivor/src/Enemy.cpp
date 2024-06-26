@@ -27,6 +27,7 @@ Enemy::Enemy(const std::string& filePath, const std::string& enemyType, Entity& 
 	std::string movementPattern = enemyData.at("movementPattern");
 	std::string shootingPattern = enemyData.at("shootingPattern");
 
+
 	if (movementPattern == "towardPlayer") {
 		movingStrategy = std::make_unique<TowardPlayerMovingStrategy>();
 	}

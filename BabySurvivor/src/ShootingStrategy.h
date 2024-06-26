@@ -9,10 +9,10 @@ protected:
 		auto projectile = std::make_unique<Projectile>("resources/Entity.json", "projectileEnemy", entityDamage, false);
 		projectile->setPosition(projPosition);
 		projectile->setDirection(projDirection);
-		return std::move(projectile);
+		return projectile;
 	}
 
 public:
 	virtual ~ShootingStrategy() = default;
-	virtual void shoot(std::vector<std::unique_ptr<Projectile>> entityProjectiles, sf::Vector2f projDirection, sf::Vector2f entityPosition, sf::Vector2f entitySize, float entityDamage) = 0;
+	virtual void shoot(std::vector<std::unique_ptr<Projectile>>& entityProjectiles, sf::Vector2f projDirection, sf::Vector2f entityPosition, sf::Vector2f entitySize, float entityDamage) = 0;
 };
