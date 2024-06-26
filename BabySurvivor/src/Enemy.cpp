@@ -1,16 +1,16 @@
 #include "Enemy.h"
+#include "TowardPlayerMovingStrategy.h"
+#include "BounceBordersMovingStrategy.h"
 #include <fstream>
 #include <random>
 #include <cmath>
+
+#include <iostream>
 
 using json = nlohmann::json;
 
 const float Enemy::cosTheta = 0.92f;
 const float Enemy::sinTheta = 0.38f;
-std::map<std::string, MovingStrategy, std::less<>> Enemy::movingMap = {
-	{"towardPlayer", "NULL"},
-	{"bounceBorders", "NULL"}
-};
 
 Enemy::Enemy(const std::string& filePath, const std::string& enemyType, Entity& target) :
 	LivingEntity{ filePath, enemyType, false},
@@ -25,15 +25,30 @@ Enemy::Enemy(const std::string& filePath, const std::string& enemyType, Entity& 
 	std::string movementPattern = enemyData.at("movementPattern");
 	std::string shootingPattern = enemyData.at("shootingPattern");
 
+	if (movementPattern == "towardPlayer") {
+		std::cout << "tp" << std::endl;
+		movingStrategy = std::make_unique<TowardPlayerMovingStrategy>();
+	}
+	if (movementPattern == "bounceBorders") {
+		std::cout << "b" << std::endl;
+		movingStrategy = std::make_unique<BounceBordersMovingStrategy>();
+
+		static std::mt19937 rng(std::random_device{}());
+		static std::uniform_real_distribution<float> dist(-1.0f, 1.0f);
+
+		direction = sf::Vector2f(dist(rng), dist(rng));
+	}
+	else {
+		movingStrategy = std::make_unique<TowardPlayerMovingStrategy>();
+	}
+
 	initializeRandomDirection();
 }
 
 void Enemy::update(sf::Time elapsedTime, sf::Vector2f stageSize)
 {
-	sf::Vector2f direction = movingStrategy->move(target.getPosition(), getPosition());
-	direction = direction * getSpeed() / sqrt(direction.x * direction.x + direction.y * direction.y);
-
-	direction = movingStrategy->checkBounds(stageSize, getPosition(), getSize());
+	sf::Vector2f newDirection = movingStrategy->move(getPosition(), direction, target.getPosition(), getSize(), stageSize);
+	direction = newDirection * getSpeed() / sqrt(newDirection.x * newDirection.x + newDirection.y * newDirection.y);
 
 	moveEntity(direction * elapsedTime.asSeconds());
 	checkBounds(stageSize);

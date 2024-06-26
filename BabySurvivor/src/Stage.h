@@ -14,7 +14,7 @@ private:
 	sf::Vector2f size;
 
 	int totalWaveNumber = 0;
-	int currentWaveNumber = 0;
+	int currentWaveNumber = 2;
 	int currentSubWaveNumber = 0;
 	sf::Clock subwaveTimer;
 	bool isWaveBeginning = true;
