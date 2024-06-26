@@ -1,6 +1,9 @@
 #include "Enemy.h"
 #include "TowardPlayerMovingStrategy.h"
 #include "BounceBordersMovingStrategy.h"
+#include "OneSimpleShootingStrategy.h"
+#include "ThreeSimpleShootingStrategy.h"
+#include "FourCrossShootingStrategy.h"
 #include <fstream>
 #include <random>
 #include <cmath>
@@ -9,8 +12,7 @@
 
 using json = nlohmann::json;
 
-const float Enemy::cosTheta = 0.92f;
-const float Enemy::sinTheta = 0.38f;
+
 
 Enemy::Enemy(const std::string& filePath, const std::string& enemyType, Entity& target) :
 	LivingEntity{ filePath, enemyType, false},
@@ -26,11 +28,9 @@ Enemy::Enemy(const std::string& filePath, const std::string& enemyType, Entity& 
 	std::string shootingPattern = enemyData.at("shootingPattern");
 
 	if (movementPattern == "towardPlayer") {
-		std::cout << "tp" << std::endl;
 		movingStrategy = std::make_unique<TowardPlayerMovingStrategy>();
 	}
-	if (movementPattern == "bounceBorders") {
-		std::cout << "b" << std::endl;
+	else if (movementPattern == "bounceBorders") {
 		movingStrategy = std::make_unique<BounceBordersMovingStrategy>();
 
 		static std::mt19937 rng(std::random_device{}());
@@ -38,48 +38,46 @@ Enemy::Enemy(const std::string& filePath, const std::string& enemyType, Entity& 
 
 		direction = sf::Vector2f(dist(rng), dist(rng));
 	}
-	else {
-		movingStrategy = std::make_unique<TowardPlayerMovingStrategy>();
+	
+	if (shootingPattern == "oneSimple")
+	{
+		shootingStrategy = std::make_unique<OneSimpleShootingStrategy>();
 	}
-
-	initializeRandomDirection();
+	else if (shootingPattern == "threeSimple")
+	{
+		shootingStrategy = std::make_unique<ThreeSimpleShootingStrategy>();
+	}
+	else if (shootingPattern == "fourCross" || shootingPattern == "fourCircle")
+	{
+		shootingStrategy = std::make_unique<FourCrossShootingStrategy>();
+	}
 }
 
 void Enemy::update(sf::Time elapsedTime, sf::Vector2f stageSize)
 {
-	sf::Vector2f newDirection = movingStrategy->move(getPosition(), direction, target.getPosition(), getSize(), stageSize);
-	direction = newDirection * getSpeed() / sqrt(newDirection.x * newDirection.x + newDirection.y * newDirection.y);
+	if (movingStrategy) {
+		sf::Vector2f newDirection = movingStrategy->move(getPosition(), direction, target.getPosition(), getSize(), stageSize);
+		direction = newDirection * getSpeed() / sqrt(newDirection.x * newDirection.x + newDirection.y * newDirection.y);
 
-	moveEntity(direction * elapsedTime.asSeconds());
-	checkBounds(stageSize);
-	
-	frameCounter++;
-	if (static_cast<float>(frameCounter) >= getShotDelay()) {
-		shoot(sf::Vector2f(0, 0));
-		frameCounter = 0;
+		moveEntity(direction * elapsedTime.asSeconds());
 	}
+	
+	if (shootingStrategy) {
+		frameCounter++;
+		if (static_cast<float>(frameCounter) >= getShotDelay()) {
+			shoot(sf::Vector2f(0, 0));
+			frameCounter = 0;
+		}
+	}
+
 }
 
-void Enemy::createProjectile(sf::Vector2f projDirection) 
+void Enemy::shoot(sf::Vector2f projDirection)
 {
-	auto projPosition = getPosition() + sf::Vector2f(getSize().x / 2, getSize().y / 2);
+	projDirection = target.getPosition() - getPosition();
+	projDirection = projDirection * getShotSpeed() / sqrt(projDirection.x * projDirection.x + projDirection.y * projDirection.y);
 
-	auto projectile = std::make_unique<Projectile>("resources/Entity.json", "projectileEnemy", getDamage(), false);
-	projectile->setPosition(projPosition);
-	projectile->setDirection(projDirection);
-	getProjectiles().push_back(std::move(projectile));
-}
-
-void Enemy::initializeRandomDirection() {
-	static std::mt19937 rng(std::random_device{}());
-	static std::uniform_real_distribution<float> dist(-1.0f, 1.0f);
-
-	direction.x = dist(rng);
-	direction.y = dist(rng);
-
-	// Normalize the velocity to ensure consistent speed
-	float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
-	direction = direction * (getSpeed() / length);
+	shootingStrategy->shoot(getProjectiles(), projDirection, getPosition(), getSize(), getDamage());
 }
 
 std::optional<CollectibleType> Enemy::getRandomCollectible() const

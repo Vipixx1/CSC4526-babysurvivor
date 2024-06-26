@@ -88,14 +88,3 @@ bool LivingEntity::takeDamage(float damageValue)
 	stats.setCurrentHealth(currentHealth - damageValue);
 	return false;
 }
-
-void LivingEntity::shoot(sf::Vector2f direction) 
-{
-	/*
-	auto newProjectiles = shootingStrategy->createProjectiles(direction);
-
-	projectiles.insert(
-		projectiles.end(),
-		std::make_move_iterator(newProjectiles.begin()),
-		std::make_move_iterator(newProjectiles.end()));*/
-}

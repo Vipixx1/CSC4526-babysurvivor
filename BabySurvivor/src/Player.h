@@ -28,6 +28,8 @@ private:
 
 public:
 	Player(const std::string& filePath, const std::string& saveFile);
+
+	void shoot(sf::Vector2f projDirection) override;
 	
 	void levelUp();
 	void heal(float healValue);

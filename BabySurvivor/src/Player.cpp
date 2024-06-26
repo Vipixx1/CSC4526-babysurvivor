@@ -150,6 +150,16 @@ void Player::update(sf::Time elapsedTime, sf::Vector2f stageSize)
 	}
 }
 
+void Player::shoot(sf::Vector2f projDirection)
+{
+	auto projPosition = getPosition() + sf::Vector2f(getSize().x / 2, getSize().y / 2);
+	auto newProjectile = std::make_unique<Projectile>("resources/Entity.json", "projectileAlly", getDamage(), true);
+	newProjectile->setPosition(projPosition);
+	newProjectile->setDirection(projDirection);
+
+	getProjectiles().push_back(std::move(newProjectile));
+}
+
 float Player::getExperience() const
 {
 	if (level < 20) { return experience; }

@@ -3,15 +3,13 @@
 #include "Entity.h"
 #include "Stats.h"
 #include "Projectile.h"
-#include "ShootingStrategy.h"
 #include "json.hpp"
 
 class LivingEntity : public Entity {
 private:
 	Stats stats;
 	bool isAlly;
-	std::unique_ptr<ShootingStrategy> shootingStrategy;
-
+	
 	std::vector<std::unique_ptr<Projectile>> projectiles;
 	
 public:
@@ -38,5 +36,5 @@ public:
 
 	virtual bool takeDamage(float damageValue);
 
-	void shoot(sf::Vector2f direction);
+	virtual void shoot(sf::Vector2f direction) = 0;
 };
