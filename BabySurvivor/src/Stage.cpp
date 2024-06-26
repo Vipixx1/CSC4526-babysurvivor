@@ -101,7 +101,7 @@ int Stage::update(sf::Time elapsedTime, sf::RenderWindow const& gameWindow)
 void Stage::updatePlayer(sf::Time elapsedTime, sf::RenderWindow const& gameWindow) 
 {
 	if (player->getActive()) {
-		player->update(elapsedTime);
+		player->update(elapsedTime, size);
 		player->checkBounds(size);
 
 		frameCounter++;
@@ -119,7 +119,7 @@ void Stage::updatePlayer(sf::Time elapsedTime, sf::RenderWindow const& gameWindo
 			auto& projectile = **it;  // Dereference std::unique_ptr
 
 			if (projectile.getActive()) {
-				projectile.update(elapsedTime);
+				projectile.update(elapsedTime, size);
 				projectile.checkBounds(size);
 				playerProjectileCheckCollisions(projectile);
 				++it;
@@ -138,7 +138,7 @@ void Stage::updateEnemies(sf::Time elapsedTime)
 		auto const& enemy = *it;  // Dereference std::unique_ptr
 
 		if (enemy->getActive()) {
-			enemy->update(elapsedTime);
+			enemy->update(elapsedTime, size);
 			
 			enemy->checkBounds(size);
 			enemyPlayerCheckCollisions(*enemy);
@@ -149,7 +149,7 @@ void Stage::updateEnemies(sf::Time elapsedTime)
 				auto& projectile = **itP;  // Dereference std::unique_ptr
 
 				if (projectile.getActive()) {
-					projectile.update(elapsedTime);
+					projectile.update(elapsedTime, size);
 					projectile.checkBounds(size);
 					enemyProjectileCheckCollisions(projectile);
 					++itP;
@@ -173,7 +173,7 @@ void Stage::updateCollectibles(sf::Time elapsedTime)
 	for (const auto& collectible : collectibles)
 	{
 		if (collectible->getActive()) {
-			collectible->update(elapsedTime);
+			collectible->update(elapsedTime, size);
 			collectibleCheckCollisions();
 		}
 	}

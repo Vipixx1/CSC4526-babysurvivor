@@ -6,7 +6,7 @@ Projectile::Projectile(const std::string& filePath, const std::string& entity, f
 	isAlly{ isAlly } 
 {}
 
-void Projectile::update(sf::Time elapsedTime)
+void Projectile::update(sf::Time elapsedTime, sf::Vector2f stageSize)
 {
 	/* Update the projectile's movement */
 	moveEntity(getDirection() * elapsedTime.asSeconds());

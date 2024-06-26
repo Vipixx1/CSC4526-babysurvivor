@@ -24,56 +24,21 @@ Enemy::Enemy(const std::string& filePath, const std::string& enemyType, Entity& 
 	initializeRandomDirection();
 }
 
-void Enemy::update(sf::Time elapsedTime)
+void Enemy::update(sf::Time elapsedTime, sf::Vector2f stageSize)
 {
-	//direction = moveStartegy->move(player.position, entity.position);
-	//moveEntity(direction * elapsedTime.asSeconds());
+	sf::Vector2f direction = movingStrategy->move(target.getPosition(), getPosition());
+	direction = direction * getSpeed() / sqrt(direction.x * direction.x + direction.y * direction.y);
 
-	if (movementPattern == "towardPlayer") 
-	{
-		direction = target.getPosition() - getPosition();
-		direction = direction * getSpeed() / sqrt(direction.x * direction.x + direction.y * direction.y);
+	direction = movingStrategy->checkBounds(stageSize, getPosition(), getSize());
 
-		moveEntity(direction * elapsedTime.asSeconds());
-	}
-
-	else if (movementPattern == "bounceBorders") {
-		moveEntity(direction * elapsedTime.asSeconds());
-	}
+	moveEntity(direction * elapsedTime.asSeconds());
+	checkBounds(stageSize);
 	
 	frameCounter++;
 	if (static_cast<float>(frameCounter) >= getShotDelay()) {
 		shoot(sf::Vector2f(0, 0));
 		frameCounter = 0;
 	}
-}
-
-void Enemy::checkBounds(sf::Vector2f stageSize)
-{
-	if (movementPattern == "bounceBorders") {
-		sf::Vector2f enemyPosition = getPosition();
-		sf::Vector2f enemySize = getSize();
-
-		if (enemyPosition.x <= 0) {
-			enemyPosition.x = 0;
-			direction.x = std::abs(direction.x);
-		}
-		else if (enemyPosition.x + enemySize.x >= stageSize.x) {
-			enemyPosition.x = stageSize.x - enemySize.x;
-			direction.x = -std::abs(direction.x);
-		}
-
-		if (enemyPosition.y <= 0) {
-			enemyPosition.y = 0;
-			direction.y = std::abs(direction.y);
-		}
-		else if (enemyPosition.y + enemySize.y >= stageSize.y) {
-			enemyPosition.y = stageSize.y - enemySize.y;
-			direction.y = -std::abs(direction.y);
-		}
-	}
-
-	else { Entity::checkBounds(stageSize); }
 }
 
 void Enemy::shoot(sf::Vector2f projDirection)

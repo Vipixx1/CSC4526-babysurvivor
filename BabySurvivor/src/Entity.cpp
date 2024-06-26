@@ -73,8 +73,8 @@ void Entity::checkBounds(sf::Vector2f stageSize)
 	setPosition(position);
 }
 
-void Entity::moveEntity(sf::Vector2f movement)
+void Entity::moveEntity(sf::Vector2f direction)
 {
-	entityBox.move(movement);
-	sprite.move(movement);
+	entityBox.move(direction);
+	sprite.move(direction);
 }
