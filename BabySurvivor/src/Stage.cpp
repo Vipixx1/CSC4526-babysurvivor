@@ -1,6 +1,7 @@
 #include "Stage.h"
 #include "json.hpp"
 #include <fstream>
+#include <iostream>
 
 using json = nlohmann::json;
 
@@ -102,7 +103,6 @@ void Stage::updatePlayer(sf::Time elapsedTime, sf::RenderWindow const& gameWindo
 {
 	if (player->getActive()) {
 		player->update(elapsedTime, size);
-		//player->checkBounds(size);
 
 		frameCounter++;
 
@@ -120,7 +120,6 @@ void Stage::updatePlayer(sf::Time elapsedTime, sf::RenderWindow const& gameWindo
 
 			if (projectile.getActive()) {
 				projectile.update(elapsedTime, size);
-				//projectile.checkBounds(size);
 				playerProjectileCheckCollisions(projectile);
 				++it;
 			}
@@ -149,7 +148,6 @@ void Stage::updateEnemies(sf::Time elapsedTime)
 
 				if (projectile.getActive()) {
 					projectile.update(elapsedTime, size);
-					//projectile.checkBounds(size);
 					enemyProjectileCheckCollisions(projectile);
 					++itP;
 				}

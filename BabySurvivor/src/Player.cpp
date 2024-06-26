@@ -148,6 +148,7 @@ void Player::update(sf::Time elapsedTime, sf::Vector2f stageSize)
 			}
 		}
 	}
+	checkBounds(stageSize);
 }
 
 void Player::shoot(sf::Vector2f projDirection)

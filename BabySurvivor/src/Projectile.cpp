@@ -12,6 +12,7 @@ void Projectile::update(sf::Time elapsedTime, sf::Vector2f stageSize)
 	moveEntity(getDirection() * elapsedTime.asSeconds());
 
 	/* Other eventual updates */
+	checkBounds(stageSize);
 }
 
 void Projectile::checkBounds(sf::Vector2f stageSize)
