@@ -7,9 +7,13 @@ using json = nlohmann::json;
 
 const float Enemy::cosTheta = 0.92f;
 const float Enemy::sinTheta = 0.38f;
+std::map<std::string, MovingStrategy, std::less<>> Enemy::movingMap = {
+	{"towardPlayer", "NULL"},
+	{"bounceBorders", "NULL"}
+};
 
 Enemy::Enemy(const std::string& filePath, const std::string& enemyType, Entity& target) :
-	LivingEntity{ filePath, enemyType, false },
+	LivingEntity{ filePath, enemyType, false},
 	enemyType{ enemyType },
 	target{ target }
 {
@@ -18,95 +22,23 @@ Enemy::Enemy(const std::string& filePath, const std::string& enemyType, Entity& 
 	json allData = json::parse(f);
 	json enemyData = allData.at(enemyType);
 
-	movementPattern = enemyData.at("movementPattern");
-	shootingPattern = enemyData.at("shootingPattern");
+	std::string movementPattern = enemyData.at("movementPattern");
+	std::string shootingPattern = enemyData.at("shootingPattern");
 
 	initializeRandomDirection();
 }
 
 void Enemy::update(sf::Time elapsedTime)
 {
-	//direction = moveStartegy->move(player.position, entity.position);
-	//moveEntity(direction * elapsedTime.asSeconds());
+	direction = movingStrategy->move(getPosition(), target.getPosition());
+	moveEntity(direction * elapsedTime.asSeconds());
 
-	if (movementPattern == "towardPlayer") 
-	{
-		direction = target.getPosition() - getPosition();
-		direction = direction * getSpeed() / sqrt(direction.x * direction.x + direction.y * direction.y);
-
-		moveEntity(direction * elapsedTime.asSeconds());
-	}
-
-	else if (movementPattern == "bounceBorders") {
-		moveEntity(direction * elapsedTime.asSeconds());
-	}
+	moveEntity(direction * elapsedTime.asSeconds());
 	
 	frameCounter++;
 	if (static_cast<float>(frameCounter) >= getShotDelay()) {
 		shoot(sf::Vector2f(0, 0));
 		frameCounter = 0;
-	}
-}
-
-void Enemy::checkBounds(sf::Vector2f stageSize)
-{
-	if (movementPattern == "bounceBorders") {
-		sf::Vector2f enemyPosition = getPosition();
-		sf::Vector2f enemySize = getSize();
-
-		if (enemyPosition.x <= 0) {
-			enemyPosition.x = 0;
-			direction.x = std::abs(direction.x);
-		}
-		else if (enemyPosition.x + enemySize.x >= stageSize.x) {
-			enemyPosition.x = stageSize.x - enemySize.x;
-			direction.x = -std::abs(direction.x);
-		}
-
-		if (enemyPosition.y <= 0) {
-			enemyPosition.y = 0;
-			direction.y = std::abs(direction.y);
-		}
-		else if (enemyPosition.y + enemySize.y >= stageSize.y) {
-			enemyPosition.y = stageSize.y - enemySize.y;
-			direction.y = -std::abs(direction.y);
-		}
-	}
-
-	else { Entity::checkBounds(stageSize); }
-}
-
-void Enemy::shoot(sf::Vector2f projDirection)
-{
-	projDirection = target.getPosition() - getPosition();
-	projDirection = projDirection * getShotSpeed() / sqrt(projDirection.x * projDirection.x + projDirection.y * projDirection.y);
-	
-
-	if (shootingPattern == "oneSimple")
-	{
-		createProjectile(projDirection);
-	}
-
-	else if (shootingPattern == "threeSimple")
-	{
-		/* Create 3 projectiles: -22.5°, 0°, +22.5° toward the target */
-		createProjectile(projDirection);
-
-		createProjectile(sf::Vector2f(projDirection.x * cosTheta - projDirection.y * sinTheta,
-						projDirection.x * sinTheta + projDirection.y * cosTheta));
-
-		createProjectile(sf::Vector2f(projDirection.x * cosTheta + projDirection.y * sinTheta,
-						-projDirection.x * sinTheta + projDirection.y * cosTheta));
-		
-	}
-
-	/* fourCircle has not been implemented yet... */
-	else if (shootingPattern == "fourCross" || shootingPattern == "fourCircle")
-	{
-		createProjectile(projDirection);
-		createProjectile(sf::Vector2f(-projDirection.y, projDirection.x));
-		createProjectile(sf::Vector2f(-projDirection.x, -projDirection.y));
-		createProjectile(sf::Vector2f(projDirection.y, -projDirection.x));
 	}
 }
 

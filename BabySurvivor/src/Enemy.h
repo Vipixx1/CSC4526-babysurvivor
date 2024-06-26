@@ -1,15 +1,18 @@
 #pragma once
 #include "LivingEntity.h"
 #include "Collectible.h"
+#include "MovingStrategy.h"
 #include <string>
 #include <memory>
 
 class Enemy : public LivingEntity {
 private:
 	std::string enemyType;
-	std::string movementPattern;
-	std::string shootingPattern;
 	sf::Vector2f direction{ 0,0 };
+
+	static std::map<std::string, MovingStrategy, std::less<>> movingMap;
+
+	std::unique_ptr<MovingStrategy> movingStrategy;
 
 	static const float cosTheta;
 	static const float sinTheta;
@@ -28,8 +31,6 @@ public:
 	Enemy(const std::string& filePath, const std::string& enemyType, Entity& target);
 	void update(sf::Time elapsedTime) override;
 	void checkBounds(sf::Vector2f stageSize) override;
-
-	void shoot(sf::Vector2f projDirection) override;
 
 	std::optional<std::unique_ptr<Collectible>> dropCollectible() const;
 };

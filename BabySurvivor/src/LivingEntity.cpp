@@ -3,6 +3,13 @@
 
 using json = nlohmann::json;
 
+std::map<std::string, ShootingStrategy, std::less<>> LivingEntity::shootMap = {
+	{"oneSimple", },
+	{"threeSimple", },
+	{"fourCross", },
+	{"fourCircle", }
+};
+
 LivingEntity::LivingEntity(const std::string& filePath, const std::string& livingEntityName, bool isAlly) :
 	Entity{ filePath, livingEntityName },
 	stats{ filePath, livingEntityName },
@@ -87,4 +94,14 @@ bool LivingEntity::takeDamage(float damageValue)
 
 	stats.setCurrentHealth(currentHealth - damageValue);
 	return false;
+}
+
+void LivingEntity::shoot(sf::Vector2f direction) 
+{
+	auto newProjectiles = shootingStrategy->createProjectiles(direction);
+
+	projectiles.insert(
+		projectiles.end(),
+		std::make_move_iterator(newProjectiles.begin()),
+		std::make_move_iterator(newProjectiles.end()));
 }

@@ -47,6 +47,4 @@ public:
 	void update(sf::Time elapsedTime) override;
 	void checkBounds(sf::Vector2f stageSize) override;
 	void handleInput(sf::Keyboard::Key key, bool isPressed);
-	void shoot(sf::Vector2f projDirection) override;
-
 };
