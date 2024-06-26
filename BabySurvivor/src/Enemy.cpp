@@ -26,6 +26,9 @@ Enemy::Enemy(const std::string& filePath, const std::string& enemyType, Entity& 
 
 void Enemy::update(sf::Time elapsedTime)
 {
+	//direction = moveStartegy->move(player.position, entity.position);
+	//moveEntity(direction * elapsedTime.asSeconds());
+
 	if (movementPattern == "towardPlayer") 
 	{
 		direction = target.getPosition() - getPosition();
