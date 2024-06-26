@@ -44,7 +44,7 @@ public:
 
 	bool takeDamage(float damageValue) override;
 	void render(sf::RenderWindow& gameWindow) const override;
-	void update(sf::Time elapsedTime) override;
+	void update(sf::Time elapsedTime, sf::Vector2f stageSize) override;
 	void checkBounds(sf::Vector2f stageSize) override;
 	void handleInput(sf::Keyboard::Key key, bool isPressed);
 };

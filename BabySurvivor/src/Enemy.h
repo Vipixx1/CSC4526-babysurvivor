@@ -29,7 +29,7 @@ private:
 
 public:
 	Enemy(const std::string& filePath, const std::string& enemyType, Entity& target);
-	void update(sf::Time elapsedTime) override;
+	void update(sf::Time elapsedTime, sf::Vector2f stageSize) override;
 	void checkBounds(sf::Vector2f stageSize) override;
 
 	std::optional<std::unique_ptr<Collectible>> dropCollectible() const;

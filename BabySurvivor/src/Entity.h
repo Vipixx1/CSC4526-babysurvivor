@@ -26,7 +26,7 @@ public:
 	void setActive(bool active);
 	
 	virtual void render(sf::RenderWindow& gameWindow) const;
-	virtual void update(sf::Time elapsedTime) = 0;
+	virtual void update(sf::Time elapsedTime, sf::Vector2f stageSize) = 0;
 	virtual void checkBounds(sf::Vector2f stageSize);
-	void moveEntity(sf::Vector2f movement);
+	void moveEntity(sf::Vector2f direction);
 };

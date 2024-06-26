@@ -28,12 +28,15 @@ Enemy::Enemy(const std::string& filePath, const std::string& enemyType, Entity& 
 	initializeRandomDirection();
 }
 
-void Enemy::update(sf::Time elapsedTime)
+void Enemy::update(sf::Time elapsedTime, sf::Vector2f stageSize)
 {
-	direction = movingStrategy->move(getPosition(), target.getPosition());
-	moveEntity(direction * elapsedTime.asSeconds());
+	sf::Vector2f direction = movingStrategy->move(target.getPosition(), getPosition());
+	direction = direction * getSpeed() / sqrt(direction.x * direction.x + direction.y * direction.y);
+
+	direction = movingStrategy->checkBounds(stageSize, getPosition(), getSize());
 
 	moveEntity(direction * elapsedTime.asSeconds());
+	checkBounds(stageSize);
 	
 	frameCounter++;
 	if (static_cast<float>(frameCounter) >= getShotDelay()) {

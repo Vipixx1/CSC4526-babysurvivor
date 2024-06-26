@@ -15,7 +15,7 @@ private:
 
 public:
 	explicit Collectible(const std::string& filePath, const std::string& entityName, CollectibleType type, float value);
-	void update(sf::Time elapsedTime) override;
+	void update(sf::Time elapsedTime, sf::Vector2f stageSize) override;
 
 	CollectibleType getCollectibleType() const;
 	float getCollectibleValue() const;

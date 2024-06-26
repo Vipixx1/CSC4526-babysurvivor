@@ -121,7 +121,7 @@ void Player::render(sf::RenderWindow& gameWindow) const
 	}
 }
 
-void Player::update(sf::Time elapsedTime)
+void Player::update(sf::Time elapsedTime, sf::Vector2f stageSize)
 {
 	sf::Vector2f velocity(0.f, 0.f);
 	float speed = getSpeed();

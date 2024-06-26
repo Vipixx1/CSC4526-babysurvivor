@@ -9,7 +9,7 @@ private:
 
 public:
 	explicit Projectile(const std::string& filePath, const std::string& entity, float damage, bool isAlly);
-	void update(sf::Time elapsedTime) override;
+	void update(sf::Time elapsedTime, sf::Vector2f stageSize) override;
 	void checkBounds(sf::Vector2f stageSize) override;
 
 	float getDamage() const;

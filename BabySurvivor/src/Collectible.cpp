@@ -5,10 +5,9 @@ Collectible::Collectible(const std::string& filePath, const std::string& entityN
 	type{ type },
 	value{ value } {}
 
-
-void Collectible::update(sf::Time elapsedTime)
+void Collectible::update(sf::Time elapsedTime, sf::Vector2f stageSize)
 {
-	//DO NOTHING
+	//DO NOTHING YET
 }
 
 

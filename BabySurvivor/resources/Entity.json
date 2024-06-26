@@ -43,7 +43,7 @@
   "player3": {
     "length": 120,
     "height": 160,
-    "baseHealth": 5000,
+    "baseHealth": 1,
     "baseDamage": 150,
     "damageMultiplier": 1.0,
     "baseSpeed": 450,
